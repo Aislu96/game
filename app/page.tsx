@@ -1,10 +1,30 @@
 'use client';
 import Image from "next/image";
 import {useEffect, useState} from "react";
+import { useGesture } from '@use-gesture/react';
 
 export default function Home() {
     const [score, setScore] = useState(0);
     const [glasses, setGlasses] = useState(1000);
+    const [rotation, setRotation] = useState(0);
+
+    const bind = useGesture({
+        onDrag: ({ offset: [mx] }) => {
+            let newRotation = rotation + mx;
+
+            // Ensure rotation stays within 0 to 359 degrees
+            newRotation = (newRotation + 360) % 360;
+
+            setRotation(newRotation);
+        },
+    });
+
+    useEffect(() => {
+        if (rotation === 0 && score > 0) {
+            handleClockRotationComplete();
+        }
+    }, [rotation]);
+
 
     const handleClockRotationComplete = () => {
         setScore(prevScore => prevScore + 1);
@@ -26,7 +46,8 @@ export default function Home() {
                 <h1 className="text-3xl text-regular text-white pl-10">Score: {score}</h1>
                 <div className="my-[120px] relative flex items-center justify-center">
                     <Image src="/arrow.png" alt="arrow" width={320} height={320} className="object-contain mx-auto"/>
-                    <Image src="/clock.png" alt="clock" width={250} height={250} className="object-contain absolute transition-transform duration-1000 ease-in-out transform-gpu hover:rotate-360" onClick={handleClockRotationComplete}/>
+                    <Image {...bind()} src="/clock.png" alt="clock" width={250} height={250}  className="object-contain absolute transition-transform duration-1000 ease-in-out transform-gpu"
+                           style={{ transform: `rotate(${rotation}deg)` }}/>
                 </div>
                 <div className="flex flex-row gap-2 w-[320px] justify-center h-[60px]">
                     <Image src="/lightning.svg" width={32} height={48} alt="lightning" className="object-contain w-[32px] h-[48px]"/>
