@@ -5,21 +5,18 @@ import {useEffect, useState} from "react";
 export default function Home() {
     const [score, setScore] = useState(0);
     const [glasses, setGlasses] = useState(1000);
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+
     const handleClockRotationComplete = () => {
         setScore(prevScore => prevScore + 1);
         setGlasses(prevGlasses => prevGlasses - 1);
     };
 
     useEffect(() => {
-        let timer;
-        if (!isLoggedIn) {
-            timer = setTimeout(() => {
+        const  timer = setTimeout(() => {
                 if (glasses < 1000) {
                     setGlasses(prevGlasses => prevGlasses + 1);
                 }
             }, 10000);
-        }
         return () => clearTimeout(timer);
     }, [glasses]);
 
