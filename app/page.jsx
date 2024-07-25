@@ -16,7 +16,7 @@ const RotatingClockGame = () => {
   const rotationCountRef = useRef(0);
   const [startGame, setStartGame] = useState(false);
 
-  const tg = window.Telegram?.WebApp;
+  const tg = window?.Telegram?.WebApp;
   const userId = tg?.initDataUnsafe?.user?.id;
 
   async function saveUserData() {
@@ -30,8 +30,8 @@ const RotatingClockGame = () => {
     if (error) console.error("Error saving game data:", error);
     else console.log("Game data saved successfully");
   }
-  window.Telegram?.WebApp?.onEvent("viewportChanged", function () {
-    if (!window.Telegram.WebApp.isExpanded) {
+  window?.Telegram?.WebApp?.onEvent("viewportChanged", function () {
+    if (!window?.Telegram.WebApp.isExpanded) {
       // The Web App is being closed
       saveUserData();
     }
@@ -74,7 +74,7 @@ const RotatingClockGame = () => {
   }
 
   function initApp() {
-    const tg = window.Telegram.WebApp;
+    const tg = window?.Telegram?.WebApp;
     tg.onEvent("viewportChanged", () => {
       if (!tg.isExpanded) {
         saveUserData();
