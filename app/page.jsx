@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
 import Image from "next/image";
 import { supabase } from "./utils/supabase/server";
+import { ImSpinner9 } from "react-icons/im";
 
 const RotatingClockGame = () => {
   const [score, setScore] = useState(0);
@@ -36,7 +37,7 @@ const RotatingClockGame = () => {
     if (!userId) return;
 
     const { data, error } = await supabase
-      .from("bixcoin")
+      .from("Bixcoin")
       .select("*")
       .eq("user_id", userId)
       .single();
@@ -49,10 +50,9 @@ const RotatingClockGame = () => {
       console.log("Game data loaded successfully");
     }
 
-    tg.ready();
-    tg.expand();
+    setStartGame(true);
 
-    tg.BackButton.show();
+    // tg.BackButton.show();
   }
 
   function initApp() {
@@ -98,6 +98,10 @@ const RotatingClockGame = () => {
     lastAngleRef.current = angle;
     rotationCountRef.current = 0;
   };
+
+  useEffect(() => {
+    loadUserData();
+  }, []);
 
   const handleMove = (clientX, clientY) => {
     if (!isDragging) return;
