@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
 import Image from "next/image";
+import { supabase } from "./utils/supabase/server";
 
 const RotatingClockGame = () => {
   const [score, setScore] = useState(0);
@@ -12,6 +13,66 @@ const RotatingClockGame = () => {
   const clockRef = useRef(null);
   const lastAngleRef = useRef(0);
   const rotationCountRef = useRef(0);
+  const [startGame, setStartGame] = useState(false);
+
+  const tg = window.Telegram?.WebApp;
+  const userId = 1; //tg?.initDataUnsafe?.user?.id;
+
+  async function saveUserData() {
+    if (!userId) return;
+
+    const { data, error } = await supabase.from("Bixcoin").upsert({
+      user_id: userId,
+      score: score,
+      energy: energy,
+      updated_at: new Date(),
+    });
+
+    if (error) console.error("Error saving game data:", error);
+    else console.log("Game data saved successfully");
+  }
+
+  async function loadUserData() {
+    if (!userId) return;
+
+    const { data, error } = await supabase
+      .from("bixcoin")
+      .select("*")
+      .eq("user_id", userId)
+      .single();
+
+    if (error) {
+      console.error("Error loading game data:", error);
+    } else if (data) {
+      setScore(data.score);
+      setEnergy(data.energy);
+      console.log("Game data loaded successfully");
+    }
+
+    tg.ready();
+    tg.expand();
+
+    tg.BackButton.show();
+  }
+
+  function initApp() {
+    const tg = window.Telegram.WebApp;
+
+    // Set up event listener for app closing
+    tg.onEvent("viewportChanged", () => {
+      if (!tg.isExpanded) {
+        saveUserData();
+      }
+    });
+
+    // Set up periodic save (every 1 minute)
+    // setInterval(saveUserData, 60000);
+
+    // Load initial user data
+    loadUserData();
+  }
+
+  document.addEventListener("DOMContentLoaded", initApp);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -80,6 +141,9 @@ const RotatingClockGame = () => {
   return (
     <div className="h-screen bg-black text-white flex flex-col items-center justify-between pt-20">
       <div className="text-4xl mb-4 w-full px-10">Score: {score}</div>
+      <button className="bg-white text-black px-4 py-2" onClick={saveUserData}>
+        save me
+      </button>
       <div className="relative flex items-center justify-center">
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
           <div
