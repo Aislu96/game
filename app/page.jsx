@@ -101,11 +101,13 @@ const RotatingClockGame = () => {
 
     // Cleanup function
     return () => {
-      if (window.Telegram?.WebApp) {
+      if (typeof window !== "undefined" && window.Telegram?.WebApp) {
         window.Telegram.WebApp.offEvent("viewportChanged", saveUserData);
         window.Telegram.WebApp.offEvent("mainButtonClicked", saveUserData);
       }
-      window.removeEventListener("beforeunload", saveUserData);
+      if (typeof window !== "undefined") {
+        window.removeEventListener("beforeunload", saveUserData);
+      }
     };
   }, []);
 
@@ -181,38 +183,76 @@ const RotatingClockGame = () => {
     setIsDragging(false);
   };
 
-  function ensureDocumentIsScrollable() {
-    const isScrollable =
-      document.documentElement.scrollHeight > window.innerHeight;
-    if (!isScrollable) {
-      document.documentElement.style.setProperty(
-        "height",
-        "calc(100vh + 1px)",
-        "important"
-      );
-    }
-  }
-  function preventCollapse() {
-    if (window.scrollY === 0) {
-      window.scrollTo(0, 1);
-    }
-  }
+  // function ensureDocumentIsScrollable() {
+  //   const isScrollable =
+  //     document.documentElement.scrollHeight > window.innerHeight;
+  //   if (!isScrollable) {
+  //     document.documentElement.style.setProperty(
+  //       "height",
+  //       "calc(100vh + 1px)",
+  //       "important"
+  //     );
+  //   }
+  // }
+  // function preventCollapse() {
+  //   if (window.scrollY === 0) {
+  //     window.scrollTo(0, 1);
+  //   }
+  // }
 
-  const scrollableElement = document.querySelector(".scrollable-element");
-  scrollableElement.addEventListener("touchstart", preventCollapse);
-
-  window.addEventListener("load", ensureDocumentIsScrollable);
-
-  // Prevent windwo.scrollY from becoming zero
-  function preventCollapse(event) {
-    if (window.scrollY === 0) {
-      window.scrollTo(0, 1);
-    }
-  }
-
-  // Attach the above function to the touchstart event handler of the scrollable element
   // const scrollableElement = document.querySelector(".scrollable-element");
-  scrollableElement.addEventListener("touchstart", preventCollapse);
+  // scrollableElement.addEventListener("touchstart", preventCollapse);
+
+  // window.addEventListener("load", ensureDocumentIsScrollable);
+
+  // // Prevent windwo.scrollY from becoming zero
+  // function preventCollapse(event) {
+  //   if (window.scrollY === 0) {
+  //     window.scrollTo(0, 1);
+  //   }
+  // }
+
+  // // Attach the above function to the touchstart event handler of the scrollable element
+  // // const scrollableElement = document.querySelector(".scrollable-element");
+  // scrollableElement.addEventListener("touchstart", preventCollapse);
+
+  const preventCollapse = useCallback(() => {
+    if (typeof window !== "undefined" && window.scrollY === 0) {
+      window.scrollTo(0, 1);
+    }
+  }, []);
+
+  const ensureDocumentIsScrollable = useCallback(() => {
+    if (typeof window !== "undefined") {
+      const isScrollable =
+        document.documentElement.scrollHeight > window.innerHeight;
+      if (!isScrollable) {
+        document.documentElement.style.setProperty(
+          "height",
+          "calc(100vh + 1px)",
+          "important"
+        );
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("load", ensureDocumentIsScrollable);
+
+      const scrollableElement = document.querySelector(".scrollable-element");
+      if (scrollableElement) {
+        scrollableElement.addEventListener("touchstart", preventCollapse);
+      }
+
+      return () => {
+        window.removeEventListener("load", ensureDocumentIsScrollable);
+        if (scrollableElement) {
+          scrollableElement.removeEventListener("touchstart", preventCollapse);
+        }
+      };
+    }
+  }, [ensureDocumentIsScrollable, preventCollapse]);
 
   return (
     <div className="scrollable-element h-screen bg-black text-white flex flex-col items-center justify-between pt-20">
