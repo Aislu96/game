@@ -128,6 +128,43 @@ const RotatingClockGame = () => {
     }
   }, [userId]);
 
+  useEffect(() => {
+    const preventCollapse = (event) => {
+      if (window.scrollY === 0) {
+        window.scrollTo(0, 1);
+      }
+    };
+
+    const clockElement = clockRef.current;
+    if (clockElement) {
+      clockElement.addEventListener("touchstart", preventCollapse, {
+        passive: false,
+      });
+    }
+
+    return () => {
+      if (clockElement) {
+        clockElement.removeEventListener("touchstart", preventCollapse);
+      }
+    };
+  }, []);
+
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    handleStart(touch.clientX, touch.clientY);
+  };
+
+  const handleTouchMove = (e) => {
+    if (isDragging) {
+      const touch = e.touches[0];
+      handleMove(touch.clientX, touch.clientY);
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    handleEnd();
+  };
+
   const calculateAngle = (clientX, clientY) => {
     const rect = clockRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -180,44 +217,14 @@ const RotatingClockGame = () => {
     setIsDragging(false);
   };
 
-  useEffect(() => {
-    const clockElement = clockRef.current;
+  // function preventCollapse(event) {
+  //   if (window.scrollY === 0) {
+  //     window.scrollTo(0, 1);
+  //   }
+  // }
 
-    const touchStartHandler = (e) => handleTouchStart(e);
-    const touchMoveHandler = (e) => handleTouchMove(e);
-    const touchEndHandler = (e) => handleTouchEnd(e);
-
-    clockElement.addEventListener("touchstart", touchStartHandler, {
-      passive: false,
-    });
-    clockElement.addEventListener("touchmove", touchMoveHandler, {
-      passive: false,
-    });
-    clockElement.addEventListener("touchend", touchEndHandler);
-
-    return () => {
-      clockElement.removeEventListener("touchstart", touchStartHandler);
-      clockElement.removeEventListener("touchmove", touchMoveHandler);
-      clockElement.removeEventListener("touchend", touchEndHandler);
-    };
-  }, []);
-
-  const handleTouchStart = (e) => {
-    const touch = e.touches[0];
-    handleStart(touch.clientX, touch.clientY);
-  };
-
-  const handleTouchMove = (e) => {
-    if (isDragging) {
-      const touch = e.touches[0];
-      handleMove(touch.clientX, touch.clientY);
-    }
-  };
-
-  const handleTouchEnd = (e) => {
-    handleEnd();
-  };
-
+  // const scrollableElement = document.querySelector(".scrollable-element");
+  // scrollableElement.addEventListener("touchstart", preventCollapse);
   return (
     <div
       className="h-screen bg-black text-white flex flex-col items-center justify-between pt-20"
@@ -249,6 +256,7 @@ const RotatingClockGame = () => {
           </div>
         </div>
       </div>
+
       <div className="mb-6 flex">
         <Image
           src={"/lightning.svg"}
