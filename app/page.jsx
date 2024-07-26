@@ -180,44 +180,81 @@ const RotatingClockGame = () => {
     setIsDragging(false);
   };
 
+  const handleTouchStart = (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    handleStart(touch.clientX, touch.clientY);
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    if (isDragging) {
+      const touch = e.touches[0];
+      handleMove(touch.clientX, touch.clientY);
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    e.preventDefault();
+    handleEnd();
+  };
+
+  useEffect(() => {
+    // Prevent default touch behavior on the entire document
+    const preventDefaultTouch = (e) => {
+      if (
+        e.target === clockRef.current ||
+        clockRef.current.contains(e.target)
+      ) {
+        return; // Allow touch events on the clock
+      }
+      e.preventDefault();
+    };
+
+    document.addEventListener("touchmove", preventDefaultTouch, {
+      passive: false,
+    });
+    document.addEventListener("touchstart", preventDefaultTouch, {
+      passive: false,
+    });
+
+    return () => {
+      document.removeEventListener("touchmove", preventDefaultTouch);
+      document.removeEventListener("touchstart", preventDefaultTouch);
+    };
+  }, []);
+
   return (
     <div
-      className="h-screen bg-black touch-none text-white flex flex-col items-center justify-between pt-20"
-      onTouchMove={(e) => e.preventDefault()}
-      style={{ height: "100vh", overflowY: "hidden" }}
+      className="h-screen bg-black text-white flex flex-col items-center justify-between pt-20"
+      style={{
+        height: "100vh",
+        overflowY: "hidden",
+        touchAction: "none",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        WebkitTouchCallout: "none",
+      }}
     >
       <div className="text-4xl mb-4 w-full px-10">Score: {score}</div>
-      {/* <button className="bg-white text-black px-4 py-2" onClick={saveUserData}>
-        save me
-      </button> */}
       <div className="relative flex items-center justify-center">
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
           <div
             ref={clockRef}
             className="w-[295px] h-[295px] rounded-full mb-5 bg-white relative touch-none flex items-center justify-center"
-            onTouchStart={(e) => {
-              e.preventDefault(); // Prevent default touch behavior
-              handleStart(e.touches[0].clientX, e.touches[0].clientY);
-            }}
-            onTouchMove={(e) => {
-              e.preventDefault(); // Prevent default touch behavior
-              handleMove(e.touches[0].clientX, e.touches[0].clientY);
-            }}
-            onTouchEnd={(e) => {
-              e.preventDefault(); // Prevent default touch behavior
-              handleEnd();
-            }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             <div
               className="absolute top-0 left-1/2 w-1.5 h-1/2 bg-black origin-bottom rounded-full"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
-              <FaCircle className="text-black absolute top-full  left-1/2 text-2xl -translate-x-1/2 -translate-y-1/2" />
+              <FaCircle className="text-black absolute top-full left-1/2 text-2xl -translate-x-1/2 -translate-y-1/2" />
             </div>
           </div>
         </div>
       </div>
-
       <div className="mb-6 flex">
         <Image
           src={"/lightning.svg"}
