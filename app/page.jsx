@@ -109,6 +109,7 @@ const RotatingClockGame = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setEnergy((prevEnergy) => Math.min(1000, prevEnergy + 1));
+      saveUserData();
     }, 10000);
     return () => clearInterval(interval);
   }, []);
