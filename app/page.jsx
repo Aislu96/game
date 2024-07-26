@@ -40,9 +40,10 @@ const RotatingClockGame = () => {
   // });
 
   useEffect(() => {
+    // setUserId(1);
     if (typeof window !== "undefined") {
       setTg(window.Telegram?.WebApp);
-      setUserId(window.Telegram?.WebApp?.initDataUnsafe?.user?.id);
+      setUserId(window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 1);
       window?.Telegram?.WebApp.onEvent("viewportChanged", function () {
         if (!window?.Telegram.WebApp.isExpanded) {
           // The Web App is being closed
@@ -109,8 +110,14 @@ const RotatingClockGame = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setEnergy((prevEnergy) => Math.min(1000, prevEnergy + 1));
-      saveUserData();
     }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      saveUserData();
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
   const calculateAngle = (clientX, clientY) => {
@@ -132,7 +139,7 @@ const RotatingClockGame = () => {
 
   useEffect(() => {
     loadUserData();
-  }, []);
+  }, [userId]);
 
   const handleMove = (clientX, clientY) => {
     if (!isDragging) return;
@@ -176,9 +183,9 @@ const RotatingClockGame = () => {
   return (
     <div className="h-screen bg-black text-white flex flex-col items-center justify-between pt-20">
       <div className="text-4xl mb-4 w-full px-10">Score: {score}</div>
-      {/* <button className="bg-white text-black px-4 py-2" onClick={saveUserData}>
+      <button className="bg-white text-black px-4 py-2" onClick={saveUserData}>
         save me
-      </button> */}
+      </button>
       <div className="relative flex items-center justify-center">
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
           <div
