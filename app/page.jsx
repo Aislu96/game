@@ -181,8 +181,41 @@ const RotatingClockGame = () => {
     setIsDragging(false);
   };
 
+  function ensureDocumentIsScrollable() {
+    const isScrollable =
+      document.documentElement.scrollHeight > window.innerHeight;
+    if (!isScrollable) {
+      document.documentElement.style.setProperty(
+        "height",
+        "calc(100vh + 1px)",
+        "important"
+      );
+    }
+  }
+  function preventCollapse() {
+    if (window.scrollY === 0) {
+      window.scrollTo(0, 1);
+    }
+  }
+
+  const scrollableElement = document.querySelector(".scrollable-element");
+  scrollableElement.addEventListener("touchstart", preventCollapse);
+
+  window.addEventListener("load", ensureDocumentIsScrollable);
+
+  // Prevent windwo.scrollY from becoming zero
+  function preventCollapse(event) {
+    if (window.scrollY === 0) {
+      window.scrollTo(0, 1);
+    }
+  }
+
+  // Attach the above function to the touchstart event handler of the scrollable element
+  // const scrollableElement = document.querySelector(".scrollable-element");
+  scrollableElement.addEventListener("touchstart", preventCollapse);
+
   return (
-    <div className="h-screen bg-black text-white flex flex-col items-center justify-between pt-20">
+    <div className="scrollable-element h-screen bg-black text-white flex flex-col items-center justify-between pt-20">
       <div className="text-4xl mb-4 w-full px-10">Score: {score}</div>
       <div className="relative flex items-center justify-center">
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
