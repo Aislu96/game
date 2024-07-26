@@ -181,27 +181,24 @@ const RotatingClockGame = () => {
   };
 
   useEffect(() => {
-    // Prevent default touch behavior outside the clock
-    const preventDefaultTouch = (e) => {
-      if (
-        e.target === clockRef.current ||
-        clockRef.current.contains(e.target)
-      ) {
-        return; // Allow touch events on the clock
-      }
-      e.preventDefault();
-    };
+    const clockElement = clockRef.current;
 
-    document.addEventListener("touchmove", preventDefaultTouch, {
+    const touchStartHandler = (e) => handleTouchStart(e);
+    const touchMoveHandler = (e) => handleTouchMove(e);
+    const touchEndHandler = (e) => handleTouchEnd(e);
+
+    clockElement.addEventListener("touchstart", touchStartHandler, {
       passive: false,
     });
-    document.addEventListener("touchstart", preventDefaultTouch, {
+    clockElement.addEventListener("touchmove", touchMoveHandler, {
       passive: false,
     });
+    clockElement.addEventListener("touchend", touchEndHandler);
 
     return () => {
-      document.removeEventListener("touchmove", preventDefaultTouch);
-      document.removeEventListener("touchstart", preventDefaultTouch);
+      clockElement.removeEventListener("touchstart", touchStartHandler);
+      clockElement.removeEventListener("touchmove", touchMoveHandler);
+      clockElement.removeEventListener("touchend", touchEndHandler);
     };
   }, []);
 
