@@ -104,9 +104,9 @@ const RotatingClockGame = () => {
         }
 
         webApp.onEvent("viewportChanged", () => {
-          if (!webApp.isExpanded) {
-            saveUserData();
-          }
+          // if (!webApp.isExpanded) {
+          saveUserData();
+          // }
         });
 
         setStartGame(true);
@@ -146,12 +146,12 @@ const RotatingClockGame = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      saveUserData();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [score]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     saveUserData();
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [score]);
 
   useEffect(() => {
     if (userId) {
