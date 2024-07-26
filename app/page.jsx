@@ -74,6 +74,7 @@ const RotatingClockGame = () => {
         const user = webApp.initDataUnsafe?.user;
         if (user?.id) {
           setUserId(user.id);
+          window?.Telegram?.WebApp?.disableVerticalSwipes();
           console.log("Telegram user ID set:", user.id);
         } else {
           console.warn("No user ID found in Telegram Web App data");
@@ -128,43 +129,6 @@ const RotatingClockGame = () => {
     }
   }, [userId]);
 
-  useEffect(() => {
-    const preventCollapse = (event) => {
-      if (window.scrollY === 0) {
-        window.scrollTo(0, 1);
-      }
-    };
-
-    const clockElement = clockRef.current;
-    if (clockElement) {
-      clockElement.addEventListener("touchstart", preventCollapse, {
-        passive: false,
-      });
-    }
-
-    return () => {
-      if (clockElement) {
-        clockElement.removeEventListener("touchstart", preventCollapse);
-      }
-    };
-  }, []);
-
-  const handleTouchStart = (e) => {
-    const touch = e.touches[0];
-    handleStart(touch.clientX, touch.clientY);
-  };
-
-  const handleTouchMove = (e) => {
-    if (isDragging) {
-      const touch = e.touches[0];
-      handleMove(touch.clientX, touch.clientY);
-    }
-  };
-
-  const handleTouchEnd = (e) => {
-    handleEnd();
-  };
-
   const calculateAngle = (clientX, clientY) => {
     const rect = clockRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -217,41 +181,32 @@ const RotatingClockGame = () => {
     setIsDragging(false);
   };
 
-  // function preventCollapse(event) {
-  //   if (window.scrollY === 0) {
-  //     window.scrollTo(0, 1);
-  //   }
-  // }
-
-  // const scrollableElement = document.querySelector(".scrollable-element");
-  // scrollableElement.addEventListener("touchstart", preventCollapse);
   return (
-    <div
-      className="h-screen bg-black text-white flex flex-col items-center justify-between pt-20"
-      style={{
-        height: "100vh",
-        overflowY: "hidden",
-        touchAction: "none",
-        userSelect: "none",
-        WebkitUserSelect: "none",
-        WebkitTouchCallout: "none",
-      }}
-    >
+    <div className="h-screen bg-black text-white flex flex-col items-center justify-between pt-20">
       <div className="text-4xl mb-4 w-full px-10">Score: {score}</div>
       <div className="relative flex items-center justify-center">
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
           <div
             ref={clockRef}
-            className="w-[295px] h-[295px] rounded-full mb-5 bg-white relative flex items-center justify-center"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
+            className="w-[295px] h-[295px] rounded-full mb-5 bg-white relative touch-none flex items-center justify-center"
+            onTouchStart={(e) => {
+              e.preventDefault(); // Prevent default touch behavior
+              handleStart(e.touches[0].clientX, e.touches[0].clientY);
+            }}
+            onTouchMove={(e) => {
+              e.preventDefault(); // Prevent default touch behavior
+              handleMove(e.touches[0].clientX, e.touches[0].clientY);
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault(); // Prevent default touch behavior
+              handleEnd();
+            }}
           >
             <div
               className="absolute top-0 left-1/2 w-1.5 h-1/2 bg-black origin-bottom rounded-full"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
-              <FaCircle className="text-black absolute top-full left-1/2 text-2xl -translate-x-1/2 -translate-y-1/2" />
+              <FaCircle className="text-black absolute top-full  left-1/2 text-2xl -translate-x-1/2 -translate-y-1/2" />
             </div>
           </div>
         </div>
