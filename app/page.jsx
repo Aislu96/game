@@ -17,8 +17,6 @@ const RotatingClockGame = () => {
   const [startGame, setStartGame] = useState(false);
   const [userId, setUserId] = useState(null);
   const [tg, setTg] = useState(null);
-  // const tg = window?.Telegram?.WebApp;
-  // const userId = tg?.initDataUnsafe?.user?.id;
 
   async function saveUserData() {
     if (!userId) return;
@@ -31,27 +29,6 @@ const RotatingClockGame = () => {
     if (error) console.error("Error saving game data:", error);
     else console.log("Game data saved successfully");
   }
-  // window?.Telegram?.WebApp?.onEvent("viewportChanged", function () {
-  //   if (!window?.Telegram.WebApp.isExpanded) {
-  //     // The Web App is being closed
-  //     saveUserData();
-  //   }
-  // });
-
-  // useEffect(() => {
-  //   // setUserId(1);
-  //   if (typeof window !== "undefined") {
-  //     setTg(window.Telegram?.WebApp);
-  //     setUserId(window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 1);
-  //     window?.Telegram?.WebApp.onEvent("viewportChanged", function () {
-  //       if (!window?.Telegram.WebApp.isExpanded) {
-  //         // The Web App is being closed
-  //         saveUserData();
-  //       }
-  //       // ...
-  //     });
-  //   }
-  // }, []);
 
   async function loadUserData() {
     if (!userId) return;
@@ -103,11 +80,11 @@ const RotatingClockGame = () => {
           setUserId(1); // Fallback for development
         }
 
-        webApp.onEvent("viewportChanged", () => {
-          // if (!webApp.isExpanded) {
-          saveUserData();
-          // }
-        });
+        webApp.onEvent("viewportChanged", saveUserData);
+        webApp.onEvent("mainButtonClicked", saveUserData);
+
+        // Add event listener for beforeunload
+        window.addEventListener("beforeunload", saveUserData);
 
         setStartGame(true);
       } else {
@@ -120,24 +97,22 @@ const RotatingClockGame = () => {
     };
 
     initializeTelegramWebApp();
+
+    // Cleanup function
+    return () => {
+      if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.offEvent("viewportChanged", saveUserData);
+        window.Telegram.WebApp.offEvent("mainButtonClicked", saveUserData);
+      }
+      window.removeEventListener("beforeunload", saveUserData);
+    };
   }, []);
 
-  // function initApp() {
-  //   // const tg = window?.Telegram?.WebApp;
-  //   tg.onEvent("viewportChanged", () => {
-  //     if (!tg.isExpanded) {
-  //       saveUserData();
-  //     }
-  //   });
-  //   loadUserData();
-  // }
+  useEffect(() => {
+    const saveInterval = setInterval(saveUserData, 30000); // Save every 30 seconds
 
-  // useEffect(() => {
-  //   document.addEventListener("DOMContentLoaded", initApp);
-  //   return () => {
-  //     document.removeEventListener("DOMContentLoaded", initApp);
-  //   };
-  // }, []);
+    return () => clearInterval(saveInterval);
+  }, [score]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -145,13 +120,6 @@ const RotatingClockGame = () => {
     }, 10000);
     return () => clearInterval(interval);
   }, []);
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     saveUserData();
-  //   }, 5000);
-  //   return () => clearInterval(interval);
-  // }, [score]);
 
   useEffect(() => {
     if (userId) {
@@ -176,10 +144,6 @@ const RotatingClockGame = () => {
     rotationCountRef.current = 0;
   };
 
-  // useEffect(() => {
-  //   loadUserData();
-  // }, [userId]);
-
   const handleMove = (clientX, clientY) => {
     if (!isDragging) return;
     const currentAngle = calculateAngle(clientX, clientY);
@@ -191,9 +155,6 @@ const RotatingClockGame = () => {
       setIsDragging(false);
     }
 
-    // angleDiff -= 360;
-
-    // Only update if movement is clockwise
     if (angleDiff > 0) {
       rotationCountRef.current += angleDiff;
       setRotation(currentAngle);
@@ -212,7 +173,6 @@ const RotatingClockGame = () => {
     } else {
       setIsDragging(false);
     }
-    // If movement is anticlockwise, do nothing (don't update lastAngleRef or rotation)
   };
 
   const handleEnd = () => {
@@ -229,14 +189,19 @@ const RotatingClockGame = () => {
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
           <div
             ref={clockRef}
-            className="w-[295px] h-[295px] rounded-full mb-5  bg-white relative touch-none flex items-center justify-center"
-            onTouchStart={(e) =>
-              handleStart(e.touches[0].clientX, e.touches[0].clientY)
-            }
-            onTouchMove={(e) =>
-              handleMove(e.touches[0].clientX, e.touches[0].clientY)
-            }
-            onTouchEnd={handleEnd}
+            className="w-[295px] h-[295px] rounded-full mb-5 bg-white relative touch-none flex items-center justify-center"
+            onTouchStart={(e) => {
+              e.preventDefault(); // Prevent default touch behavior
+              handleStart(e.touches[0].clientX, e.touches[0].clientY);
+            }}
+            onTouchMove={(e) => {
+              e.preventDefault(); // Prevent default touch behavior
+              handleMove(e.touches[0].clientX, e.touches[0].clientY);
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault(); // Prevent default touch behavior
+              handleEnd();
+            }}
           >
             <div
               className="absolute top-0 left-1/2 w-1.5 h-1/2 bg-black origin-bottom rounded-full"
