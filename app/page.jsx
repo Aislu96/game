@@ -180,27 +180,8 @@ const RotatingClockGame = () => {
     setIsDragging(false);
   };
 
-  const handleTouchStart = (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    handleStart(touch.clientX, touch.clientY);
-  };
-
-  const handleTouchMove = (e) => {
-    e.preventDefault();
-    if (isDragging) {
-      const touch = e.touches[0];
-      handleMove(touch.clientX, touch.clientY);
-    }
-  };
-
-  const handleTouchEnd = (e) => {
-    e.preventDefault();
-    handleEnd();
-  };
-
   useEffect(() => {
-    // Prevent default touch behavior on the entire document
+    // Prevent default touch behavior outside the clock
     const preventDefaultTouch = (e) => {
       if (
         e.target === clockRef.current ||
@@ -224,6 +205,22 @@ const RotatingClockGame = () => {
     };
   }, []);
 
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0];
+    handleStart(touch.clientX, touch.clientY);
+  };
+
+  const handleTouchMove = (e) => {
+    if (isDragging) {
+      const touch = e.touches[0];
+      handleMove(touch.clientX, touch.clientY);
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    handleEnd();
+  };
+
   return (
     <div
       className="h-screen bg-black text-white flex flex-col items-center justify-between pt-20"
@@ -241,7 +238,7 @@ const RotatingClockGame = () => {
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
           <div
             ref={clockRef}
-            className="w-[295px] h-[295px] rounded-full mb-5 bg-white relative touch-none flex items-center justify-center"
+            className="w-[295px] h-[295px] rounded-full mb-5 bg-white relative flex items-center justify-center"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
