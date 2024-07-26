@@ -181,11 +181,15 @@ const RotatingClockGame = () => {
   };
 
   return (
-    <div className="h-screen bg-black text-white flex flex-col items-center justify-between pt-20">
+    <div
+      className="h-screen bg-black touch-none text-white flex flex-col items-center justify-between pt-20"
+      onTouchMove={(e) => e.preventDefault()}
+      style={{ height: "100vh", overflowY: "hidden" }}
+    >
       <div className="text-4xl mb-4 w-full px-10">Score: {score}</div>
-      <button className="bg-white text-black px-4 py-2" onClick={saveUserData}>
+      {/* <button className="bg-white text-black px-4 py-2" onClick={saveUserData}>
         save me
-      </button>
+      </button> */}
       <div className="relative flex items-center justify-center">
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
           <div
