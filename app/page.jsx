@@ -119,7 +119,7 @@ const RotatingClockGame = () => {
       saveUserData();
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [score]);
   const calculateAngle = (clientX, clientY) => {
     const rect = clockRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
