@@ -109,9 +109,10 @@ const RotatingClockGame = () => {
   }, []);
 
   useEffect(() => {
-    const saveInterval = setInterval(saveUserData, 30000); // Save every 30 seconds
+    saveUserData();
+    // const saveInterval = setInterval(saveUserData, 30000); // Save every 30 seconds
 
-    return () => clearInterval(saveInterval);
+    // return () => clearInterval(saveInterval);
   }, [score]);
 
   useEffect(() => {
