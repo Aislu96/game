@@ -17,7 +17,6 @@ const RotatingClockGame = () => {
   const [startGame, setStartGame] = useState(false);
   const [userId, setUserId] = useState(null);
   const [tg, setTg] = useState(null);
-
   // const tg = window?.Telegram?.WebApp;
   // const userId = tg?.initDataUnsafe?.user?.id;
 
@@ -39,20 +38,20 @@ const RotatingClockGame = () => {
   //   }
   // });
 
-  useEffect(() => {
-    // setUserId(1);
-    if (typeof window !== "undefined") {
-      setTg(window.Telegram?.WebApp);
-      setUserId(window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 1);
-      window?.Telegram?.WebApp.onEvent("viewportChanged", function () {
-        if (!window?.Telegram.WebApp.isExpanded) {
-          // The Web App is being closed
-          saveUserData();
-        }
-        // ...
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   // setUserId(1);
+  //   if (typeof window !== "undefined") {
+  //     setTg(window.Telegram?.WebApp);
+  //     setUserId(window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 1);
+  //     window?.Telegram?.WebApp.onEvent("viewportChanged", function () {
+  //       if (!window?.Telegram.WebApp.isExpanded) {
+  //         // The Web App is being closed
+  //         saveUserData();
+  //       }
+  //       // ...
+  //     });
+  //   }
+  // }, []);
 
   async function loadUserData() {
     if (!userId) return;
@@ -90,22 +89,55 @@ const RotatingClockGame = () => {
     setStartGame(true);
   }
 
-  function initApp() {
-    // const tg = window?.Telegram?.WebApp;
-    tg.onEvent("viewportChanged", () => {
-      if (!tg.isExpanded) {
-        saveUserData();
-      }
-    });
-    loadUserData();
-  }
-
   useEffect(() => {
-    document.addEventListener("DOMContentLoaded", initApp);
-    return () => {
-      document.removeEventListener("DOMContentLoaded", initApp);
+    const initializeTelegramWebApp = () => {
+      if (typeof window !== "undefined" && window.Telegram?.WebApp) {
+        const webApp = window.Telegram.WebApp;
+        setTg(webApp);
+        const user = webApp.initDataUnsafe?.user;
+        if (user?.id) {
+          setUserId(user.id);
+          console.log("Telegram user ID set:", user.id);
+        } else {
+          console.warn("No user ID found in Telegram Web App data");
+          setUserId(1); // Fallback for development
+        }
+
+        webApp.onEvent("viewportChanged", () => {
+          if (!webApp.isExpanded) {
+            saveUserData();
+          }
+        });
+
+        setStartGame(true);
+      } else {
+        console.warn(
+          "Telegram Web App not found. Are you running in development mode?"
+        );
+        setUserId(1); // Fallback for development
+        setStartGame(true);
+      }
     };
+
+    initializeTelegramWebApp();
   }, []);
+
+  // function initApp() {
+  //   // const tg = window?.Telegram?.WebApp;
+  //   tg.onEvent("viewportChanged", () => {
+  //     if (!tg.isExpanded) {
+  //       saveUserData();
+  //     }
+  //   });
+  //   loadUserData();
+  // }
+
+  // useEffect(() => {
+  //   document.addEventListener("DOMContentLoaded", initApp);
+  //   return () => {
+  //     document.removeEventListener("DOMContentLoaded", initApp);
+  //   };
+  // }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -120,6 +152,13 @@ const RotatingClockGame = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, [score]);
+
+  useEffect(() => {
+    if (userId) {
+      loadUserData();
+    }
+  }, [userId]);
+
   const calculateAngle = (clientX, clientY) => {
     const rect = clockRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -137,9 +176,9 @@ const RotatingClockGame = () => {
     rotationCountRef.current = 0;
   };
 
-  useEffect(() => {
-    loadUserData();
-  }, [userId]);
+  // useEffect(() => {
+  //   loadUserData();
+  // }, [userId]);
 
   const handleMove = (clientX, clientY) => {
     if (!isDragging) return;
