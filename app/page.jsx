@@ -255,7 +255,7 @@ const RotatingClockGame = () => {
   }, [ensureDocumentIsScrollable, preventCollapse]);
 
   return (
-    <div className="scrollable-element h-screen bg-black text-white flex flex-col items-center justify-between pt-20">
+    <div className="scrollable-element h-screen bg-black overscroll-behavior-none text-white flex flex-col items-center justify-between pt-20">
       <div className="text-4xl mb-4 w-full px-10">Score: {score}</div>
       <div className="relative flex items-center justify-center">
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">

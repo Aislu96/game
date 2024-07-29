@@ -5,3 +5,7 @@
 .scrollable-element {
   overflow-y: scroll;
 }
+
+body {
+  overscroll-behavior: none;
+}
