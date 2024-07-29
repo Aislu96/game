@@ -4,9 +4,12 @@ import { FaCircle } from "react-icons/fa";
 import Image from "next/image";
 import { supabase } from "./utils/supabase/server";
 import { ImSpinner9 } from "react-icons/im";
+import ScoreDisplay from "@/app/scoreDisplay";
+import LabeledIcon from "@/app/labeledIcon";
+import Menu from "@/app/menu";
 
 const RotatingClockGame = () => {
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(1000);
   const [energy, setEnergy] = useState(1000);
   const [rotation, setRotation] = useState(0);
   const [startAngle, setStartAngle] = useState(0);
@@ -215,8 +218,24 @@ const RotatingClockGame = () => {
   }, []);
 
   return (
-    <div className=" h-screen bg-black  text-white flex flex-col items-center justify-between pt-20">
-      <div className="text-4xl mb-4 w-full px-10">Score: {score}</div>
+    <div className="h-screen bg-black  text-white flex flex-col items-center justify-between p-2.5 relative">
+      <div className="flex flex-col rounded-[10px] absolute top-0 left-0 border-2 border-customYellow m-2.5 z-10 bg-gray-500 w-[90%] ">
+       <div className="flex flex-row justify-between p-[10px]">
+          <p className="text-4xl text-medium">Top list</p>
+          <Image src={"/close.svg"} alt="close" width={42} height={42}/>
+        </div>
+        <div className="flex flex-row justify-between p-[10px]">
+          <div className="flex flex-row gap-2.5">
+            <div className="bg-image:url('/border.svg') w-[50px] h-[50px] bg-cover"></div>
+            <div className=""></div>
+          </div>
+         <div className="flex flex-col items-center">
+          <Image src={"/close.svg"} alt="close" width={42} height={42}/>
+      </div>
+      </div>
+      </div>
+      <LabeledIcon />
+      <ScoreDisplay score={score} />
       <div className="relative flex items-center justify-center">
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
           <div
@@ -261,6 +280,7 @@ const RotatingClockGame = () => {
           <div className="text-sm text-center">1 Energy - 10 Sec</div>
         </span>
       </div>
+      <Menu />
     </div>
   );
 };
