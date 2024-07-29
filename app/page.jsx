@@ -254,34 +254,34 @@ const RotatingClockGame = () => {
   //   }
   // }, [ensureDocumentIsScrollable, preventCollapse]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Prevent default touch actions
-      document.addEventListener(
-        "touchstart",
-        function (event) {
-          event.preventDefault();
-        },
-        { passive: false }
-      );
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     // Prevent default touch actions
+  //     document.addEventListener(
+  //       "touchstart",
+  //       function (event) {
+  //         event.preventDefault();
+  //       },
+  //       { passive: false }
+  //     );
 
-      document.addEventListener(
-        "touchmove",
-        function (event) {
-          event.preventDefault();
-        },
-        { passive: false }
-      );
+  //     document.addEventListener(
+  //       "touchmove",
+  //       function (event) {
+  //         event.preventDefault();
+  //       },
+  //       { passive: false }
+  //     );
 
-      document.addEventListener(
-        "touchend",
-        function (event) {
-          event.preventDefault();
-        },
-        { passive: false }
-      );
-    }
-  }, []);
+  //     document.addEventListener(
+  //       "touchend",
+  //       function (event) {
+  //         event.preventDefault();
+  //       },
+  //       { passive: false }
+  //     );
+  //   }
+  // }, []);
 
   return (
     <div className=" h-screen bg-black  text-white flex flex-col items-center justify-between pt-20">
