@@ -113,9 +113,6 @@ const RotatingClockGame = () => {
 
   useEffect(() => {
     saveUserData();
-    // const saveInterval = setInterval(saveUserData, 30000); // Save every 30 seconds
-
-    // return () => clearInterval(saveInterval);
   }, [score]);
 
   useEffect(() => {
@@ -183,105 +180,34 @@ const RotatingClockGame = () => {
     setIsDragging(false);
   };
 
-  // function ensureDocumentIsScrollable() {
-  //   const isScrollable =
-  //     document.documentElement.scrollHeight > window.innerHeight;
-  //   if (!isScrollable) {
-  //     document.documentElement.style.setProperty(
-  //       "height",
-  //       "calc(100vh + 1px)",
-  //       "important"
-  //     );
-  //   }
-  // }
-  // function preventCollapse() {
-  //   if (window.scrollY === 0) {
-  //     window.scrollTo(0, 1);
-  //   }
-  // }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Prevent default touch actions
+      document.addEventListener(
+        "touchstart",
+        function (event) {
+          event.preventDefault();
+        },
+        { passive: false }
+      );
 
-  // const scrollableElement = document.querySelector(".scrollable-element");
-  // scrollableElement.addEventListener("touchstart", preventCollapse);
+      document.addEventListener(
+        "touchmove",
+        function (event) {
+          event.preventDefault();
+        },
+        { passive: false }
+      );
 
-  // window.addEventListener("load", ensureDocumentIsScrollable);
-
-  // // Prevent windwo.scrollY from becoming zero
-  // function preventCollapse(event) {
-  //   if (window.scrollY === 0) {
-  //     window.scrollTo(0, 1);
-  //   }
-  // }
-
-  // // Attach the above function to the touchstart event handler of the scrollable element
-  // // const scrollableElement = document.querySelector(".scrollable-element");
-  // scrollableElement.addEventListener("touchstart", preventCollapse);
-
-  // const preventCollapse = useCallback(() => {
-  //   if (typeof window !== "undefined" && window.scrollY === 0) {
-  //     window.scrollTo(0, 1);
-  //   }
-  // }, []);
-
-  // const ensureDocumentIsScrollable = useCallback(() => {
-  //   if (typeof window !== "undefined") {
-  //     const isScrollable =
-  //       document.documentElement.scrollHeight > window.innerHeight;
-  //     if (!isScrollable) {
-  //       document.documentElement.style.setProperty(
-  //         "height",
-  //         "calc(100vh + 1px)",
-  //         "important"
-  //       );
-  //     }
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     window.addEventListener("load", ensureDocumentIsScrollable);
-
-  //     const scrollableElement = document.querySelector(".scrollable-element");
-  //     if (scrollableElement) {
-  //       scrollableElement.addEventListener("touchstart", preventCollapse);
-  //     }
-
-  //     return () => {
-  //       window.removeEventListener("load", ensureDocumentIsScrollable);
-  //       if (scrollableElement) {
-  //         scrollableElement.removeEventListener("touchstart", preventCollapse);
-  //       }
-  //     };
-  //   }
-  // }, [ensureDocumentIsScrollable, preventCollapse]);
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     // Prevent default touch actions
-  //     document.addEventListener(
-  //       "touchstart",
-  //       function (event) {
-  //         event.preventDefault();
-  //       },
-  //       { passive: false }
-  //     );
-
-  //     document.addEventListener(
-  //       "touchmove",
-  //       function (event) {
-  //         event.preventDefault();
-  //       },
-  //       { passive: false }
-  //     );
-
-  //     document.addEventListener(
-  //       "touchend",
-  //       function (event) {
-  //         event.preventDefault();
-  //       },
-  //       { passive: false }
-  //     );
-  //   }
-  // }, []);
+      document.addEventListener(
+        "touchend",
+        function (event) {
+          event.preventDefault();
+        },
+        { passive: false }
+      );
+    }
+  }, []);
 
   return (
     <div className=" h-screen bg-black  text-white flex flex-col items-center justify-between pt-20">
