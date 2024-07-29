@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, use } from "react";
 import { FaCircle } from "react-icons/fa";
 import Image from "next/image";
 import { supabase } from "./utils/supabase/server";
@@ -254,30 +254,34 @@ const RotatingClockGame = () => {
   //   }
   // }, [ensureDocumentIsScrollable, preventCollapse]);
 
-  // Prevent default touch actions
-  document.addEventListener(
-    "touchstart",
-    function (event) {
-      event.preventDefault();
-    },
-    { passive: false }
-  );
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Prevent default touch actions
+      document.addEventListener(
+        "touchstart",
+        function (event) {
+          event.preventDefault();
+        },
+        { passive: false }
+      );
 
-  document.addEventListener(
-    "touchmove",
-    function (event) {
-      event.preventDefault();
-    },
-    { passive: false }
-  );
+      document.addEventListener(
+        "touchmove",
+        function (event) {
+          event.preventDefault();
+        },
+        { passive: false }
+      );
 
-  document.addEventListener(
-    "touchend",
-    function (event) {
-      event.preventDefault();
-    },
-    { passive: false }
-  );
+      document.addEventListener(
+        "touchend",
+        function (event) {
+          event.preventDefault();
+        },
+        { passive: false }
+      );
+    }
+  }, []);
 
   return (
     <div className=" h-screen bg-black  text-white flex flex-col items-center justify-between pt-20">
