@@ -142,7 +142,6 @@ const RotatingClockGame = () => {
     const angle = calculateAngle(clientX, clientY);
     setStartAngle(angle);
     lastAngleRef.current = angle;
-    rotationCountRef.current = 0;
   };
 
   const handleMove = (clientX, clientY) => {
@@ -156,9 +155,10 @@ const RotatingClockGame = () => {
       setIsDragging(false);
     }
 
+    // Only update if movement is clockwise
     if (angleDiff > 0) {
+      setRotation((prevRotation) => prevRotation + angleDiff);
       rotationCountRef.current += angleDiff;
-      setRotation(currentAngle);
 
       // Check for full rotation
       if (
@@ -178,6 +178,7 @@ const RotatingClockGame = () => {
 
   const handleEnd = () => {
     setIsDragging(false);
+    lastAngleRef.current = rotation;
   };
 
   useEffect(() => {
