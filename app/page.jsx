@@ -216,46 +216,71 @@ const RotatingClockGame = () => {
   // // const scrollableElement = document.querySelector(".scrollable-element");
   // scrollableElement.addEventListener("touchstart", preventCollapse);
 
-  const preventCollapse = useCallback(() => {
-    if (typeof window !== "undefined" && window.scrollY === 0) {
-      window.scrollTo(0, 1);
-    }
-  }, []);
+  // const preventCollapse = useCallback(() => {
+  //   if (typeof window !== "undefined" && window.scrollY === 0) {
+  //     window.scrollTo(0, 1);
+  //   }
+  // }, []);
 
-  const ensureDocumentIsScrollable = useCallback(() => {
-    if (typeof window !== "undefined") {
-      const isScrollable =
-        document.documentElement.scrollHeight > window.innerHeight;
-      if (!isScrollable) {
-        document.documentElement.style.setProperty(
-          "height",
-          "calc(100vh + 1px)",
-          "important"
-        );
-      }
-    }
-  }, []);
+  // const ensureDocumentIsScrollable = useCallback(() => {
+  //   if (typeof window !== "undefined") {
+  //     const isScrollable =
+  //       document.documentElement.scrollHeight > window.innerHeight;
+  //     if (!isScrollable) {
+  //       document.documentElement.style.setProperty(
+  //         "height",
+  //         "calc(100vh + 1px)",
+  //         "important"
+  //       );
+  //     }
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("load", ensureDocumentIsScrollable);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     window.addEventListener("load", ensureDocumentIsScrollable);
 
-      const scrollableElement = document.querySelector(".scrollable-element");
-      if (scrollableElement) {
-        scrollableElement.addEventListener("touchstart", preventCollapse);
-      }
+  //     const scrollableElement = document.querySelector(".scrollable-element");
+  //     if (scrollableElement) {
+  //       scrollableElement.addEventListener("touchstart", preventCollapse);
+  //     }
 
-      return () => {
-        window.removeEventListener("load", ensureDocumentIsScrollable);
-        if (scrollableElement) {
-          scrollableElement.removeEventListener("touchstart", preventCollapse);
-        }
-      };
-    }
-  }, [ensureDocumentIsScrollable, preventCollapse]);
+  //     return () => {
+  //       window.removeEventListener("load", ensureDocumentIsScrollable);
+  //       if (scrollableElement) {
+  //         scrollableElement.removeEventListener("touchstart", preventCollapse);
+  //       }
+  //     };
+  //   }
+  // }, [ensureDocumentIsScrollable, preventCollapse]);
+
+  // Prevent default touch actions
+  document.addEventListener(
+    "touchstart",
+    function (event) {
+      event.preventDefault();
+    },
+    { passive: false }
+  );
+
+  document.addEventListener(
+    "touchmove",
+    function (event) {
+      event.preventDefault();
+    },
+    { passive: false }
+  );
+
+  document.addEventListener(
+    "touchend",
+    function (event) {
+      event.preventDefault();
+    },
+    { passive: false }
+  );
 
   return (
-    <div className="scrollable-element h-screen bg-black overscroll-behavior-none text-white flex flex-col items-center justify-between pt-20">
+    <div className=" h-screen bg-black  text-white flex flex-col items-center justify-between pt-20">
       <div className="text-4xl mb-4 w-full px-10">Score: {score}</div>
       <div className="relative flex items-center justify-center">
         <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
