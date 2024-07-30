@@ -7,6 +7,7 @@ import { ImSpinner9 } from "react-icons/im";
 import ScoreDisplay from "@/app/scoreDisplay";
 import LabeledIcon from "@/app/labeledIcon";
 import Menu from "@/app/menu";
+import TopList from "@/app/topList";
 
 const RotatingClockGame = () => {
   const [score, setScore] = useState(1000);
@@ -20,6 +21,7 @@ const RotatingClockGame = () => {
   const [startGame, setStartGame] = useState(false);
   const [userId, setUserId] = useState(null);
   const [tg, setTg] = useState(null);
+  const [topList, setTopList] = useState(false);
 
   async function saveUserData() {
     if (!userId) return;
@@ -218,70 +220,59 @@ const RotatingClockGame = () => {
   }, []);
 
   return (
-    <div className="h-screen bg-black  text-white flex flex-col items-center justify-between p-2.5 relative">
-      <div className="flex flex-col rounded-[10px] absolute top-0 left-0 border-2 border-customYellow m-2.5 z-10 bg-gray-500 w-[90%] ">
-       <div className="flex flex-row justify-between p-[10px]">
-          <p className="text-4xl text-medium">Top list</p>
-          <Image src={"/close.svg"} alt="close" width={42} height={42}/>
-        </div>
-        <div className="flex flex-row justify-between p-[10px]">
-          <div className="flex flex-row gap-2.5">
-            <div className="bg-image:url('/border.svg') w-[50px] h-[50px] bg-cover"></div>
-            <div className=""></div>
-          </div>
-         <div className="flex flex-col items-center">
-          <Image src={"/close.svg"} alt="close" width={42} height={42}/>
-      </div>
-      </div>
-      </div>
-      <LabeledIcon />
-      <ScoreDisplay score={score} />
-      <div className="relative flex items-center justify-center">
-        <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
-          <div
-            ref={clockRef}
-            className="w-[295px] h-[295px] rounded-full mb-5 bg-white relative touch-none flex items-center justify-center"
-            onTouchStart={(e) => {
-              e.preventDefault(); // Prevent default touch behavior
-              handleStart(e.touches[0].clientX, e.touches[0].clientY);
-            }}
-            onTouchMove={(e) => {
-              e.preventDefault(); // Prevent default touch behavior
-              handleMove(e.touches[0].clientX, e.touches[0].clientY);
-            }}
-            onTouchEnd={(e) => {
-              e.preventDefault(); // Prevent default touch behavior
-              handleEnd();
-            }}
-          >
-            <div
-              className="absolute top-0 left-1/2 w-1.5 h-1/2 bg-black origin-bottom rounded-full"
-              style={{ transform: `rotate(${rotation}deg)` }}
-            >
-              <FaCircle className="text-black absolute top-full  left-1/2 text-2xl -translate-x-1/2 -translate-y-1/2" />
+      <>
+        {!topList && <div className="h-screen bg-black  text-white flex flex-col items-center justify-between p-2.5">
+          <LabeledIcon topList={topList} setTopList={setTopList}/>
+          <ScoreDisplay score={score} />
+          <div className="relative flex items-center justify-center">
+            <div className="bg-[url('/arrow.svg')] h-[380px] w-[380px] bg-cover flex items-center justify-center">
+              <div
+                  ref={clockRef}
+                  className="w-[295px] h-[295px] rounded-full mb-5 bg-white relative touch-none flex items-center justify-center"
+                  onTouchStart={(e) => {
+                    e.preventDefault(); // Prevent default touch behavior
+                    handleStart(e.touches[0].clientX, e.touches[0].clientY);
+                  }}
+                  onTouchMove={(e) => {
+                    e.preventDefault(); // Prevent default touch behavior
+                    handleMove(e.touches[0].clientX, e.touches[0].clientY);
+                  }}
+                  onTouchEnd={(e) => {
+                    e.preventDefault(); // Prevent default touch behavior
+                    handleEnd();
+                  }}
+              >
+                <div
+                    className="absolute top-0 left-1/2 w-1.5 h-1/2 bg-black origin-bottom rounded-full"
+                    style={{ transform: `rotate(${rotation}deg)` }}
+                >
+                  <FaCircle className="text-black absolute top-full  left-1/2 text-2xl -translate-x-1/2 -translate-y-1/2" />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="mb-6 flex">
-        <Image
-          src={"/lightning.svg"}
-          alt="Lightning"
-          width={36}
-          height={50}
-          className="mr-4 mb-4"
-        />
-        <span className="space-y-2">
+          <div className="mb-6 flex">
+            <Image
+                src={"/lightning.svg"}
+                alt="Lightning"
+                width={36}
+                height={50}
+                className="mr-4 mb-4"
+            />
+            <span className="space-y-2">
           <div className="flex items-end">
             <h1 className="text-5xl"> {energy}</h1>
             <h3 className="text-3xl text-stone-400">/1000</h3>
           </div>
           <div className="text-sm text-center">1 Energy - 10 Sec</div>
         </span>
-      </div>
-      <Menu />
-    </div>
+          </div>
+          <Menu />
+        </div>
+        }
+        {topList && <TopList topList={topList} setTopList={setTopList}/>}
+      </>
   );
 };
 
