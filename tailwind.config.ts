@@ -22,6 +22,8 @@ const config = {
         customYellow: "#FAA300",
         customBorder: "#302F40",
         customFon: "#181622",
+        customScroll: '#4A4854',
+        customGray: '#363440',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

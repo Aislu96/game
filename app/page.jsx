@@ -22,6 +22,16 @@ const RotatingClockGame = () => {
   const [userId, setUserId] = useState(null);
   const [tg, setTg] = useState(null);
   const [topList, setTopList] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (topList) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  }, [topList]);
+
 
   async function saveUserData() {
     if (!userId) return;
@@ -221,6 +231,7 @@ const RotatingClockGame = () => {
 
   return (
       <>
+        <div className={`opacity-0 duration-700 ease-in-out ${!isVisible ? "opacity-100" : ""}`}>
         {!topList && <div className="h-screen bg-black  text-white flex flex-col items-center justify-between p-2.5">
           <LabeledIcon topList={topList} setTopList={setTopList}/>
           <ScoreDisplay score={score} />
@@ -271,7 +282,10 @@ const RotatingClockGame = () => {
           <Menu />
         </div>
         }
-        {topList && <TopList topList={topList} setTopList={setTopList}/>}
+        </div>
+        <div className={`opacity-0 duration-700 ease-in-out ${isVisible ? "opacity-100" : ""}`}>
+          {topList && <TopList topList={topList} setTopList={setTopList} />}
+        </div>
       </>
   );
 };
