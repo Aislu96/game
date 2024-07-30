@@ -36,8 +36,8 @@ const TopList = ({topList, setTopList}) => {
                 </div>
             </div>
             <div className="relative">
-                <Image src={"/fonImg.svg"} alt="fontImg" width={375} height={443}
-                       className="object-cover w-full absolute z-0 -top-16 left-0"/>
+                <Image src={"/fonImg.svg"} alt="fontImg" width={375} height={600}
+                       className="object-cover w-full absolute z-0 -top-16 left-0 h-[600px]"/>
                 <Image src={"/topList.svg"} alt="topList" width={122} height={31}
                        className="object-cover h-[31px] mx-auto mb-2.5 relative z-10"/>
                 <ScrollArea
