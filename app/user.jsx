@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const User = ({index, item}) => {
     return (
-        <div className="mt-1.5 mx-2.5 flex mb-2 flex-row items-center gap-[38px] justify-between">
+        <div className="py-1.5 px-2.5 my-0.5 flex flex-row items-center gap-[38px] justify-between">
             <div className="flex flex-row gap-[5px] items-center">
                 <p className="font-light text-base min-w-[35px] text-center">{index + 4}.</p>
                 <div className="relative">
