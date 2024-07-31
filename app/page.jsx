@@ -17,7 +17,6 @@ const Page = () => {
       <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full bg-blue-500 opacity-20 blur-[100px] -translate-x-1/2 -translate-y-1/2"></div>
 
       <div className="absolute top-0 left-0 w-full h-[89.7%] bg-white opacity-5 z-20 rounded-[50px]"></div>
-
       <LabeledIcon />
 
       <div className="flex-grow flex flex-col justify-center items-center z-30">

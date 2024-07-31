@@ -109,3 +109,27 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+/*.triangle {*/
+/*  position: absolute;*/
+/*  height: 0;*/
+/*  border-left: 50vw solid transparent;*/
+/*  border-right: 50vw solid transparent;*/
+/*  border-top: 50px solid #FFFFFF33;*/
+/*  opacity: 0.4;*/
+/*  width: 100%;*/
+/*  bottom: 77px;*/
+/*  left: 0;*/
+/*}*/
+
+/*.triangle-two {*/
+/*  position: absolute;*/
+/*  bottom: 75px;*/
+/*  width: 100%;*/
+/*  height: 0;*/
+/*  border-left: 15vw solid transparent;*/
+/*  border-right: 89vw solid transparent;*/
+/*  border-top: 52px solid #FFFFFF33;*/
+/*  opacity: 0.4;*/
+/*}*/
