@@ -1,4 +1,3 @@
-//User
 import Image from "next/image";
 
 const User = ({ index, item, user }) => {
