@@ -4,7 +4,7 @@ import Image from "next/image";
 const Profile = () => {
   const user_name = "@User_Name";
   return (
-    <div>
+    <div className="h-screen bg-black">
       <div className="relative bg-no-repeat bg-center bg-cover h-[128px]">
         <Image
           src={"/profileImageBg.png"}
@@ -40,18 +40,22 @@ const Profile = () => {
         </span>
       </div>
 
-      <div className="border border-purple-custom rounded-lg h-40 w-60">
-        {" "}
-        your friends
-      </div>
-      <div className="border border-purple-custom rounded-lg h-40 w-60">
-        {" "}
-        your friends
-      </div>
+      <div className="flex items-center justify-between border h-60 p-2">
+        <div className="h-60 space-y-2">
+          <div className="border border-purple-custom rounded-lg h-1/2 w-60 text-white">
+            {" "}
+            your friends
+          </div>
+          <div className="border border-purple-custom rounded-lg h-1/2 w-60 text-white">
+            {" "}
+            your friends
+          </div>
+        </div>
 
-      <div className="border border-orange-custom rounded-lg h-60 w-40 text-white">
-        {" "}
-        your friends
+        <div className="border border-orange-custom rounded-lg h-full w-40 text-white">
+          {" "}
+          your friends
+        </div>
       </div>
     </div>
   );

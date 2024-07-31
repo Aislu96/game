@@ -7,6 +7,9 @@ const Menu = () => {
 
   const handleTouch = (icon) => {
     setActiveIcon(icon);
+    if (icon === "user") {
+      window.location.href = "/profile";
+    }
   };
 
   const getIconSrc = (icon) => {

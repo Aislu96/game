@@ -1,9 +1,14 @@
 //User
 import Image from "next/image";
 
-const User = ({ index, item }) => {
+const User = ({ index, item, user }) => {
+  const userClasses =
+    user.id === item.id ? "bg-customGray rounded-xl my-1" : "my-0.5";
+  console.log(user.id === item.id);
   return (
-    <div className="mt-1.5 mx-2.5 flex mb-2 flex-row items-center gap-[38px] justify-between">
+    <div
+      className={`py-1.5 px-2.5 flex flex-row items-center gap-[38px] justify-between ${userClasses}`}
+    >
       <div className="flex flex-row gap-[5px] items-center">
         <p className="font-light text-base min-w-[35px] text-center">
           {index + 4}.

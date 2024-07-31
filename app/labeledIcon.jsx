@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const LabeledIcon = ({ topList, setTopList }) => {
   function handelTouch() {
@@ -7,7 +8,7 @@ const LabeledIcon = ({ topList, setTopList }) => {
   }
 
   return (
-    <div className="flex flex-row justify-between px-[30px] w-full border fixed top-8 left-0 right-0 z-10">
+    <div className="flex flex-row justify-between px-[30px] w-full border fixed top-8 left-0 right-0 z-50">
       <div className="flex flex-col items-center gap-1">
         <Image
           src={"/boost.svg"}
@@ -22,14 +23,16 @@ const LabeledIcon = ({ topList, setTopList }) => {
         className="flex flex-col items-center gap-1"
         onTouchStart={() => handelTouch()}
       >
-        <Image
-          src={"/top.svg"}
-          alt="boost"
-          width={50}
-          height={40}
-          className="object-cover"
-        />
-        <p className="text-medium text-sm">TOP</p>
+        <Link href="/toplist">
+          <Image
+            src={"/top.svg"}
+            alt="boost"
+            width={50}
+            height={40}
+            className="object-cover"
+          />
+          <p className="text-medium text-sm text-center">TOP</p>
+        </Link>
       </div>
     </div>
   );
