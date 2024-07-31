@@ -1,6 +1,6 @@
 import Image from "next/image";
 import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area";
-import {list} from './data.js';
+import {list, user} from './data.js';
 import User from "@/app/User";
 import UserTop from "@/app/userTop";
 
@@ -9,6 +9,8 @@ const TopList = ({topList, setTopList}) => {
     function handelTouch() {
         setTopList(!topList);
     }
+
+    const isUserInList = list.some(item => item.id === user.id);
 
     return (
         <div className="h-screen bg-black text-white relative overflow-hidden">
@@ -44,12 +46,13 @@ const TopList = ({topList, setTopList}) => {
                     className="w-[322px] h-[326px] px-[5px] pt-3 mx-auto bg-customFon rounded-xl border-[1px] border-customBorder relative z-10">
                     {Array.isArray(list) && list.length > 0 && list.slice(4).map((item, index) => (
                         <div className="border-after" key={index}>
-                            <User item={item} index={index}/>
+                            <User item={item} index={index} user={user}/>
                         </div>
                     ))}
-                    <div className="absolute bottom-0 left-0 bg-customGray rounded-xl w-full">
-                        <User item={list[8]} index={100}/>
+                    {!isUserInList && <div className="absolute bottom-0 left-0 bg-customGray rounded-b-xl w-full">
+                        <User item={user} index={100} user={''} />
                     </div>
+                    }
                     <ScrollBar orientation="vertical"/>
                 </ScrollArea>
             </div>
