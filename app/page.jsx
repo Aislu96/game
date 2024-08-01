@@ -5,7 +5,7 @@ import LabeledIcon from "./labeledIcon";
 import { useState, useEffect } from "react";
 
 import Game from "./game/game";
-import Shop from "./shop/shop";
+import Shop from "./shop/page";
 import Profile from "./profile/profile";
 import Image from "next/image";
 import { useGameContext } from "./context/game";
@@ -170,7 +170,7 @@ const Page = () => {
                 alt="pointer"
                 width={20}
                 height={20}
-                className="absolute -top-10 left-2 object-cover"
+                className="absolute -top-8 left-2 object-cover"
               />
             )}
           </div>
