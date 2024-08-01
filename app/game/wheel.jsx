@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { useGameContext } from "./context/game";
+import { useGameContext } from "../context/game";
 
 const Wheel = () => {
   const [rotation, setRotation] = useState(0);

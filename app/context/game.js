@@ -6,6 +6,8 @@ const GameContext = createContext();
 export const GameProvider = ({ children }) => {
   const [score, setScore] = useState(0);
   const [energy, setEnergy] = useState(1000);
+  const [userId, setUserId] = useState(null);
+  const [tg, setTg] = useState(null);
 
   return (
     <GameContext.Provider
@@ -14,6 +16,10 @@ export const GameProvider = ({ children }) => {
         setScore,
         energy,
         setEnergy,
+        userId,
+        setUserId,
+        tg,
+        setTg,
       }}
     >
       {children}

@@ -18,22 +18,6 @@ const RotatingClockGame = () => {
   const [userId, setUserId] = useState(null);
   const [tg, setTg] = useState(null);
 
-  async function saveUserData() {
-    if (!userId) return;
-    const { data, error } = await supabase.from("Bixcoin").upsert({
-      user_id: userId,
-      score: score,
-      energy: energy,
-      updated_at: new Date(),
-      first_name: tg?.initDataUnsafe?.user?.first_name,
-      last_name: tg?.initDataUnsafe?.user?.last_name,
-      username: tg?.initDataUnsafe?.user?.username,
-      language_code: tg?.initDataUnsafe?.user?.language_code,
-    });
-    if (error) console.error("Error saving game data:", error);
-    else console.log("Game data saved successfully");
-  }
-
   async function loadUserData() {
     if (!userId) return;
     const { data, error } = await supabase

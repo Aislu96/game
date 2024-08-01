@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { useGameContext } from "./context/game";
+import { useGameContext } from "../context/game";
 
 const Energy = () => {
   const { energy } = useGameContext();
   return (
-    <div className="mb-6 flex border justify-center">
+    <div className="mb-6 flex justify-center">
       <Image
         src={"/lightning.svg"}
         alt="Lightning"
