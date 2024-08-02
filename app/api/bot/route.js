@@ -1,7 +1,9 @@
 import TelegramBot from "node-telegram-bot-api";
 import { supabase } from "../../utils/supabase/server";
 
-const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: false });
+const bot = new TelegramBot("7312215401:AAFF9fc4ZeC9HBZT3jTmUUPxO7ogT651ZiI", {
+  polling: false,
+});
 
 // Your web app URL (update this with your actual URL)
 const webAppUrl = "https://bi-xcoin-7rao.vercel.app";
