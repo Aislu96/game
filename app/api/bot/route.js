@@ -1,15 +1,16 @@
 import TelegramBot from "node-telegram-bot-api";
-import { supabase } from "../../utils/supabase/server";
+import { supabase } from "@/utils/supabase/server";
 
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
   polling: false,
 });
 
-const webAppUrl = "https://bi-xcoin-7rao.vercel.app";
+const webAppUrl =
+  "https://bi-xcoin-7rao-git-main-ishakumns-projects.vercel.app";
 
-export default async function handler(req, res) {
-  if (req.method === "POST") {
-    const body = req.body;
+export async function POST(req) {
+  try {
+    const body = await req.json();
     console.log("Received a POST request", body);
 
     if (body.message) {
@@ -21,16 +22,20 @@ export default async function handler(req, res) {
       if (text === "/start") {
         const welcomeText = `Welcome to BIXcoin Bot 👋\n\nTap on the coin and watch your balance grow.\nHow much is BIXcoin worth? Who knows, maybe a lot someday!\nGot friends? Invite them to the game and earn more coins together.`;
 
-        await bot.sendPhoto(chatId, "/botBanner.png", {
-          caption: welcomeText,
-          reply_markup: JSON.stringify({
-            inline_keyboard: [
-              [{ text: "Play", callback_data: `play_${chatId}` }],
-              [{ text: "Invite Friends", callback_data: "invite" }],
-            ],
-          }),
-        });
-        console.log("Sent welcome message");
+        try {
+          await bot.sendPhoto(chatId, "/botBanner.png", {
+            caption: welcomeText,
+            reply_markup: JSON.stringify({
+              inline_keyboard: [
+                [{ text: "Play", callback_data: `play_${chatId}` }],
+                [{ text: "Invite Friends", callback_data: "invite" }],
+              ],
+            }),
+          });
+          console.log("Sent welcome message");
+        } catch (error) {
+          console.error("Error sending welcome message:", error);
+        }
       }
     } else if (body.callback_query) {
       const chatId = body.callback_query.message.chat.id;
@@ -143,9 +148,17 @@ export default async function handler(req, res) {
       }
     }
 
-    res.status(200).json({ message: "OK" });
-  } else {
-    res.setHeader("Allow", ["POST"]);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    return new Response(JSON.stringify({ message: "OK" }), { status: 200 });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+    });
   }
+}
+
+export async function GET() {
+  return new Response(JSON.stringify({ message: "Bot API is running" }), {
+    status: 200,
+  });
 }
