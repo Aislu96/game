@@ -1,5 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
-import { supabase } from "../../utils/supabase/server";
+import { supabase } from "../../../utils/supabase/server";
 
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: false });
 
@@ -7,11 +7,16 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: false });
 const webAppUrl = "https://bi-xcoin-7rao.vercel.app";
 
 export async function POST(req) {
+  console.log("Received a POST request");
+
   const body = await req.json();
+  console.log("Request body:", body);
 
   if (body.message) {
     const chatId = body.message.chat.id;
     const text = body.message.text;
+
+    console.log("Message received:", text);
 
     if (text === "/start") {
       const welcomeText = `Welcome to BIXcoin Bot 👋\n\nTap on the coin and watch your balance grow.\nHow much is BIXcoin worth? Who knows, maybe a lot someday!\nGot friends? Invite them to the game and earn more coins together.`;
@@ -25,10 +30,13 @@ export async function POST(req) {
           ],
         }),
       });
+      console.log("Sent welcome message");
     }
   } else if (body.callback_query) {
     const chatId = body.callback_query.message.chat.id;
     const data = body.callback_query.data;
+
+    console.log("Callback query received:", data);
 
     if (data === "invite") {
       const inviteLink = `https://t.me/BIXXcoin_bot/?start=invite_${chatId}`;
@@ -36,6 +44,7 @@ export async function POST(req) {
         chatId,
         `Here's your invite link: ${inviteLink}\nShare this with your friends to earn more coins!`
       );
+      console.log("Sent invite link");
     } else if (data.startsWith("play_")) {
       const inviterChatId = data.split("_")[1];
       const newUserChatId = chatId;
@@ -48,6 +57,8 @@ export async function POST(req) {
         const languageCode = body.callback_query.from.language_code;
         const score = 0;
         const energy = 1000;
+
+        console.log("Saving user data for:", userId);
 
         // Check if user exists
         const { data: existingUser, error: fetchError } = await supabase
