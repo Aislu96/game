@@ -6,6 +6,8 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: false });
 // Your web app URL (update this with your actual URL)
 const webAppUrl = "https://bi-xcoin-7rao.vercel.app";
 
+console.log("Telegram bot is running");
+
 export async function POST(req) {
   console.log("Received a POST request");
 
