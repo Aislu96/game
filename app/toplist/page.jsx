@@ -9,7 +9,6 @@ import Link from "next/link";
 
 const TopList = () => {
   const isUserInList = list.some((item) => item.id === user.id);
-  //   console.log(isUserInList);
 
   return (
     <div className="h-screen bg-black text-white relative overflow-hidden">

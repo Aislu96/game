@@ -24,6 +24,7 @@ const config = {
                 "orange-custom": "#C58629",
                 customYellow: "#FAA300",
                 customYellow2: "#F9BA0B",
+                customYellow3: "#AB810C",
                 customBorder: "#302F40",
                 customFon: "#181622",
                 customScroll: "#4A4854",

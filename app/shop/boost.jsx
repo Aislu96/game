@@ -17,17 +17,21 @@ const Boast = () => {
                     iconSrc="lightningTwo.svg"
                     altText="Recover ENERGY"
                     text="Recover ENERGY"
+                    duration={24 * 60 * 60} // 24 hours
                 />
                 <BoostCard
                     iconSrc="hand.svg"
                     altText="x2 BinXcoin 2 min"
                     text="x2 BinXcoin 2 min"
+                    duration={2 * 60 * 60} // 2 hours
                 />
                 <BoostCard
                     iconSrc="coins.svg"
                     altText="+100 BinXcoin"
                     text="+100 BinXcoin"
+                    duration={60 * 60} // 1 hour
                 />
+
             </div>
         </div>
     );

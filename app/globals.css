@@ -49,6 +49,13 @@ body {
     border-bottom: 1px solid #403e4a;
     margin: 0 auto;
 }
+.border-after-two::after {
+    content: "";
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #403e4a;
+    margin: 0 auto;
+}
 
 @layer base {
     :root {
@@ -123,6 +130,11 @@ body {
     linear-gradient(90deg, #8A6FD0 0%, #D79129 100%) border-box;
     border-radius: 10px;
 }
+.gradient-out {
+    background: linear-gradient(90deg, #8A6FD0 0%, #D79129 100%) padding-box,
+    linear-gradient(90deg, #8A6FD0 0%, #D79129 100%) border-box;
+}
+
 @keyframes blink {
     0%, 100% {
         opacity: 1;

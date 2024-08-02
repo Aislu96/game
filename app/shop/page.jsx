@@ -24,7 +24,7 @@ const Shop = () => {
                     </div>
                     <div
                         className="w-[140px] h-[34px] rounded-[10px] border-solid border-[1px] border-transparent gradient mt-[27px]">
-                        <Link  href="/output" className="m-[4px] rounded-[6px] bg-customYellow2 text-black text-base font-medium h-6 w-[130px] flex items-center justify-center">Output
+                        <Link  href="/output" className="m-[4px] rounded-[6px] bg-customYellow2 text-black text-base font-medium h-6 w-[130px] flex items-center justify-center hover:bg-customYellow3">Output
                         </Link>
                     </div>
                 </div>
@@ -39,3 +39,29 @@ const Shop = () => {
 };
 
 export default Shop;
+// document.addEventListener('DOMContentLoaded', function() {
+//     // id таймера
+//     let timerId = null;
+//     // вычисляем разницу дат и устанавливаем оставшееся времени в качестве содержимого элементов
+//     function countdownTimer() {
+//         const diff = new Date();
+//         if (diff <= 0) {
+//             clearInterval(timerId);
+//         }
+//         const t_hours = diff > 0 ? Math.floor(diff / 1000 / 60 / 60) % 24 : 0;
+//         const t_minutes = diff > 0 ? Math.floor(diff / 1000 / 60) % 60 : 0;
+//         const t_seconds = diff > 0 ? Math.floor(diff / 1000) % 60 : 0;
+//         hours.textContent = t_hours < 10 ? '0' + t_hours : t_hours;
+//         minutes.textContent = t_minutes < 10 ? '0' + t_minutes : t_minutes;
+//         seconds.textContent = t_seconds < 10 ? '0' + t_seconds : t_seconds;
+//     }
+//     // получаем элементы, содержащие компоненты даты
+//     const hours = document.getElementById('hours');
+//     const minutes = document.getElementById('minutes');
+//     const seconds = document.getElementById('seconds');
+//
+//     // вызываем функцию countdownTimer
+//     countdownTimer();
+//     // вызываем функцию countdownTimer каждую секунду
+//     timerId = setInterval(countdownTimer, 1000);
+// });

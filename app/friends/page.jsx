@@ -5,10 +5,19 @@ import { list, user } from "../data.js";
 import User from "@/app/User";
 import UserTop from "@/app/userTop";
 import Link from "next/link";
+import {useState} from "react";
 
 const Friends = () => {
     const isUserInList = list.some((item) => item.id === user.id);
+    const [isTouched, setIsTouched] = useState(false);
 
+    const handleTouchStart = () => {
+        setIsTouched(true);
+    };
+
+    const handleTouchEnd = () => {
+        setIsTouched(false);
+    };
     return (
         <div className="h-screen bg-black text-white relative overflow-hidden">
             <Image
@@ -48,9 +57,11 @@ const Friends = () => {
                         username="aislisha96"
                     />
                     <div className="flex flex-col items-center mt-[15px]">
-                        <div className="relative">
+                        <div className="relative"
+                             onTouchStart={handleTouchStart}
+                             onTouchEnd={handleTouchEnd}>
                             <Image
-                                src={"/addFriends.svg"}
+                                src={isTouched ? "/addFriendsHover.svg" : "/addFriends.svg"}
                                 alt={"add a friends"}
                                 width={50}
                                 height={50}
