@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { list } from "./data.js";
-import User from "@/app/User";
-import UserTop from "@/app/userTop";
+import User from "./user";
+import UserTop from "./userTop";
 
 const TopList = ({ topList, setTopList }) => {
   function handelTouch() {

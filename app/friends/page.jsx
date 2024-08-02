@@ -2,8 +2,8 @@
 import Image from "next/image";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { list, user } from "../data.js";
-import User from "@/app/user";
-import UserTop from "@/app/userTop";
+import User from "../user.jsx";
+import UserTop from "../userTop";
 import Link from "next/link";
 import { useGameContext } from "../context/game.js";
 import { useEffect, useState } from "react";
