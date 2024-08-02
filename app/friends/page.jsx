@@ -12,7 +12,7 @@ const Friends = () => {
     return (
         <div className="h-screen bg-black text-white relative overflow-hidden">
             <Image
-                src={"/fireworks.svg"}
+                src={"/fireworkstwo.svg"}
                 alt={"fireworks"}
                 width={375}
                 height={279}
