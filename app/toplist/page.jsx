@@ -8,10 +8,54 @@ import { list, user } from "../data.js";
 import User from "@/app/User";
 import UserTop from "@/app/userTop";
 import Link from "next/link";
+// import { getUsersSortedByScore } from "../utils/supabase/data";
+import { useGameContext } from "../context/game.js";
+import { useEffect, useState } from "react";
+import { supabase } from "../utils/supabase/server";
 
 const TopList = () => {
-  const isUserInList = list.some((item) => item.id === user.id);
-  //   console.log(isUserInList);
+  const { userId } = useGameContext();
+  const [users, setUsers] = useState([]);
+  const [theTopList, setTheTopList] = useState([]);
+  const [isUserInList, setIsUserInList] = useState(false);
+
+  async function getUsersSortedByScore() {
+    // Fetch data from the Bixcoin table
+    let { data, error } = await supabase
+      .from("Bixcoin")
+      .select("user_id, username, score");
+
+    if (error) {
+      console.error("Error fetching data:", error);
+      return [];
+    }
+
+    // Map the data to the desired format
+    const users = data.map((user) => ({
+      id: user.user_id,
+      username: user.username,
+      score: user.score,
+      imageSrc: "/img.svg",
+    }));
+
+    // Sort the users by score in descending order
+    users.sort((a, b) => b.score - a.score);
+
+    console.log(users, "users");
+
+    return users;
+  }
+  useEffect(() => {
+    async function fetchUsers() {
+      const sortedUsers = await getUsersSortedByScore();
+      setUsers(sortedUsers);
+      const topList = sortedUsers.slice(0, 20);
+      setTheTopList(topList);
+      setIsUserInList(topList.some((item) => item.id === userId));
+      console.log(isUserInList, "isUserInList", userId, "userId");
+    }
+    fetchUsers();
+  }, [userId]);
 
   return (
     <div className="h-screen bg-black text-white relative overflow-hidden">
@@ -41,22 +85,22 @@ const TopList = () => {
         <div className="flex flex-col items-center mt-[45px]">
           <UserTop
             rankSrc="/two.svg"
-            userImgSrc="/img.svg"
-            username="ishakumn"
+            userImgSrc={theTopList[1]?.imageSrc}
+            username={theTopList[1]?.username}
           />
         </div>
         <div className="flex flex-col items-center">
           <UserTop
             rankSrc="/one.svg"
-            userImgSrc="/img.svg"
-            username="aislisha96"
+            userImgSrc={theTopList[0]?.imageSrc}
+            username={theTopList[0]?.username}
           />
         </div>
         <div className="flex flex-col items-center mt-[85px]">
           <UserTop
             rankSrc="/three.svg"
-            userImgSrc="/img.svg"
-            username="KotuneN"
+            userImgSrc={theTopList[2]?.imageSrc}
+            username={theTopList[2]?.username}
           />
         </div>
       </div>
@@ -76,16 +120,21 @@ const TopList = () => {
           className="object-cover h-[31px] mx-auto mb-2.5 relative z-10"
         />
         <ScrollArea className="w-[322px] h-[326px] px-[5px] pt-3 mx-auto bg-customFon rounded-xl border-[1px] border-customBorder relative z-10">
-          {Array.isArray(list) &&
-            list.length > 0 &&
-            list.slice(4).map((item, index) => (
-              <div className="border-after" key={index}>
-                <User item={item} index={index} user={user} />
-              </div>
-            ))}
+          {Array.isArray(theTopList) &&
+            theTopList.length > 0 &&
+            theTopList.slice(3).map(
+              (item, index) => (
+                console.log(item, "item"),
+                (
+                  <div className="border-after" key={index}>
+                    <User item={item} index={index} />
+                  </div>
+                )
+              )
+            )}
           {!isUserInList && (
             <div className="absolute bottom-0 left-0 bg-customGray rounded-b-xl w-full">
-              <User item={user} index={100} user={""} />
+              <User item={user} index={100} />
             </div>
           )}
           <ScrollBar orientation="vertical" />
