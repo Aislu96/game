@@ -138,6 +138,35 @@ const Page = () => {
     }
   }, [userId]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Prevent default touch actions
+      document.addEventListener(
+        "touchstart",
+        function (event) {
+          event.preventDefault();
+        },
+        { passive: false }
+      );
+
+      document.addEventListener(
+        "touchmove",
+        function (event) {
+          event.preventDefault();
+        },
+        { passive: false }
+      );
+
+      document.addEventListener(
+        "touchend",
+        function (event) {
+          event.preventDefault();
+        },
+        { passive: false }
+      );
+    }
+  }, []);
+
   return (
     <div className="relative flex flex-col h-screen bg-black text-white overflow-hidden">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-orange-500 opacity-30 blur-[120px] -translate-y-1/4 translate-x-1/4"></div>
