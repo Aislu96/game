@@ -23,7 +23,7 @@ const OutputCard = ({ iconSrc, altText, text }) => {
                     <Image src={iconSrc} alt={altText} width={46} height={31} className="object-cover" />
                     <p className="text-base font-light">{text}</p>
                 </div>
-                <div className={`w-[80px] h-[31px] flex items-center justify-center my-1 gradient ${isTouched ? 'gradient-out' : ''} hover:gradient-out`}>
+                <div className={`w-[80px] h-[31px] flex items-center justify-center my-1 gradient ${isTouched ? 'gradient-out' : ''}`}>
                     <p className="text-base font-light">select</p>
                 </div>
             </div>

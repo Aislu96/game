@@ -30,7 +30,6 @@ const config = {
                 customScroll: "#4A4854",
                 customGray: "#363440",
                 customGray2: "#ACACAC",
-                customGreen: "#81D7C1",
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",

@@ -18,6 +18,7 @@ const Friends = () => {
     const handleTouchEnd = () => {
         setIsTouched(false);
     };
+
     return (
         <div className="h-screen bg-black text-white relative overflow-hidden">
             <Image

@@ -49,6 +49,7 @@ body {
     border-bottom: 1px solid #403e4a;
     margin: 0 auto;
 }
+
 .border-after-two::after {
     content: "";
     display: block;
