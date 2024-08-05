@@ -9,6 +9,9 @@ const nextConfig = {
   env: {
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
   },
+  experimental: {
+    appDir: true,
+  },
 };
 
 export default nextConfig;
