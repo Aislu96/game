@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import TelegramBot from "node-telegram-bot-api";
-import { supabase } from "../../../utils/supabase/server";
+import { supabase } from "../../utils/supabase/server";
 
 export const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
   polling: false,
