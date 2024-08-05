@@ -25,7 +25,7 @@ const Profile = () => {
             <div className="absolute top-2.5 left-2">
               <Image
                 src={"/img.svg"}
-                alt="пользователь"
+                alt="😊"
                 width={76}
                 height={83}
                 className="object-cover hexagon_profile"

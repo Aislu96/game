@@ -2,6 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+.border-after:not(:last-child)::after {
+  content: "";
+  display: block;
+  width: 100px;
+  border-bottom: 1px solid #403e4a;
+  margin: 0 auto;
+}
+
+.border-after-two::after {
+  content: "";
+  display: block;
+  width: 100%;
+  border-bottom: 1px solid #403e4a;
+  margin: 0 auto;
+}
+
+.gradient {
+  border: 1px solid transparent;
+  background: linear-gradient(#181622, #181622) padding-box,
+    linear-gradient(90deg, #8a6fd0 0%, #d79129 100%) border-box;
+  border-radius: 10px;
+}
+.gradient-out {
+  background: linear-gradient(90deg, #8a6fd0 0%, #d79129 100%) padding-box,
+    linear-gradient(90deg, #8a6fd0 0%, #d79129 100%) border-box;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.blink {
+  animation: blink 3s infinite;
+}
+
 .scrollable-element {
   overflow-y: scroll;
 }

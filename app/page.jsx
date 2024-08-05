@@ -1,15 +1,19 @@
 "use client";
 
 import LabeledIcon from "./labeledIcon";
-
 import { useState, useEffect } from "react";
-
 import Game from "./game/game";
 import Shop from "./shop/page";
 import Profile from "./profile/profile";
 import Image from "next/image";
 import { useGameContext } from "./context/game";
 import { supabase } from "./utils/supabase/server";
+// import { bot } from "./api/bot/route";
+// import TelegramBot from "node-telegram-bot-api";
+
+// const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
+//   polling: false,
+// });
 
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
@@ -30,13 +34,33 @@ const Page = () => {
       : `${iconPaths[icon]}.svg`;
   };
 
-  const { userId, setUserId, tg, setTg, score, setScore, energy, setEnergy } =
-    useGameContext();
+  const {
+    userId,
+    setUserId,
+    tg,
+    setTg,
+    score,
+    setScore,
+    energy,
+    setEnergy,
+    image,
+    setImage,
+  } = useGameContext();
 
   const [startGame, setStartGame] = useState(false);
 
   async function saveUserData() {
     if (!userId) return;
+
+    // Fetch user's profile photos
+    const profilePhotos = await bot.getUserProfilePhotos(userId);
+    let profilePictureUrl = null;
+    if (profilePhotos.total_count > 0) {
+      const fileId = profilePhotos.photos[0][0].file_id;
+      const file = await bot.getFile(fileId);
+      profilePictureUrl = `https://api.telegram.org/file/bot${process.env.TELEGRAM_BOT_TOKEN}/${file.file_path}`;
+    }
+
     const { data, error } = await supabase.from("Bixcoin").upsert({
       user_id: userId,
       score: score,
@@ -46,6 +70,7 @@ const Page = () => {
       last_name: tg?.initDataUnsafe?.user?.last_name,
       username: tg?.initDataUnsafe?.user?.username,
       language_code: tg?.initDataUnsafe?.user?.language_code,
+      profile_picture: profilePictureUrl, // Save profile picture URL
     });
     if (error) console.error("Error saving game data:", error);
     else console.log("Game data saved successfully");
@@ -71,6 +96,7 @@ const Page = () => {
 
       setScore(data.score);
       setEnergy(newEnergy);
+      setImage(data.profile_picture);
 
       // Update the user's energy in the database
       const { error: updateError } = await supabase

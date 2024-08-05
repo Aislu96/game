@@ -23,7 +23,7 @@ const TopList = () => {
     // Fetch data from the Bixcoin table
     let { data, error } = await supabase
       .from("Bixcoin")
-      .select("user_id, username, score");
+      .select("user_id, username, score, profile_picture");
 
     if (error) {
       console.error("Error fetching data:", error);
@@ -35,7 +35,7 @@ const TopList = () => {
       id: user.user_id,
       username: user.username,
       score: user.score,
-      imageSrc: "/img.svg",
+      imageSrc: user.profile_picture || "/binXCoin.svg",
     }));
 
     // Sort the users by score in descending order

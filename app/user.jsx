@@ -26,7 +26,7 @@ const User = ({ index, item }) => {
           <div className="absolute top-[5px] left-[5px]">
             <Image
               src={item?.imageSrc}
-              alt="пользователь"
+              alt="😊"
               width={40}
               height={46}
               className="object-cover hexagon-small"

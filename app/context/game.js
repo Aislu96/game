@@ -7,6 +7,7 @@ export const GameProvider = ({ children }) => {
   const [score, setScore] = useState(0);
   const [energy, setEnergy] = useState(1000);
   const [userId, setUserId] = useState(null);
+  const [image, setImage] = useState(null);
   const [tg, setTg] = useState(null);
 
   return (
@@ -20,6 +21,8 @@ export const GameProvider = ({ children }) => {
         setUserId,
         tg,
         setTg,
+        image,
+        setImage
       }}
     >
       {children}
