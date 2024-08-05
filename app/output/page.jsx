@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-const OutputCard = ({ iconSrc, altText, text }) => {
+const OutputCard = () => {
   const [isTouched, setIsTouched] = useState(false);
 
   const handleTouchStart = () => {
@@ -26,8 +26,8 @@ const OutputCard = ({ iconSrc, altText, text }) => {
       >
         <div className="flex flex-row gap-[5px] items-center">
           <Image
-            src={iconSrc}
-            alt={altText}
+            src={"/bixXcoin.svg"}
+            alt={"place holder"}
             width={46}
             height={31}
             className="object-cover"
