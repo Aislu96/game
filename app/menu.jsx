@@ -3,8 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const Menu = () => {
-  const [activeIcon, setActiveIcon] = useState("game");
+const Menu = ({activeIcon, setActiveIcon}) => {
 
   const handleTouch = (icon) => {
     setActiveIcon(icon);
@@ -48,15 +47,6 @@ const Menu = () => {
             height={46}
             className="object-cover"
           />
-          {activeIcon === icon && (
-            <Image
-              src="/pointer.svg"
-              alt="pointer"
-              width={20}
-              height={20}
-              className="absolute -top-8 left-2 object-cover"
-            />
-          )}
         </Link>
       ))}
     </div>

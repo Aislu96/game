@@ -131,6 +131,7 @@ body {
     linear-gradient(90deg, #8A6FD0 0%, #D79129 100%) border-box;
     border-radius: 10px;
 }
+
 .gradient-out {
     background: linear-gradient(90deg, #8A6FD0 0%, #D79129 100%) padding-box,
     linear-gradient(90deg, #8A6FD0 0%, #D79129 100%) border-box;
@@ -147,4 +148,22 @@ body {
 
 .blink {
     animation: blink 3s infinite;
+}
+
+.triangle {
+    border-left: 50vw solid transparent;
+    border-right: 50vw solid transparent;
+    border-top: 6.45vh solid white;
+}
+
+.triangle-two {
+  border-left: 15vw solid transparent;
+  border-right: 89vw solid transparent;
+  border-top: 6.45vh solid white;
+}
+
+.triangle-three {
+    border-right: 15vw solid transparent;
+    border-left: 89vw solid transparent;
+    border-top: 6.45vh solid white;
 }
