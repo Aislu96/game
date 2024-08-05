@@ -1,5 +1,6 @@
+import { NextResponse } from "next/server";
 import TelegramBot from "node-telegram-bot-api";
-import { supabase } from "../../utils/supabase/server";
+import { supabase } from "../../../utils/supabase/server";
 
 export const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
   polling: false,
@@ -41,22 +42,16 @@ export async function POST(req) {
           `Here's your invite link: ${inviteLink}\nShare this with your friends to earn more coins!`
         );
         console.log("Sent invite link");
-      } else if (data === "play") {
-        // Update user details when they press "Play"
-        await updateUserData(chatId, body.callback_query.from);
-        // Redirect to the web app
-        await bot.answerCallbackQuery(body.callback_query.id, {
-          url: webAppUrl,
-        });
       }
     }
 
-    return new Response(JSON.stringify({ message: "OK" }), { status: 200 });
+    return NextResponse.json({ message: "OK" });
   } catch (error) {
     console.error("Error processing request:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
-      status: 500,
-    });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -190,7 +185,5 @@ async function sendWelcomeMessage(chatId) {
 }
 
 export async function GET() {
-  return new Response(JSON.stringify({ message: "Bot API is running" }), {
-    status: 200,
-  });
+  return NextResponse.json({ message: "Bot API is running" });
 }
