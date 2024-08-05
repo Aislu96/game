@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 
 import Game from "./game/game";
 import Shop from "./shop/page";
-import Profile from "./profile/profile";
 import Image from "next/image";
 import { useGameContext } from "./context/game";
 import { supabase } from "./utils/supabase/server";
@@ -162,7 +161,7 @@ const Page = () => {
       <Game />
 
       {/* <Shop />
-      <Profile /> */}
+      <Page /> */}
       <div className="flex flex-row justify-between w-full px-[30px] z-50 bottom-2 left-0 right-0 relative">
         {["shop", "game", "profile"].map((icon) => (
           <div
