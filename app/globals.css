@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+.triangle {
+  border-left: 50vw solid transparent;
+  border-right: 50vw solid transparent;
+  border-top: 6.45vh solid white;
+}
+
+.triangle-two {
+  border-left: 15vw solid transparent;
+  border-right: 89vw solid transparent;
+  border-top: 6.45vh solid white;
+}
+
+.triangle-three {
+  border-right: 15vw solid transparent;
+  border-left: 89vw solid transparent;
+  border-top: 6.45vh solid white;
+}
+
 .border-after:not(:last-child)::after {
   content: "";
   display: block;

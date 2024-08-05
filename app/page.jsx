@@ -4,17 +4,11 @@ import LabeledIcon from "./labeledIcon";
 import { useState, useEffect } from "react";
 import Game from "./game/game";
 import Shop from "./shop/page";
-import Profile from "./profile/profile";
+import Profile from "./profile/page";
 import Image from "next/image";
 import { useGameContext } from "./context/game";
 import { supabase } from "./utils/supabase/server";
-// import { bot } from "./api/bot/route";
-// import TelegramBot from "node-telegram-bot-api";
-
-// const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
-//   polling: false,
-// });
-
+import Menu from "./menu";
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
 
@@ -205,32 +199,7 @@ const Page = () => {
 
       {/* <Shop />
       <Profile /> */}
-      <div className="flex flex-row justify-between w-full px-[30px] z-50 fixed bottom-2 left-0 right-0">
-        {["shop", "game", "profile"].map((icon) => (
-          <div
-            key={icon}
-            className="relative"
-            onTouchStart={() => handleTouch(icon)}
-          >
-            <Image
-              src={getIconSrc(icon)}
-              alt={icon}
-              width={46}
-              height={46}
-              className="object-cover"
-            />
-            {/* {activeIcon === icon && (
-              <Image
-                src="/pointer.svg"
-                alt="pointer"
-                width={20}
-                height={20}
-                className="absolute -top-10 left-2 object-cover"
-              />
-            )} */}
-          </div>
-        ))}
-      </div>
+      <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} />
     </div>
   );
 };

@@ -1,11 +1,24 @@
+"use client";
 import React from "react";
 import Image from "next/image";
+import { useGameContext } from "../context/game";
+import Link from "next/link";
 
 const Profile = () => {
+  const { userId, score, image } = useGameContext();
   const user_name = "@User_Name";
   return (
     <div className="h-screen bg-black">
       <div className="relative bg-no-repeat bg-center bg-cover h-[128px]">
+        <Link href="/">
+          <Image
+            src={"/backArrow.svg"}
+            alt={"background image"}
+            width={40}
+            height={25}
+            className="absolute top-10 z-50"
+          />
+        </Link>
         <Image
           src={"/profileImageBg.png"}
           alt={"background image"}
@@ -24,8 +37,8 @@ const Profile = () => {
             />
             <div className="absolute top-2.5 left-2">
               <Image
-                src={"/img.svg"}
-                alt="😊"
+                src={image || "/binXcoin.svg"}
+                alt="Image"
                 width={76}
                 height={83}
                 className="object-cover hexagon_profile"

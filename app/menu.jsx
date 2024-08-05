@@ -48,7 +48,7 @@ const Menu = () => {
             height={46}
             className="object-cover"
           />
-          {activeIcon === icon && (
+          {/* {activeIcon === icon && (
             <Image
               src="/pointer.svg"
               alt="pointer"
@@ -56,7 +56,7 @@ const Menu = () => {
               height={20}
               className="absolute -top-10 left-2 object-cover"
             />
-          )}
+          )} */}
         </Link>
       ))}
     </div>
