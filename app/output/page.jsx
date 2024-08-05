@@ -32,7 +32,7 @@ const OutputCard = () => {
             height={31}
             className="object-cover"
           />
-          <p className="text-base font-light">{text}</p>
+          <p className="text-base font-light">{"lorem ipsum"}</p>
         </div>
         <div
           className={`w-[80px] h-[31px] flex items-center justify-center my-1 gradient ${
