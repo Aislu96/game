@@ -22,18 +22,23 @@ export async function POST(req) {
       if (text.startsWith("/start")) {
         console.log("User detected:", chatId);
         const params = text.split(" ");
+        await sendWelcomeMessage(chatId);
+        await updateUserData(chatId, body.message.from);
         if (params.length > 1 && params[1].startsWith("invite_")) {
           console.log("Invited by:", params[1]);
           const inviterChatId = params[1].split("_")[1];
           await handleInvitation(chatId, inviterChatId);
         }
-        await sendWelcomeMessage(chatId);
       }
-    } else if (body.callback_query) {
+    }
+    if (body.callback_query) {
       const chatId = body.callback_query.message.chat.id;
       const data = body.callback_query.data;
 
       console.log("Callback query received:", data);
+
+      // Immediately answer the callback query
+      await bot.answerCallbackQuery(body.callback_query.id);
 
       if (data === "invite") {
         const inviteLink = `https://t.me/BIXXcoin_bot?start=invite_${chatId}`;
@@ -42,6 +47,11 @@ export async function POST(req) {
           `Here's your invite link: ${inviteLink}\nShare this with your friends to earn more coins!`
         );
         console.log("Sent invite link");
+      } else if (data === "play") {
+        const userInfo = body.callback_query.from;
+        // await updateUserData(chatId, userInfo);
+        console.log("User data updated after pressing Play button");
+        // Note: We don't need to open the web app here as it's handled by the button itself
       }
     }
 
@@ -58,7 +68,7 @@ export async function POST(req) {
 async function updateUserData(userId, userInfo) {
   const { first_name, last_name, username, language_code } = userInfo;
 
-  console.log("Updating user data for:", userId);
+  console.log("Updating user data for:", userId, "User info:", userInfo);
 
   // Fetch user's profile photos
   const profilePhotos = await bot.getUserProfilePhotos(userId);
@@ -69,12 +79,16 @@ async function updateUserData(userId, userInfo) {
     profilePictureUrl = `https://api.telegram.org/file/bot${process.env.TELEGRAM_BOT_TOKEN}/${file.file_path}`;
   }
 
+  console.log("Profile picture URL:", profilePictureUrl);
+
   // Check if user exists
   const { data: existingUser, error: fetchError } = await supabase
     .from("Bixcoin")
     .select("*")
     .eq("user_id", userId)
     .single();
+
+  console.log("Existing user data:", existingUser, "Fetch error:", fetchError);
 
   if (fetchError && fetchError.code !== "PGRST116") {
     console.error("Error fetching user data:", fetchError);
@@ -84,27 +98,30 @@ async function updateUserData(userId, userInfo) {
   if (!existingUser) {
     console.log("No existing user found, creating new user:", userId);
     // Insert new user
-    const { error } = await supabase.from("Bixcoin").insert({
-      user_id: userId,
-      score: 0,
-      energy: 1000,
-      updated_at: new Date(),
-      first_name: first_name,
-      last_name: last_name,
-      username: username,
-      language_code: language_code,
-      profile_picture: profilePictureUrl,
-    });
+    const { data, error } = await supabase
+      .from("Bixcoin")
+      .insert({
+        user_id: userId,
+        score: 0,
+        energy: 1000,
+        updated_at: new Date(),
+        first_name: first_name,
+        last_name: last_name,
+        username: username,
+        language_code: language_code,
+        profile_picture: profilePictureUrl,
+      })
+      .select();
 
     if (error) {
       console.error("Error saving game data:", error);
     } else {
-      console.log("New user data saved successfully");
+      console.log("New user data saved successfully:", data);
     }
   } else {
     console.log("Updating existing user:", userId);
     // Update existing user
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("Bixcoin")
       .update({
         updated_at: new Date(),
@@ -114,12 +131,13 @@ async function updateUserData(userId, userInfo) {
         language_code: language_code,
         profile_picture: profilePictureUrl,
       })
-      .eq("user_id", userId);
+      .eq("user_id", userId)
+      .select();
 
     if (error) {
       console.error("Error updating user data:", error);
     } else {
-      console.log("User data updated successfully");
+      console.log("User data updated successfully:", data);
     }
   }
 }
@@ -172,7 +190,12 @@ async function sendWelcomeMessage(chatId) {
         caption: welcomeText,
         reply_markup: JSON.stringify({
           inline_keyboard: [
-            [{ text: "Play", web_app: { url: webAppUrl } }],
+            [
+              {
+                text: "Play",
+                web_app: { url: webAppUrl },
+              },
+            ],
             [{ text: "Invite Friends", callback_data: "invite" }],
           ],
         }),

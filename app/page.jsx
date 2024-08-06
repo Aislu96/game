@@ -39,6 +39,8 @@ const Page = () => {
     setEnergy,
     image,
     setImage,
+    username,
+    setUsername,
   } = useGameContext();
 
   const [startGame, setStartGame] = useState(false);
@@ -91,6 +93,7 @@ const Page = () => {
       setScore(data.score);
       setEnergy(newEnergy);
       setImage(data.profile_picture);
+      setUsername(data.username);
 
       // Update the user's energy in the database
       const { error: updateError } = await supabase

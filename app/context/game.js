@@ -9,6 +9,7 @@ export const GameProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
   const [image, setImage] = useState(null);
   const [tg, setTg] = useState(null);
+  const [username, setUsername] = useState(null);
 
   return (
     <GameContext.Provider
@@ -22,7 +23,9 @@ export const GameProvider = ({ children }) => {
         tg,
         setTg,
         image,
-        setImage
+        setImage,
+        username,
+        setUsername,
       }}
     >
       {children}

@@ -10,7 +10,7 @@ import { supabase } from "../utils/supabase/server";
 import { useRouter } from "next/navigation";
 
 const Friends = () => {
-  const { userId, score, image } = useGameContext();
+  const { userId, score, image, username } = useGameContext();
   const [friends, setFriends] = useState([]);
   const [theTopList, setTheTopList] = useState([]);
   const [isUserInList, setIsUserInList] = useState(false);
@@ -59,12 +59,12 @@ const Friends = () => {
     }));
 
     // Add the current user to the list
-    friends.push({
-      id: userId,
-      username: "You",
-      score: score,
-      imageSrc: image || "/binXCoin.svg",
-    });
+    // friends.push({
+    //   id: userId,
+    //   username: "You",
+    //   score: score,
+    //   imageSrc: image || "/binXCoin.svg",
+    // });
 
     // Sort the friends by score in descending order
     friends.sort((a, b) => b.score - a.score);
@@ -116,14 +116,22 @@ const Friends = () => {
           <UserTop
             rankSrc="/two.svg"
             userImgSrc={theTopList[1]?.imageSrc}
-            username={theTopList[1]?.username}
+            username={
+              username == theTopList[1]?.username
+                ? "You"
+                : theTopList[1]?.username
+            }
           />
         </div>
         <div className="flex flex-col items-center">
           <UserTop
             rankSrc="/one.svg"
             userImgSrc={theTopList[0]?.imageSrc}
-            username={theTopList[0]?.username}
+            username={
+              username == theTopList[0]?.username
+                ? "You"
+                : theTopList[0]?.username
+            }
           />
           <div className="flex flex-col items-center mt-[15px]">
             <div className="relative" onClick={handleAddFriendClick}>
@@ -142,7 +150,11 @@ const Friends = () => {
           <UserTop
             rankSrc="/three.svg"
             userImgSrc={theTopList[2]?.imageSrc}
-            username={theTopList[2]?.username}
+            username={
+              username == theTopList[2]?.username
+                ? "You"
+                : theTopList[2]?.username
+            }
           />
         </div>
       </div>

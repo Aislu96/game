@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useGameContext } from "./context/game";
 
 const User = ({ index, item }) => {
-  const { userId } = useGameContext();
+  const { userId, username } = useGameContext();
 
   return (
     <div
@@ -26,14 +26,16 @@ const User = ({ index, item }) => {
           <div className="absolute top-[5px] left-[5px]">
             <Image
               src={item?.imageSrc}
-              alt="😊"
+              alt="user"
               width={40}
               height={46}
               className="object-cover hexagon-small"
             />
           </div>
         </div>
-        <p className="font-light text-base">{item?.username}</p>
+        <p className="font-light text-base">
+          {username == item?.username ? "You" : item?.username}
+        </p>
       </div>
       <div className="flex flex-row gap-[5px]">
         <Image
