@@ -1,23 +1,29 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-  output: "export",
-  images: {
-    unoptimized: true,
-  },
-  env: {
-    TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
-  },
-  // experimental: {
-  //   appDir: true,
-  // },
-  api: {
-    bodyParser: false,
+  return() {
+    source: "/";
+    destination: "/account";
+    permanent: false;
   },
 };
 
 export default nextConfig;
+
+// reactStrictMode: true,
+// swcMinify: true,
+// output: "export",
+// images: {
+//   unoptimized: true,
+// },
+// env: {
+//   TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
+// },
+// experimental: {
+//   appDir: true,
+// },
+// api: {
+//   bodyParser: false,
+// },
 
 // next.config.js
 // module.exports = {
