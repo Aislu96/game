@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import TelegramBot from "node-telegram-bot-api";
 import { supabase } from "../../utils/supabase/server";
 
-const bot = new TelegramBot(process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN, {
+const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
   polling: false,
 });
 
@@ -207,6 +207,31 @@ async function sendWelcomeMessage(chatId) {
   }
 }
 
-export async function GET() {
+export async function GET(req) {
+  console.log("GET request received at /api/bot");
   return NextResponse.json({ message: "Bot API is running" });
 }
+
+export async function POST(req) {
+  console.log("POST request received at /api/bot");
+  try {
+    const body = await req.json();
+    console.log("Received a POST request", body);
+
+    // Your existing POST logic here...
+
+    return NextResponse.json({ message: "OK" });
+  } catch (error) {
+    console.error("Error processing request:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
