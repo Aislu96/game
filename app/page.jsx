@@ -2,32 +2,25 @@
 
 import LabeledIcon from "./labeledIcon";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import Game from "./game/game";
-import Shop from "./shop/page";
-import Image from "next/image";
+import Menu from "./menu";
 import { useGameContext } from "./context/game";
 import { supabase } from "./utils/supabase/server";
 
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
 
-  const handleTouch = (icon) => {
-    setActiveIcon(icon);
-  };
 
-  const getIconSrc = (icon) => {
-    const iconPaths = {
-      shop: "/shop",
-      game: "/game",
-      profile: "/profile",
-    };
-
-    return activeIcon === icon
-      ? `${iconPaths[icon]}Active.svg`
-      : `${iconPaths[icon]}.svg`;
+  const getTriangleClass = () => {
+    if (activeIcon === "shop") return "triangle-two";
+    if (activeIcon === "game") return "triangle";
+    if (activeIcon === "profile") return "triangle-three";
+    return "";
   };
+  const triangleClass = getTriangleClass();
+
 
   const { userId, setUserId, tg, setTg, score, setScore, energy, setEnergy } =
     useGameContext();
@@ -137,15 +130,6 @@ const Page = () => {
     }
   }, [userId]);
 
-  const getTriangleClass = () => {
-    if (activeIcon === "shop") return "triangle-two";
-    if (activeIcon === "game") return "triangle";
-    if (activeIcon === "profile") return "triangle-three";
-    return "";
-  };
-
-  const triangleClass = getTriangleClass();
-
 
   return (
     <div className="relative flex flex-col h-screen bg-black text-white overflow-hidden">
@@ -162,23 +146,7 @@ const Page = () => {
 
       {/* <Shop />
       <Page /> */}
-      <div className="flex flex-row justify-between w-full px-[30px] z-50 bottom-2 left-0 right-0 relative">
-        {["shop", "game", "profile"].map((icon) => (
-          <div
-            key={icon}
-            className="relative"
-            onTouchStart={() => handleTouch(icon)}
-          >
-            <Image
-              src={getIconSrc(icon)}
-              alt={icon}
-              width={46}
-              height={46}
-              className="object-cover"
-            />
-          </div>
-        ))}
-      </div>
+      <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon}/>
     </div>
   );
 };

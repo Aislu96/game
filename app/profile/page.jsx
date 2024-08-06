@@ -67,7 +67,7 @@ const Page = () => {
     };
 
     return (
-        <div className="h-screen bg-customFon relative">
+        <div className="h-screen bg-customFon relative flex flex-col ">
             {isFormVisible && (<div className="absolute w-full h-full bg-customOverlay opacity-60 top-0 left-0 z-10" onClick={toggleFormVisibility}></div>)}
             <div className="absolute top-0 left-0 w-full  h-[90vh]">
                 <div className="absolute h-[92.9%] w-full bg-white opacity-5 rounded-t-[50px]">

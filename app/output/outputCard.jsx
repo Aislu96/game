@@ -15,8 +15,8 @@ const OutputCard = ({ iconSrc, altText, text }) => {
 
     return (
         <div
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
+            onMouseDown={handleTouchStart}
+            onMouseUp={handleTouchEnd}
         >
             <div className={`p-[6px] flex flex-row justify-between my-1 ${isTouched ? 'bg-customGray' : ''}`}>
                 <div className='flex flex-row gap-[5px] items-center'>

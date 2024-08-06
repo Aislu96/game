@@ -39,7 +39,7 @@ const BoostCard = ({ iconSrc, altText, text, duration }) => {
     };
 
     return (
-        <div className="border-after relative" onTouchStart={handleTouch}>
+        <div className="border-after relative" onClick={handleTouch}>
             <div className="py-[6px] flex flex-row justify-between">
                 <div className={`flex flex-row gap-[5px] items-center ${isActive ? 'transition-opacity duration-500 ease-in-out opacity-50' : ""}`}>
                     <Image src={iconSrc} alt={altText} width={39} height={39} className="object-cover" />
