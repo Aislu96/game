@@ -16,6 +16,16 @@ const Friends = () => {
   const [isUserInList, setIsUserInList] = useState(false);
   const router = useRouter();
 
+  const [isTouched, setIsTouched] = useState(false);
+
+  const handleTouchStart = () => {
+    setIsTouched(true);
+  };
+
+  const handleTouchEnd = () => {
+    setIsTouched(false);
+  };
+
   const handleAddFriendClick = () => {
     const inviteLink = `https://t.me/BIXXcoin_bot/?start=invite_${userId}`;
     const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
@@ -136,10 +146,14 @@ const Friends = () => {
             }
           />
           <div className="flex flex-col items-center mt-[15px]">
-            <div className="relative" onClick={handleAddFriendClick}>
+            <div
+              className="relative"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
               <Image
-                src={"/addFriends.svg"}
-                alt={"add a friend"}
+                src={isTouched ? "/addFriendsHover.svg" : "/addFriends.svg"}
+                alt={"add a friends"}
                 width={50}
                 height={50}
                 className="object-cover"

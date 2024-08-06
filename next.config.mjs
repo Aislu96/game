@@ -5,6 +5,10 @@ const nextConfig = {
     destination: "/account";
     permanent: false;
   },
+
+  images: {
+    domains: ["api.telegram.org"],
+  },
 };
 
 export default nextConfig;

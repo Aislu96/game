@@ -20,6 +20,8 @@ const config = {
     },
     extend: {
       colors: {
+        customOverlay: "rgba(0, 0, 0, 0.5)",
+        customFon2: "#1D1E29",
         "purple-custom": "#44298A",
         "orange-custom": "#C58629",
         customYellow: "#FAA300",

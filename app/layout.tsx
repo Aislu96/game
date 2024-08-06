@@ -26,7 +26,7 @@ export default function RootLayout({
       </head>
       <GameProvider>
         {" "}
-        <body className={inter.className}>{children}</body>
+        <body className={`${inter.className}`}>{children}</body>
       </GameProvider>
     </html>
   );

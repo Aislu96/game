@@ -2,6 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
+.gradient-profile {
+  border: 1px solid transparent;
+  background: linear-gradient(#181622, #181622) padding-box,
+    linear-gradient(62.72deg, #566eb1 1.24%, #c17ab8 47.07%, #dfdaff 98.76%)
+      border-box;
+}
+.gradient-profile-two {
+  border: 1px solid transparent;
+  background: linear-gradient(#181622, #181622) padding-box,
+    linear-gradient(62.72deg, #dfdaff 1.24%, #c17ab8 52.93%, #566eb1 98.76%)
+      border-box;
+}
+
+.gradient-profile-three {
+  border: 1px solid transparent;
+  background: linear-gradient(#181622, #181622) padding-box,
+    linear-gradient(61.03deg, #c7619c 0.08%, #f16e62 51.5%, #c7a461 99.92%)
+      border-box;
+}
+
+.radial-gradient {
+  background: radial-gradient(
+    circle at left top,
+    rgba(68, 41, 138, 1) 0%,
+    rgba(24, 22, 34, 1) 41%
+  );
+  opacity: 0.7;
+}
+
+.radial-gradient-two {
+  background: radial-gradient(
+    circle at right bottom,
+    rgba(197, 134, 41, 1) 0%,
+    rgba(24, 22, 34, 1) 41%
+  );
+  opacity: 0.5;
+}
+
 .triangle {
   border-left: 50vw solid transparent;
   border-right: 50vw solid transparent;

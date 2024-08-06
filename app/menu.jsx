@@ -39,7 +39,7 @@ const Menu = () => {
           href={getHref(icon)}
           key={icon}
           className="relative"
-          onTouchStart={() => handleTouch(icon)}
+          onClick={() => handleTouch(icon)}
         >
           <Image
             src={getIconSrc(icon)}

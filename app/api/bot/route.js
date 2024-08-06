@@ -65,6 +65,34 @@ export async function POST(req) {
   }
 }
 
+async function sendWelcomeMessage(chatId) {
+  const welcomeText = `Welcome to BIXcoin Bot 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them to the game and earn more coins together.`;
+
+  try {
+    await bot.sendPhoto(
+      chatId,
+      "https://bi-xcoin-7rao.vercel.app/botBanner.png",
+      {
+        caption: welcomeText,
+        reply_markup: JSON.stringify({
+          inline_keyboard: [
+            [
+              {
+                text: "Play",
+                web_app: { url: `${webAppUrl}?tgWebAppFullscreen=true` },
+              },
+            ],
+            [{ text: "Invite Friends", callback_data: "invite" }],
+          ],
+        }),
+      }
+    );
+    console.log("Sent welcome message");
+  } catch (error) {
+    console.error("Error sending welcome message:", error);
+  }
+}
+
 async function updateUserData(userId, userInfo) {
   const { first_name, last_name, username, language_code } = userInfo;
 
@@ -176,34 +204,6 @@ async function handleInvitation(userId, inviterChatId) {
         console.log("Inviter's score updated successfully");
       }
     }
-  }
-}
-
-async function sendWelcomeMessage(chatId) {
-  const welcomeText = `Welcome to BIXcoin Bot 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them to the game and earn more coins together.`;
-
-  try {
-    await bot.sendPhoto(
-      chatId,
-      "https://bi-xcoin-7rao.vercel.app/botBanner.png",
-      {
-        caption: welcomeText,
-        reply_markup: JSON.stringify({
-          inline_keyboard: [
-            [
-              {
-                text: "Play",
-                web_app: { url: webAppUrl },
-              },
-            ],
-            [{ text: "Invite Friends", callback_data: "invite" }],
-          ],
-        }),
-      }
-    );
-    console.log("Sent welcome message");
-  } catch (error) {
-    console.error("Error sending welcome message:", error);
   }
 }
 

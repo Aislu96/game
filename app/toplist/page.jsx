@@ -8,7 +8,7 @@ import { list, user } from "../data.js";
 import User from "../user.jsx";
 import UserTop from "../userTop";
 import Link from "next/link";
-// import { getUsersSortedByScore } from "../utils/supabase/data";
+
 import { useGameContext } from "../context/game.js";
 import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabase/server";
@@ -35,7 +35,7 @@ const TopList = () => {
       id: user.user_id,
       username: user.username,
       score: user.score,
-      imageSrc: user.profile_picture || "/binXCoin.svg",
+      imageSrc: user.profile_picture ? user.profile_picture : "/binXCoin.svg",
     }));
 
     // Sort the users by score in descending order
