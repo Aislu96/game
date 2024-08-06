@@ -55,7 +55,9 @@ const Friends = () => {
       id: friend.user_id,
       username: friend.username,
       score: friend.score,
-      imageSrc: friend.profile_picture || "/binXCoin.svg",
+      imageSrc: friend.profile_picture
+        ? friend.profile_picture
+        : "/binXCoin.svg",
     }));
 
     // Add the current user to the list
