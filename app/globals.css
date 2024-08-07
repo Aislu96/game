@@ -2,9 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-.wheel {
+/* .wheel {
   will-change: transform;
   transform: translateZ(0);
+} */
+
+.wheel {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
 }
 
 .gradient-profile {
