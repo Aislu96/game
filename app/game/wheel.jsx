@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import React, { useState, useRef, useCallback } from "react";
 import { useGameContext } from "../context/game";
 
 const Wheel = () => {
@@ -29,39 +30,41 @@ const Wheel = () => {
     lastAngleRef.current = angle;
   };
 
-  const handleMove = (clientX, clientY) => {
-    if (!isDragging) return;
-    const currentAngle = calculateAngle(clientX, clientY);
-    let angleDiff = currentAngle - lastAngleRef.current;
+  const handleMove = useCallback(
+    (clientX, clientY) => {
+      if (!isDragging) return;
 
-    // Adjust for the boundary between 359 and 0 degrees
-    if (angleDiff < -180) angleDiff += 360;
-    if (angleDiff > 180) {
-      setIsDragging(false);
-    }
+      const currentAngle = calculateAngle(clientX, clientY);
+      let angleDiff = currentAngle - lastAngleRef.current;
 
-    // Only update if movement is clockwise
-    if (angleDiff > 0) {
-      requestAnimationFrame(() => {
-        setRotation((prevRotation) => prevRotation + angleDiff);
-      });
-      rotationCountRef.current += angleDiff;
-
-      // Check for full rotation
-      if (
-        rotationCountRef.current >= 360 &&
-        Math.abs(currentAngle - startAngle) < 30
-      ) {
-        setScore((prevScore) => prevScore + 1);
-        setEnergy((prevEnergy) => Math.max(0, prevEnergy - 1));
-        rotationCountRef.current = 0;
+      if (angleDiff < -180) angleDiff += 360;
+      if (angleDiff > 180) {
+        setIsDragging(false);
+        return;
       }
 
-      lastAngleRef.current = currentAngle;
-    } else {
-      setIsDragging(false);
-    }
-  };
+      if (angleDiff > 0) {
+        requestAnimationFrame(() => {
+          setRotation((prevRotation) => prevRotation + angleDiff);
+          rotationCountRef.current += angleDiff;
+
+          if (
+            rotationCountRef.current >= 360 &&
+            Math.abs(currentAngle - startAngle) < 30
+          ) {
+            setScore((prevScore) => prevScore + 1);
+            setEnergy((prevEnergy) => Math.max(0, prevEnergy - 1));
+            rotationCountRef.current = 0;
+          }
+
+          lastAngleRef.current = currentAngle;
+        });
+      } else {
+        setIsDragging(false);
+      }
+    },
+    [isDragging, startAngle, setScore, setEnergy]
+  );
 
   const handleEnd = () => {
     setIsDragging(false);
@@ -72,20 +75,20 @@ const Wheel = () => {
     <div className="bg-[url('/arrow.svg')] mt-8 mb-4 h-[355px] w-[321px] bg-cover flex items-center justify-center mx-auto">
       <div
         ref={clockRef}
-        style={{ transform: `rotate(${rotation}deg)` }}
-        className="wheel w-[295px] h-[295px] rounded-full mb-5 bg-[url('/wheel.png')] bg-cover relative touch-none flex items-center justify-center"
-        onTouchStart={(e) => {
-          handleStart(e.touches[0].clientX, e.touches[0].clientY);
+        style={{
+          transform: `rotate(${rotation}deg)`,
+          touchAction: "none",
+          willChange: "transform",
         }}
-        onTouchMove={(e) => {
-          handleMove(e.touches[0].clientX, e.touches[0].clientY);
-        }}
-        onTouchEnd={(e) => {
-          handleEnd();
-        }}
+        className="w-[295px] h-[295px] rounded-full mb-5 bg-[url('/wheel.png')] bg-cover relative flex items-center justify-center"
+        onTouchStart={(e) =>
+          handleStart(e.touches[0].clientX, e.touches[0].clientY)
+        }
+        onTouchMove={(e) =>
+          handleMove(e.touches[0].clientX, e.touches[0].clientY)
+        }
+        onTouchEnd={handleEnd}
       ></div>
     </div>
   );
 };
-
-export default Wheel;
