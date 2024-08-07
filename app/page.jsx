@@ -144,6 +144,16 @@ const Page = () => {
 
     initializeTelegramWebApp();
 
+    // Prevent default touch actions only on the main container
+    const preventDefaultTouch = (e) => {
+      if (e.target.closest(".wheel-container")) return; // Allow touches on the wheel
+      e.preventDefault();
+    };
+
+    document.addEventListener("touchmove", preventDefaultTouch, {
+      passive: false,
+    });
+
     // Cleanup function
     return () => {
       if (typeof window !== "undefined" && window.Telegram?.WebApp) {
@@ -153,6 +163,7 @@ const Page = () => {
       if (typeof window !== "undefined") {
         window.removeEventListener("beforeunload", saveUserData);
       }
+      document.removeEventListener("touchmove", preventDefaultTouch);
     };
   }, []);
 
@@ -204,7 +215,10 @@ const Page = () => {
       </div>
 
       <LabeledIcon />
-      <Game />
+      <div className="absolute top-[17%] left-0 w-full h-[90vh] z-20 wheel-container">
+        <Game />
+      </div>
+
       <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} />
     </div>
   );
