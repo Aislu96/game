@@ -1,8 +1,6 @@
 "use client";
 
-import Image from "next/image";
-
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useGameContext } from "../context/game";
 
 const Wheel = () => {
@@ -12,7 +10,6 @@ const Wheel = () => {
   const clockRef = useRef(null);
   const lastAngleRef = useRef(0);
   const rotationCountRef = useRef(0);
-  //   const [startGame, setStartGame] = useState(false);
 
   const { setScore, setEnergy } = useGameContext();
 
@@ -45,7 +42,9 @@ const Wheel = () => {
 
     // Only update if movement is clockwise
     if (angleDiff > 0) {
-      setRotation((prevRotation) => prevRotation + angleDiff);
+      requestAnimationFrame(() => {
+        setRotation((prevRotation) => prevRotation + angleDiff);
+      });
       rotationCountRef.current += angleDiff;
 
       // Check for full rotation
@@ -74,17 +73,14 @@ const Wheel = () => {
       <div
         ref={clockRef}
         style={{ transform: `rotate(${rotation}deg)` }}
-        className="w-[295px] h-[295px] rounded-full mb-5 bg-[url('/wheel.png')] bg-cover relative touch-none flex items-center justify-center"
+        className="wheel w-[295px] h-[295px] rounded-full mb-5 bg-[url('/wheel.png')] bg-cover relative touch-none flex items-center justify-center"
         onTouchStart={(e) => {
-          //   e.preventDefault(); // Prevent default touch behavior
           handleStart(e.touches[0].clientX, e.touches[0].clientY);
         }}
         onTouchMove={(e) => {
-          //   e.preventDefault(); // Prevent default touch behavior
           handleMove(e.touches[0].clientX, e.touches[0].clientY);
         }}
         onTouchEnd={(e) => {
-          //   e.preventDefault(); // Prevent default touch behavior
           handleEnd();
         }}
       ></div>
