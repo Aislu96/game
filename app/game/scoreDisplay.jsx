@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { supabase } from "../utils/supabase/server";
 
 const ScoreDisplay = () => {
-  const { userId, energy, tg } = useGameContext();
+  const { userId, energy, tg, score } = useGameContext();
 
   async function saveUserData() {
     if (!userId) return;
@@ -23,7 +23,6 @@ const ScoreDisplay = () => {
     else console.log("Game data saved successfully");
   }
 
-  const { score } = useGameContext();
   const getImageSrc = () => {
     if (score >= 0 && score <= 100) {
       return "/coal.svg";
@@ -44,6 +43,7 @@ const ScoreDisplay = () => {
 
   useEffect(() => {
     saveUserData();
+    console.log("Score", score);
   }, [score]);
 
   return (

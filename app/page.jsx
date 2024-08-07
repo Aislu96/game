@@ -1,7 +1,7 @@
 "use client";
 
 import LabeledIcon from "./labeledIcon";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import Game from "./game/game";
 import Shop from "./shop/page";
 import Profile from "./profile/page1";
@@ -37,9 +37,9 @@ const Page = () => {
     setScore,
     energy,
     setEnergy,
-    image,
+
     setImage,
-    username,
+
     setUsername,
   } = useGameContext();
 
@@ -73,6 +73,7 @@ const Page = () => {
   }
 
   async function loadUserData() {
+    console.log("Loading user data");
     if (!userId) return;
     const { data, error } = await supabase
       .from("Bixcoin")
@@ -83,12 +84,15 @@ const Page = () => {
     if (error) {
       console.error("Error loading game data:", error);
     } else if (data) {
+      console.log("User data loaded successfully");
       const now = new Date();
       const lastUpdated = new Date(data.updated_at);
       const timeDifferenceSeconds = Math.floor((now - lastUpdated) / 1000);
       console.log("Time difference: " + timeDifferenceSeconds);
       const energyGain = Math.floor(timeDifferenceSeconds / 10);
       const newEnergy = Math.min(1000, data.energy + energyGain);
+
+      console.log(data);
 
       setScore(data.score);
       setEnergy(newEnergy);
@@ -111,7 +115,7 @@ const Page = () => {
   }
 
   useEffect(() => {
-    const initializeTelegramWebApp = () => {
+    const initializeTelegramWebApp = async () => {
       if (typeof window !== "undefined" && window.Telegram?.WebApp) {
         window.Telegram.WebApp.expand();
         const webApp = window.Telegram.WebApp;
@@ -125,6 +129,7 @@ const Page = () => {
           console.warn("No user ID found in Telegram Web App data");
           setUserId(1); // Fallback for development
         }
+        // await loadUserData();
 
         webApp.onEvent("viewportChanged", saveUserData);
         webApp.onEvent("mainButtonClicked", saveUserData);
@@ -166,6 +171,12 @@ const Page = () => {
       document.removeEventListener("touchmove", preventDefaultTouch);
     };
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      loadUserData();
+    }
+  }, [userId]);
 
   // useEffect(() => {
   //   if (userId) {
@@ -215,9 +226,9 @@ const Page = () => {
       </div>
 
       <LabeledIcon />
-      <div className="absolute top-[17%] left-0 w-full h-[90vh] z-20 wheel-container">
-        <Game />
-      </div>
+      {/* <div className="absolute top-[17%] left-0 w-full h-[90vh] z-20 wheel-container"> */}
+      <Game />
+      {/* </div> */}
 
       <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} />
     </div>
