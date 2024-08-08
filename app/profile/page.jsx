@@ -35,7 +35,7 @@ const Page = () => {
     } else if (score > 5000 && score <= 10000) {
       return { src: "/diamond.svg", text: "Diamond" };
     } else if (score > 10000) {
-      return { src: "/binXCoin.svg", text: "BinXCoin" };
+      return { src: "/binXcoin.svg", text: "BinXcoin" };
     } else {
       return { src: "/coal.svg", text: "Coal" };
     }
@@ -127,7 +127,7 @@ const Page = () => {
       </div>
       <div className="flex flex-col mx-[30px] gap-5 relative overflow-hidden">
         {isFormVisible && (
-          <div className="opacity-100 py-3 px-1.5 flex flex-col gap-1.5 absolute left-0 top-0 w-full z-20 bg-customFon2 border-[1px] border-solid border-customBorder rounded-xl">
+          <div className="opacity-100 py-3 px-1.5 flex flex-col gap-1.5 absolute left-0 top-0 w-full z-[200] bg-customFon2 border-[1px] border-solid border-customBorder rounded-xl">
             <p className="text-medium text-base text-white text-center">
               Enter your wallet
             </p>

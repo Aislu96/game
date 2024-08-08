@@ -9,6 +9,7 @@ import { useGameContext } from "./context/game";
 import { supabase } from "./utils/supabase/server";
 import Menu from "./menu";
 import Friends from "./friends/page";
+import { ImSpinner9 } from "react-icons/im";
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
 
@@ -213,7 +214,7 @@ const Page = () => {
       id: user.user_id,
       username: user.username,
       score: user.score,
-      imageSrc: user.profile_picture ? user.profile_picture : "/binXCoin.svg",
+      imageSrc: user.profile_picture ? user.profile_picture : "/binXcoin.svg",
     }));
 
     // Sort the users by score in descending order
@@ -259,7 +260,7 @@ const Page = () => {
       score: friend.score,
       imageSrc: friend.profile_picture
         ? friend.profile_picture
-        : "/binXCoin.svg",
+        : "/binXcoin.svg",
     }));
 
     friends.sort((a, b) => b.score - a.score);
@@ -275,6 +276,14 @@ const Page = () => {
       loadUserData();
     }
   }, [userId]);
+
+  if (!startGame) {
+    return (
+      <div className="h-screen bg-black text-white flex items-center justify-center">
+        <ImSpinner9 className="animate-spin text-[200px]" />
+      </div>
+    );
+  }
 
   return (
     <div className="relative flex flex-col h-screen bg-black text-white overflow-hidden ">

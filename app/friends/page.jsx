@@ -79,7 +79,7 @@ const Friends = () => {
             userImgSrc={
               theTopFriends[1]?.imageSrc
                 ? theTopFriends[1]?.imageSrc
-                : "/binXCoin.svg"
+                : "/binXcoin.svg"
             }
             username={
               username == theTopFriends[1]?.username
@@ -124,7 +124,7 @@ const Friends = () => {
             userImgSrc={
               theTopFriends[2]?.imageSrc
                 ? theTopFriends[2]?.imageSrc
-                : "/binXCoin.svg"
+                : "/binXcoin.svg"
             }
             username={
               username == theTopFriends[2]?.username

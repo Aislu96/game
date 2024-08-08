@@ -48,7 +48,7 @@ const Output = () => {
           height={31}
           className="object-cover h-[31px] mx-auto mb-2.5 relative z-10"
         />
-        <div className="w-[315px] p-2.5 bg-customFon rounded-xl border-[1px] border-customBorder relative z-10 mx-auto">
+        <div className="w-[315px] p-2.5 bg-customFon rounded-xl border-[1px] border-customBorder relative z-10 mx-auto h-full">
           <div className="border-after-two">
             <div className="flex flex-row justify-between items-center py-2">
               <h2 className="text-xl font-normal">Partner brokers</h2>
@@ -59,7 +59,7 @@ const Output = () => {
               account of the selected broker
             </p>
           </div>
-          <div className="flex flex-col overflow-y-auto  max-h-64">
+          <div className="flex flex-col overflow-y-auto h-[280px]">
             <OutputCard
               iconSrc="/artsmarkers.svg"
               altText="Artsmarkers"
@@ -92,7 +92,7 @@ const Output = () => {
             />
           </div>
         </div>
-        <div className="max-w-[315px] w-full [h-100px]  p-2.5 bg-customFon rounded-xl border-[1px] border-customBorder fixed bottom-0  z-10 mx-auto mt-[30px] flex flex-row gap-2.5">
+        <div className="w-[315px] [h-100px] mx-auto  p-2.5 bg-customFon rounded-xl border-[1px] border-customBorder fixed bottom-0  left-2 right-2 justify-center z-10 mt-[30px] flex flex-row gap-2.5">
           <div className="flex flex-col">
             <div className="flex flex-row justify-between items-center py-1">
               <h2 className="text-lg font-normal">Your wallet</h2>

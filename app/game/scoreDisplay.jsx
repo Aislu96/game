@@ -35,7 +35,7 @@ const ScoreDisplay = () => {
     } else if (score > 5000 && score <= 10000) {
       return "/diamond.svg";
     } else if (score > 10000) {
-      return "/binXCoin.svg";
+      return "/binXcoin.svg";
     } else {
       return "/coal.svg";
     }
