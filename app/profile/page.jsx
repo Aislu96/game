@@ -135,7 +135,7 @@ const Page = () => {
               </div>
             ) : (
               <form
-                className="flex flex-col gap-1.5"
+                className="flex flex-col gap-1.5 z-50"
                 name="form-wallet"
                 onSubmit={handleSubmit}
               >

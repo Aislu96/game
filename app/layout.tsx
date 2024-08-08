@@ -9,6 +9,8 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Game",
   description: "Game",
+  viewport:
+    "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
 };
 
 export default function RootLayout({
@@ -25,7 +27,6 @@ export default function RootLayout({
         />
       </head>
       <GameProvider>
-        {" "}
         <body className={`${inter.className}`}>{children}</body>
       </GameProvider>
     </html>
