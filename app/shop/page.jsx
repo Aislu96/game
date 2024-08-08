@@ -18,8 +18,7 @@ const Shop = () => {
 
   return (
     <div
-      className="relative flex flex-col h-screen bg-black text-white overflow-hidden rounded-t-xl"
-      style={{ touchAction: "manipulation" }}
+      className="relative flex flex-col h-screen bg-black text-white overflow-hidden"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     >
       {" "}

@@ -7,9 +7,10 @@ import { useGameContext } from "../context/game";
 import { supabase } from "../utils/supabase/server";
 
 const Page = () => {
-  const { score, image, username, userId, profitPerWeek } = useGameContext();
+  const { score, image, username, userId, profitPerWeek, wallet, setWallet } =
+    useGameContext();
   const [activeIcon, setActiveIcon] = useState("game");
-  const [wallet, setWallet] = useState("");
+
   const [isWalletValid, setIsWalletValid] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -44,6 +45,9 @@ const Page = () => {
     // Проверка валидности при изменении wallet
     const isValid = wallet.length >= 27 && wallet.length <= 34;
     setIsWalletValid(isValid);
+    if (isValid) {
+      setIsWalletAttached(true);
+    }
   }, [wallet]);
 
   const handleWalletChange = (e) => {
@@ -76,7 +80,7 @@ const Page = () => {
   };
 
   return (
-    <div className="h-screen bg-customFon relative rounded-t-xl">
+    <div className="h-screen bg-customFon relative">
       {isFormVisible && (
         <div
           className="absolute w-full h-full bg-customOverlay opacity-60 top-0 left-0 z-10"
@@ -187,14 +191,14 @@ const Page = () => {
             <div className="flex flex-row gap-1.5 items-baseline relative flex-wrap">
               <p className="text-medium text-sm text-white">Earned:</p>
               <p className="text-medium text-base text-white">
-                {score * 0.0002}
+                {(score * 0.0002).toFixed(3)}
               </p>
               <Image src="/tether.svg" alt="tether" width={13} height={13} />
             </div>
             <div className="flex flex-row gap-1.5 items-baseline relative flex-wrap">
               <p className="text-medium text-sm text-white">Profit per week:</p>
               <p className="text-medium text-base text-white">
-                {profitPerWeek}
+                {profitPerWeek.toFixed(3)}
               </p>
             </div>
           </div>

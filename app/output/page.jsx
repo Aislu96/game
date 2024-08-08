@@ -59,7 +59,7 @@ const Output = () => {
               account of the selected broker
             </p>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col overflow-y-auto  max-h-64">
             <OutputCard
               iconSrc="/artsmarkers.svg"
               altText="Artsmarkers"
@@ -92,7 +92,7 @@ const Output = () => {
             />
           </div>
         </div>
-        <div className="w-[315px] [h-100px] p-2.5 bg-customFon rounded-xl border-[1px] border-customBorder relative z-10 mx-auto mt-[30px] flex flex-row gap-2.5">
+        <div className="max-w-[315px] w-full [h-100px]  p-2.5 bg-customFon rounded-xl border-[1px] border-customBorder fixed bottom-0  z-10 mx-auto mt-[30px] flex flex-row gap-2.5">
           <div className="flex flex-col">
             <div className="flex flex-row justify-between items-center py-1">
               <h2 className="text-lg font-normal">Your wallet</h2>

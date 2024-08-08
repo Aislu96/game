@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useGameContext } from "./context/game";
 import { supabase } from "./utils/supabase/server";
 import Menu from "./menu";
+import Friends from "./friends/page";
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
 
@@ -39,6 +40,9 @@ const Page = () => {
     setImage,
     setUsername,
     setProfitPerWeek,
+    setWallet,
+    setTheTopList,
+    setTheTopFriends,
   } = useGameContext();
 
   const [startGame, setStartGame] = useState(false);
@@ -70,6 +74,22 @@ const Page = () => {
     else console.log("Game data saved successfully");
   }
 
+  async function getUserWallet() {
+    if (!userId) return;
+    const { data, error } = await supabase
+      .from("Account")
+      .select("wallet")
+      .eq("user_id", userId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching user wallet:", error);
+      return;
+    }
+
+    setWallet(data.wallet);
+  }
+
   async function loadUserData() {
     console.log("Loading user data");
     if (!userId) return;
@@ -97,18 +117,13 @@ const Page = () => {
       setImage(data.profile_picture);
       setUsername(data.username);
 
-      // Update the user's energy in the database
-      const { error: updateError } = await supabase
-        .from("Bixcoin")
-        .update({ energy: newEnergy, updated_at: now })
-        .eq("user_id", userId);
-
-      if (updateError) {
-        console.error("Error updating user energy:", updateError);
-      } else {
-        console.log("User energy updated successfully");
-      }
+      await getUserWallet();
     }
+
+    calculateProfitPerWeek(data.updated_at);
+    await getUsersSortedByScore();
+    await getFriendsSortedByScore();
+
     setStartGame(true);
   }
 
@@ -170,19 +185,8 @@ const Page = () => {
     };
   }, []);
 
-  const calculateProfitPerWeek = async () => {
-    const { data, error } = await supabase
-      .from("Bixcoin")
-      .select("updated_at")
-      .eq("user_id", userId)
-      .single();
-
-    if (error) {
-      console.error("Error fetching data from Bixcoin table:", error);
-      return;
-    }
-
-    const updatedAt = new Date(data.updated_at);
+  const calculateProfitPerWeek = (updated_at) => {
+    const updatedAt = new Date(updated_at);
     const now = new Date();
     const daysSinceUpdate = Math.floor(
       (now - updatedAt) / (1000 * 60 * 60 * 24)
@@ -190,18 +194,90 @@ const Page = () => {
     const profitPerWeek = ((7 - daysSinceUpdate) / 7) * score;
     const formattedProfitPerWeek = Math.max(0, profitPerWeek);
 
-    setProfitPerWeek(formattedProfitPerWeek);
+    setProfitPerWeek(formattedProfitPerWeek * 0.0002);
   };
+
+  async function getUsersSortedByScore() {
+    // Fetch data from the Bixcoin table
+    let { data, error } = await supabase
+      .from("Bixcoin")
+      .select("user_id, username, score, profile_picture");
+
+    if (error) {
+      console.error("Error fetching data:", error);
+      return [];
+    }
+
+    // Map the data to the desired format
+    const users = data.map((user) => ({
+      id: user.user_id,
+      username: user.username,
+      score: user.score,
+      imageSrc: user.profile_picture ? user.profile_picture : "/binXCoin.svg",
+    }));
+
+    // Sort the users by score in descending order
+    users.sort((a, b) => b.score - a.score);
+
+    console.log(users, "users");
+    const topList = users.slice(0, 20);
+    setTheTopList(topList);
+  }
+
+  async function getFriendsSortedByScore() {
+    // Fetch friends from the Friends table
+    let { data: friendsData, error: friendsError } = await supabase
+      .from("Friends")
+      .select("friends_id")
+      .eq("user_id", userId);
+
+    if (friendsError) {
+      console.error("Error fetching friends:", friendsError);
+      return [];
+    }
+
+    // Extract friend IDs
+    const friendIds = friendsData.map((friend) => friend.friends_id);
+
+    friendIds.push(userId);
+
+    // Fetch data for friends from the Bixcoin table
+    let { data: bixcoinData, error: bixcoinError } = await supabase
+      .from("Bixcoin")
+      .select("user_id, username, score, profile_picture")
+      .in("user_id", friendIds);
+
+    if (bixcoinError) {
+      console.error("Error fetching friend data:", bixcoinError);
+      return [];
+    }
+
+    // Map the data to the desired format
+    const friends = bixcoinData.map((friend) => ({
+      id: friend.user_id,
+      username: friend.username,
+      score: friend.score,
+      imageSrc: friend.profile_picture
+        ? friend.profile_picture
+        : "/binXCoin.svg",
+    }));
+
+    friends.sort((a, b) => b.score - a.score);
+
+    console.log(friends, "friends");
+
+    const topFriends = friends.slice(0, 20);
+    setTheTopFriends(topFriends);
+  }
 
   useEffect(() => {
     if (userId) {
       loadUserData();
-      calculateProfitPerWeek();
     }
   }, [userId]);
 
   return (
-    <div className="relative flex flex-col h-screen bg-black text-white overflow-hidden rounded-t-xl">
+    <div className="relative flex flex-col h-screen bg-black text-white overflow-hidden ">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-orange-500 opacity-30 blur-[120px] -translate-y-1/4 translate-x-1/4"></div>
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full bg-purple-600 opacity-30 blur-[120px] translate-y-1/4 -translate-x-1/4"></div>
       <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full bg-blue-500 opacity-20 blur-[100px] -translate-x-1/2 -translate-y-1/2"></div>
