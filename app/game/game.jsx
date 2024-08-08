@@ -4,7 +4,7 @@ import ScoreDisplay from "./scoreDisplay";
 
 const Game = () => {
   return (
-    <div className="flex-grow flex flex-col justify-center items-center z-30">
+    <div className="flex-grow flex flex-col justify-center items-center z-30 space-y-4">
       <ScoreDisplay />
       <Wheel />
       <Energy />

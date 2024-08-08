@@ -1,8 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import Image from "next/image";
+import { supabase } from "../utils/supabase/server";
 
-const BoostCard = ({ iconSrc, altText, text, duration }) => {
+const BoostCard = ({ iconSrc, altText, text, duration, onClick }) => {
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
 
@@ -12,6 +13,11 @@ const BoostCard = ({ iconSrc, altText, text, duration }) => {
       setTimeLeft(duration);
     }
   };
+  useEffect(() => {
+    console.log("Duration changed:", duration);
+    setTimeLeft(duration);
+    setIsActive(duration > 0);
+  }, [duration]);
 
   useEffect(() => {
     let timer;
@@ -28,7 +34,6 @@ const BoostCard = ({ iconSrc, altText, text, duration }) => {
     } else {
       clearInterval(timer);
     }
-
     return () => clearInterval(timer);
   }, [isActive, timeLeft]);
 
@@ -38,8 +43,14 @@ const BoostCard = ({ iconSrc, altText, text, duration }) => {
     return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`;
   };
 
+  const handleClick = () => {
+    if (!isActive) {
+      onClick();
+    }
+  };
+
   return (
-    <div className="border-after relative" onTouchStart={handleTouch}>
+    <div className="border-after relative" onClick={handleClick}>
       <div className="py-[6px] flex flex-row justify-between">
         <div
           className={`flex flex-row gap-[5px] items-center ${
@@ -57,7 +68,7 @@ const BoostCard = ({ iconSrc, altText, text, duration }) => {
           />
           <p className="text-lg font-light">{text}</p>
         </div>
-        <div
+        <button
           className={`w-[80px] h-[31px] flex items-center justify-center my-1 gradient ${
             isActive ? "blink" : ""
           }`}
@@ -65,7 +76,7 @@ const BoostCard = ({ iconSrc, altText, text, duration }) => {
           <p className="text-base font-light">
             {isActive ? formatTime(timeLeft) + "h" : "use"}
           </p>
-        </div>
+        </button>
       </div>
     </div>
   );

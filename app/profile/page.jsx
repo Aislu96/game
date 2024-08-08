@@ -4,17 +4,16 @@ import Image from "next/image";
 import Menu from "../menu";
 import Link from "next/link";
 import { useGameContext } from "../context/game";
+import { supabase } from "../utils/supabase/server";
 
 const Page = () => {
-  const { score } = useGameContext();
+  const { score, image, username, userId, profitPerWeek } = useGameContext();
   const [activeIcon, setActiveIcon] = useState("game");
   const [wallet, setWallet] = useState("");
   const [isWalletValid, setIsWalletValid] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isWalletAttached, setIsWalletAttached] = useState(false);
-
-  const { image, username } = useGameContext();
 
   const getTriangleClass = () => {
     if (activeIcon === "shop") return "triangle-two";
@@ -50,15 +49,27 @@ const Page = () => {
   const handleWalletChange = (e) => {
     setWallet(e.target.value);
   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isWalletValid) {
       setIsFormSubmitted(true);
       setIsWalletAttached(true);
+      try {
+        const { data, error } = await supabase
+          .from("Account")
+          .upsert({ user_id: userId, wallet: wallet });
+        if (error) {
+          console.error(error);
+        } else {
+          console.log("Wallet updated successfully");
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
     setWallet("");
   };
+
   const toggleFormVisibility = () => {
     setIsFormVisible(!isFormVisible);
     setIsFormSubmitted(false);
@@ -182,7 +193,9 @@ const Page = () => {
             </div>
             <div className="flex flex-row gap-1.5 items-baseline relative flex-wrap">
               <p className="text-medium text-sm text-white">Profit per week:</p>
-              <p className="text-medium text-base text-white">10</p>
+              <p className="text-medium text-base text-white">
+                {profitPerWeek}
+              </p>
             </div>
           </div>
         </div>

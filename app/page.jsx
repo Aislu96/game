@@ -4,7 +4,6 @@ import LabeledIcon from "./labeledIcon";
 import { useState, useEffect, use } from "react";
 import Game from "./game/game";
 import Shop from "./shop/page";
-import Profile from "./profile/page1";
 import Image from "next/image";
 import { useGameContext } from "./context/game";
 import { supabase } from "./utils/supabase/server";
@@ -37,10 +36,9 @@ const Page = () => {
     setScore,
     energy,
     setEnergy,
-
     setImage,
-
     setUsername,
+    setProfitPerWeek,
   } = useGameContext();
 
   const [startGame, setStartGame] = useState(false);
@@ -172,46 +170,35 @@ const Page = () => {
     };
   }, []);
 
+  const calculateProfitPerWeek = async () => {
+    const { data, error } = await supabase
+      .from("Bixcoin")
+      .select("updated_at")
+      .eq("user_id", userId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching data from Bixcoin table:", error);
+      return;
+    }
+
+    const updatedAt = new Date(data.updated_at);
+    const now = new Date();
+    const daysSinceUpdate = Math.floor(
+      (now - updatedAt) / (1000 * 60 * 60 * 24)
+    );
+    const profitPerWeek = ((7 - daysSinceUpdate) / 7) * score;
+    const formattedProfitPerWeek = Math.max(0, profitPerWeek);
+
+    setProfitPerWeek(formattedProfitPerWeek);
+  };
+
   useEffect(() => {
     if (userId) {
       loadUserData();
+      calculateProfitPerWeek();
     }
   }, [userId]);
-
-  // useEffect(() => {
-  //   if (userId) {
-  //     loadUserData();
-  //   }
-  // }, [userId]);
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     // Prevent default touch actions
-  //     document.addEventListener(
-  //       "touchstart",
-  //       function (event) {
-  //         event.preventDefault();
-  //       },
-  //       { passive: false }
-  //     );
-
-  //     document.addEventListener(
-  //       "touchmove",
-  //       function (event) {
-  //         event.preventDefault();
-  //       },
-  //       { passive: false }
-  //     );
-
-  //     document.addEventListener(
-  //       "touchend",
-  //       function (event) {
-  //         event.preventDefault();
-  //       },
-  //       { passive: false }
-  //     );
-  //   }
-  // }, []);
 
   return (
     <div className="relative flex flex-col h-screen bg-black text-white overflow-hidden rounded-t-xl">
@@ -226,10 +213,10 @@ const Page = () => {
       </div>
 
       <LabeledIcon />
-      {/* <div className="absolute top-[17%] left-0 w-full h-[90vh] z-20 wheel-container"> */}
       <Game />
-      {/* </div> */}
 
+      {/* <Shop />
+      <Profile /> */}
       <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} />
     </div>
   );

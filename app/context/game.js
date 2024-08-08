@@ -10,6 +10,9 @@ export const GameProvider = ({ children }) => {
   const [image, setImage] = useState(null);
   const [tg, setTg] = useState(null);
   const [username, setUsername] = useState(null);
+  const [profitPerRoll, setProfitPerRoll] = useState(1);
+
+  const [profitPerWeek, setProfitPerWeek] = useState(0);
 
   return (
     <GameContext.Provider
@@ -26,6 +29,10 @@ export const GameProvider = ({ children }) => {
         setImage,
         username,
         setUsername,
+        profitPerRoll,
+        setProfitPerRoll,
+        profitPerWeek,
+        setProfitPerWeek,
       }}
     >
       {children}

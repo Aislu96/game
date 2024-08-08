@@ -51,10 +51,10 @@ const ScoreDisplay = () => {
       <Image
         src={getImageSrc()}
         alt="score-based image"
-        width={50}
-        height={50}
+        width={35}
+        height={35}
       />
-      <p className="text-4xl">{score}</p>
+      <p className="text-3xl">{score}</p>
     </div>
   );
 };

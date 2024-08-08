@@ -5,96 +5,117 @@ import { useGameContext } from "../context/game";
 
 const Wheel = () => {
   const [rotation, setRotation] = useState(0);
-  const wheelRef = useRef(null);
-  const { setScore, setEnergy } = useGameContext();
-  const lastTouchRef = useRef(null);
+  const [startAngle, setStartAngle] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const clockRef = useRef(null);
+  const lastAngleRef = useRef(0);
   const rotationCountRef = useRef(0);
-  const animationRef = useRef(null);
+  const { setScore, setEnergy, profitPerRoll } = useGameContext();
+  const requestRef = useRef();
+  const previousTimeRef = useRef();
 
-  const calculateAngle = useCallback((touch) => {
-    const rect = wheelRef.current.getBoundingClientRect();
+  const calculateAngle = useCallback((clientX, clientY) => {
+    const rect = clockRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    return Math.atan2(touch.clientY - centerY, touch.clientX - centerX);
+    let angle =
+      Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI);
+    return (angle + 360) % 360;
   }, []);
 
-  const handleTouchStart = useCallback((e) => {
-    e.preventDefault();
-    lastTouchRef.current = e.touches[0];
-  }, []);
-
-  const handleTouchMove = useCallback(
-    (e) => {
-      e.preventDefault();
-      if (!lastTouchRef.current) return;
-
-      const touch = e.touches[0];
-      const lastAngle = calculateAngle(lastTouchRef.current);
-      const currentAngle = calculateAngle(touch);
-      let angleDiff = currentAngle - lastAngle;
-
-      // Adjust for the boundary between PI and -PI
-      if (angleDiff > Math.PI) angleDiff -= 2 * Math.PI;
-      if (angleDiff < -Math.PI) angleDiff += 2 * Math.PI;
-
-      // Convert to degrees and update rotation
-      const rotationDiff = (angleDiff * 180) / Math.PI;
-      if (rotationDiff > 0) {
-        setRotation((prev) => (prev + rotationDiff) % 360);
-        rotationCountRef.current += rotationDiff;
-
-        // Check for full rotation
-        if (rotationCountRef.current >= 360) {
-          setScore((prevScore) => prevScore + 1);
-          setEnergy((prevEnergy) => Math.max(0, prevEnergy - 1));
-          rotationCountRef.current %= 360;
-        }
-      }
-
-      lastTouchRef.current = touch;
+  const handleStart = useCallback(
+    (clientX, clientY) => {
+      setIsDragging(true);
+      const angle = calculateAngle(clientX, clientY);
+      setStartAngle(angle);
+      lastAngleRef.current = angle;
     },
-    [calculateAngle, setScore, setEnergy]
+    [calculateAngle]
   );
 
-  const handleTouchEnd = useCallback((e) => {
-    e.preventDefault();
-    lastTouchRef.current = null;
-  }, []);
+  const handleMove = useCallback(
+    (clientX, clientY) => {
+      if (!isDragging) return;
+      const currentAngle = calculateAngle(clientX, clientY);
+      let angleDiff = currentAngle - lastAngleRef.current;
+      if (angleDiff < -180) angleDiff += 360;
+      if (angleDiff > 180) {
+        setIsDragging(false);
+        return;
+      }
+      if (angleDiff > 0) {
+        setRotation((prevRotation) => prevRotation + angleDiff);
+        rotationCountRef.current += angleDiff;
+        if (
+          rotationCountRef.current >= 360 &&
+          Math.abs(currentAngle - startAngle) < 30
+        ) {
+          setScore((prevScore) => prevScore + profitPerRoll);
+          setEnergy((prevEnergy) => Math.max(0, prevEnergy - 1));
+          rotationCountRef.current = 0;
+        }
+        lastAngleRef.current = currentAngle;
+      } else {
+        setIsDragging(false);
+      }
+    },
+    [isDragging, calculateAngle, startAngle, setScore, setEnergy]
+  );
 
-  const interpolateRotation = useCallback(
-    (timestamp) => {
-      if (lastTouchRef.current) {
-        handleTouchMove({
-          touches: [lastTouchRef.current],
-          preventDefault: () => {},
+  const handleEnd = useCallback(() => {
+    setIsDragging(false);
+    lastAngleRef.current = rotation;
+  }, [rotation]);
+
+  const animate = useCallback(
+    (time) => {
+      if (previousTimeRef.current != undefined) {
+        const deltaTime = time - previousTimeRef.current;
+        setRotation((prevRotation) => {
+          const newRotation = prevRotation + (isDragging ? 0.1 * deltaTime : 0);
+          return newRotation % 360;
         });
       }
-      animationRef.current = requestAnimationFrame(interpolateRotation);
+      previousTimeRef.current = time;
+      requestRef.current = requestAnimationFrame(animate);
     },
-    [handleTouchMove]
+    [isDragging]
   );
 
   useEffect(() => {
-    animationRef.current = requestAnimationFrame(interpolateRotation);
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
+    requestRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [animate]);
+
+  useEffect(() => {
+    const preventDefaultScroll = (e) => {
+      e.preventDefault();
     };
-  }, [interpolateRotation]);
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("touchmove", preventDefaultScroll, {
+      passive: false,
+    });
+
+    return () => {
+      document.body.style.overflow = "auto";
+      document.removeEventListener("touchmove", preventDefaultScroll);
+    };
+  }, []);
 
   return (
-    <div className="bg-[url('/arrow.svg')] mt-8 mb-4 h-[355px] w-[321px] bg-cover flex items-center justify-center mx-auto">
+    <div className="bg-[url('/arrow.svg')] max-h-[333px]  max-w-[300px] h-full w-full bg-cover flex items-center justify-center mx-auto">
       <div
-        ref={wheelRef}
-        style={{
-          transform: `rotate(${rotation}deg)`,
-          willChange: "transform",
-        }}
-        className="w-[295px] h-[295px] rounded-full mb-5 bg-[url('/wheel.png')] bg-cover relative touch-none flex items-center justify-center"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        ref={clockRef}
+        style={{ transform: `rotate(${rotation}deg)` }}
+        className="max-w-[295px] max-h-[295px] h-full w-full rounded-full  bg-[url('/wheel.png')] bg-cover relative touch-none flex items-center justify-center"
+        onTouchStart={(e) =>
+          handleStart(e.touches[0].clientX, e.touches[0].clientY)
+        }
+        onTouchMove={(e) =>
+          handleMove(e.touches[0].clientX, e.touches[0].clientY)
+        }
+        onTouchEnd={handleEnd}
       ></div>
     </div>
   );
