@@ -9,7 +9,6 @@ import { useGameContext } from "./context/game";
 import { supabase } from "./utils/supabase/server";
 import Menu from "./menu";
 import Friends from "./friends/page";
-import { ImSpinner9 } from "react-icons/im";
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
 
@@ -276,14 +275,6 @@ const Page = () => {
       loadUserData();
     }
   }, [userId]);
-
-  if (!startGame) {
-    return (
-      <div className="h-screen bg-black text-white flex items-center justify-center">
-        <ImSpinner9 className="animate-spin text-[200px]" />
-      </div>
-    );
-  }
 
   return (
     <div className="relative flex flex-col h-screen bg-black text-white overflow-hidden ">
