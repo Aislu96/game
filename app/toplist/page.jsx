@@ -58,7 +58,7 @@ const TopList = () => {
   }, [userId]);
 
   return (
-    <div className="h-screen bg-black text-white relative overflow-hidden">
+    <div className="h-screen bg-black text-white relative overflow-hidden overflow-hidden">
       <Image
         src={"/fireworks.svg"}
         alt={"fireworks"}
