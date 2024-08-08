@@ -15,6 +15,10 @@ const Shop = () => {
     return "";
   };
   const triangleClass = getTriangleClass();
+
+  document.addEventListener("touchmove", preventDefaultTouch, {
+    passive: false,
+  });
   return (
     <div
       className="relative flex flex-col h-screen bg-black text-white overflow-hidden rounded-t-xl"

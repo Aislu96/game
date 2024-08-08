@@ -213,10 +213,10 @@ const Page = () => {
       </div>
 
       <LabeledIcon />
+      {/* <div className="absolute top-[17%] left-0 w-full h-[90vh] z-20 wheel-container"> */}
       <Game />
+      {/* </div> */}
 
-      {/* <Shop />
-      <Profile /> */}
       <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} />
     </div>
   );
