@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .wheel {
-  will-change: transform;
-  transform: translateZ(0);
-} */
+html,
+body,
+#__next {
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  touch-action: none !important;
+}
 
 .wheel {
   will-change: transform;
