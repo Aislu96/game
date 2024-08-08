@@ -17,7 +17,7 @@ const Output = () => {
   return (
     <div className="h-screen bg-black text-white relative overflow-hidden">
       <div className="px-[30px] pt-[20px]">
-        <Link href="/">
+        <Link href="/shop">
           {" "}
           <Image
             src={"/backArrow.svg"}

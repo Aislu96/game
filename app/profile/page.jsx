@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Menu from "../menu";
 import Link from "next/link";
@@ -40,6 +40,14 @@ const Page = () => {
       return { src: "/coal.svg", text: "Coal" };
     }
   };
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isFormVisible]);
 
   useEffect(() => {
     // Проверка валидности при изменении wallet
@@ -125,14 +133,14 @@ const Page = () => {
       <div className="mt-20 text-3xl text-center mb-5">
         <span className="font-medium gradient-text">{username}</span>
       </div>
-      <div className="flex flex-col mx-[30px] gap-5 relative overflow-hidden">
+      <div className="flex flex-col mx-[30px] gap-5 relative">
         {isFormVisible && (
-          <div className="opacity-100 py-3 px-1.5 flex flex-col gap-1.5 absolute left-0 top-0 w-full z-[200] bg-customFon2 border-[1px] border-solid border-customBorder rounded-xl">
+          <div className="opacity-100 py-3 px-1.5 flex flex-col gap-1.5 absolute left-0 -top-16 w-full z-[200] bg-customFon2 border-[1px] border-solid border-customBorder rounded-xl">
             <p className="text-medium text-base text-white text-center">
               Enter your wallet
             </p>
             {isFormSubmitted ? (
-              <div className="w-full bg-customFon px-2.5 py-4 border-[1px] border-solid border-customBorder rounded-xl">
+              <div className="w-full bg-customFon px-2.5 py-4 border-[1px]  border-solid border-customBorder rounded-xl">
                 <p className="text-medium text-base text-white text-center">
                   Your wallet is saved
                 </p>
@@ -145,6 +153,7 @@ const Page = () => {
               >
                 <input
                   type="text"
+                  ref={inputRef}
                   className="w-full text-medium text-base text-white bg-customFon outline-0 h-[50px] px-2.5 py-4 border-[1px] border-solid border-customBorder rounded-xl"
                   placeholder=""
                   minLength="27"

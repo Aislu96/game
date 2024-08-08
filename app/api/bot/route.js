@@ -124,7 +124,11 @@ async function updateUserData(userId, userInfo) {
   }
 
   if (!existingUser) {
-    console.log("No existing user found, creating new user:", userId);
+    console.log(
+      "No existing user found, creating new user:",
+      userId,
+      existingUser
+    );
     // Insert new user
     const { data, error } = await supabase
       .from("Bixcoin")
