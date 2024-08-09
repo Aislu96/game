@@ -66,7 +66,7 @@ export async function POST(req) {
 }
 
 async function sendWelcomeMessage(chatId) {
-  const welcomeText = `Welcome to BIXcoin Bot 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them to the game and earn more coins together 🪙🪙.`;
+  const welcomeText = `Welcome to BIXcoin Bot 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them to the game and earn more coins 🪙🪙 together.`;
 
   try {
     await bot.sendPhoto(
