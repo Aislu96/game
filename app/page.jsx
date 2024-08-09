@@ -9,6 +9,7 @@ import { useGameContext } from "./context/game";
 import { supabase } from "./utils/supabase/server";
 import Menu from "./menu";
 import Friends from "./friends/page";
+import BgGradient from "./bgGradient";
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
 
@@ -265,9 +266,7 @@ const Page = () => {
 
   return (
     <div className="relative flex flex-col h-screen bg-black text-white ">
-      <div className="first-div"></div>
-      <div className="second-div"></div>
-      <div className="third-div"></div>
+      <BgGradient />
       <div className="absolute top-0 left-0 w-full  h-[90vh] ">
         <div className="absolute h-[92.9%] w-full bg-white opacity-5 "></div>
         <div
