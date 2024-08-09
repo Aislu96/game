@@ -39,17 +39,19 @@ const Wheel = () => {
       if (angleDiff > 180) angleDiff -= 360;
 
       if (angleDiff > 0) {
-        setRotation((prev) => prev + angleDiff);
-        rotationCountRef.current += angleDiff;
-        if (
-          rotationCountRef.current >= 360 &&
-          Math.abs(currentAngle - startAngleRef.current) < 30
-        ) {
-          setScore((prevScore) => prevScore + profitPerRoll);
-          setEnergy((prevEnergy) => Math.max(0, prevEnergy - 1));
-          rotationCountRef.current = 0;
-        }
-        lastAngleRef.current = currentAngle;
+        requestAnimationFrame(() => {
+          setRotation((prev) => prev + angleDiff);
+          rotationCountRef.current += angleDiff;
+          if (
+            rotationCountRef.current >= 360 &&
+            Math.abs(currentAngle - startAngleRef.current) < 30
+          ) {
+            setScore((prevScore) => prevScore + profitPerRoll);
+            setEnergy((prevEnergy) => Math.max(0, prevEnergy - 1));
+            rotationCountRef.current = 0;
+          }
+          lastAngleRef.current = currentAngle;
+        });
       } else {
         setIsDragging(false);
       }
@@ -79,9 +81,11 @@ const Wheel = () => {
         ref={wheelRef}
         style={{
           transform: `rotate(${rotation}deg)`,
-          transition: isDragging ? "none" : "transform 0.1s linear",
+          // transition: isDragging ? "none" : "transform 0.1s linear",
         }}
-        className="max-w-[295px] max-h-[295px] h-full w-full rounded-full bg-[url('/wheel.png')] bg-cover relative touch-none flex items-center justify-center"
+        className={`max-w-[295px] max-h-[295px] h-full w-full rounded-full bg-[url('/wheel.png')] bg-cover relative touch-none flex items-center justify-center 
+        
+        `}
         onTouchStart={(e) =>
           handleStart(e.touches[0].clientX, e.touches[0].clientY)
         }

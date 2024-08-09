@@ -11,6 +11,19 @@ body,
   touch-action: none !important;
 }
 
+.wheel-animation {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .wheel {
   will-change: transform;
   transition: transform 0.1s ease-out;
