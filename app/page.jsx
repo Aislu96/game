@@ -1,6 +1,6 @@
 "use client";
 
-import LabeledIcon from "./labeledIcon";
+import LabeledIcon from "./game/labeledIcon";
 import { useState, useEffect, use } from "react";
 import Game from "./game/game";
 import Shop from "./shop/page";
@@ -274,8 +274,6 @@ const Page = () => {
           className={`w-full opacity-5 absolute z-10 bottom-0 h-0 triangle`}
         ></div>
       </div>
-
-      <LabeledIcon />
 
       <Game />
 

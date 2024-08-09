@@ -1,13 +1,17 @@
 import Wheel from "./wheel";
 import Energy from "./energy";
 import ScoreDisplay from "./scoreDisplay";
+import LabeledIcon from "./labeledIcon";
 
 const Game = () => {
   return (
-    <div className="h-[390px] flex-col mt-[32%] justify-center items-center z-50 space-y-4">
-      <ScoreDisplay />
-      <Wheel />
-      <Energy />
+    <div className="flex-grow  flex-col justify-center items-center z-50 space-y-4">
+      <LabeledIcon />
+      <div className="h-[480px]  !mt-[35%]">
+        <ScoreDisplay />
+        <Wheel />
+        <Energy />
+      </div>
     </div>
   );
 };

@@ -47,7 +47,7 @@ const ScoreDisplay = () => {
   }, [score]);
 
   return (
-    <div className="flex flex-row justify-center gap-5 w-full">
+    <div className="flex flex-row justify-center gap-5 w-full mb-6">
       <Image
         src={getImageSrc()}
         alt="score-based image"
