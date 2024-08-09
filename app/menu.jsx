@@ -33,7 +33,7 @@ const Menu = () => {
   };
 
   return (
-    <div className="flex flex-row justify-between w-full px-[30px] z-50 !fixed !bottom-2 !left-0 !right-0">
+    <div className="flex flex-row justify-between w-full px-[30px] z-[100] !fixed !bottom-2 !left-0 !right-0">
       {["shop", "game", "profile"].map((icon) => (
         <Link
           href={getHref(icon)}
