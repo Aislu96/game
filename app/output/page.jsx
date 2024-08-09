@@ -92,7 +92,7 @@ const Output = () => {
             />
           </div>
         </div>
-        <div className="w-[315px] [h-100px] mx-auto  p-2.5 bg-customFon rounded-xl border-[1px] border-customBorder fixed bottom-0  left-2 right-2 justify-center z-10 mt-[30px] flex flex-row gap-2.5">
+        <div className="w-[315px] [h-100px] mx-auto  p-2.5 bg-customFon rounded-xl border-[1px] border-customBorder fixed bottom-1  left-2 right-2 justify-center z-10 mt-[30px] flex flex-row gap-2.5">
           <div className="flex flex-col">
             <div className="flex flex-row justify-between items-center py-1">
               <h2 className="text-lg font-normal">Your wallet</h2>
