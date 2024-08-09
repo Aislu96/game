@@ -8,6 +8,7 @@ import { useGameContext } from "../context/game.js";
 import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabase/server";
 import { useRouter } from "next/navigation";
+import Wheel from "../game/wheel";
 
 const Friends = () => {
   const { userId, score, image, username, theTopFriends } = useGameContext();
@@ -49,7 +50,8 @@ const Friends = () => {
 
   return (
     <div className="h-screen bg-black text-white relative overflow-hidden">
-      <Image
+      <Wheel />
+      {/* <Image
         src={"/fireworksTwo.svg"}
         alt={"fireworks"}
         width={375}
@@ -165,7 +167,7 @@ const Friends = () => {
           )}
           <ScrollBar orientation="vertical" />
         </ScrollArea>
-      </div>
+      </div> */}
     </div>
   );
 };
