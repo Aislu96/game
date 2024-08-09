@@ -27,6 +27,8 @@ const Page = () => {
     setWallet,
     setTheTopList,
     setTheTopFriends,
+    language_code,
+    setLanguageCode,
   } = useGameContext();
 
   const [startGame, setStartGame] = useState(false);
@@ -100,6 +102,7 @@ const Page = () => {
       setEnergy(newEnergy);
       setImage(data.profile_picture);
       setUsername(data.username);
+      setLanguageCode(data.language_code);
 
       await getUserWallet();
     }

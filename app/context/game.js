@@ -17,6 +17,7 @@ export const GameProvider = ({ children }) => {
   const [theTopFriends, setTheTopFriends] = useState([]);
 
   const [profitPerWeek, setProfitPerWeek] = useState(0);
+  const [language_code, setLanguageCode] = useState(null);
 
   return (
     <GameContext.Provider
@@ -45,6 +46,8 @@ export const GameProvider = ({ children }) => {
         setUsers,
         theTopFriends,
         setTheTopFriends,
+        language_code,
+        setLanguageCode,
       }}
     >
       {children}
