@@ -277,7 +277,7 @@ const Page = () => {
 
       <Game />
 
-      <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} />
+      {/* <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} /> */}
     </div>
   );
 };
