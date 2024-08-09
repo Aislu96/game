@@ -5,7 +5,7 @@ import LabeledIcon from "./labeledIcon";
 
 const Game = () => {
   return (
-    <div className="flex-grow  flex-col justify-center items-center z-20 space-y-4 border-2">
+    <div className="flex-grow  flex-col justify-center items-center space-y-4  z-50 ">
       <LabeledIcon />
 
       <ScoreDisplay />

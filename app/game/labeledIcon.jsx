@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const LabeledIcon = () => {
   return (
-    <div className="flex flex-row justify-between px-[30px] w-full  mt-6">
+    <div className="flex flex-row justify-between px-[30px] w-full  mt-6 ">
       <Link href="/friends">
         <Image
           src={"/friendsIcon.svg"}
