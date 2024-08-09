@@ -9,6 +9,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "../utils/supabase/server";
 import { useRouter } from "next/navigation";
 import Wheel from "../game/wheel";
+import Game from "../game/game";
+import LabeledIcon from "../labeledIcon";
+import Menu from "../menu";
 
 const Friends = () => {
   const { userId, score, image, username, theTopFriends } = useGameContext();
@@ -49,9 +52,31 @@ const Friends = () => {
   }, [userId]);
 
   return (
-    <div className="h-screen bg-black text-white relative overflow-hidden">
-      <Wheel />
-      {/* <Image
+    <div className="relative flex flex-col h-screen bg-black text-white overflow-hidden ">
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-orange-500 opacity-30 blur-[120px] -translate-y-1/4 translate-x-1/4"></div>
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full bg-purple-600 opacity-30 blur-[120px] translate-y-1/4 -translate-x-1/4"></div>
+      <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full bg-blue-500 opacity-20 blur-[100px] -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute top-0 left-0 w-full  h-[90vh] z-20">
+        <div className="absolute h-[92.9%] w-full bg-white opacity-5 z-20"></div>
+        <div
+          className={`w-full opacity-5 absolute z-20 bottom-0 h-0 triangle`}
+        ></div>
+      </div>
+
+      <LabeledIcon />
+      {/* <div className="absolute top-[17%] left-0 w-full h-[90vh] z-20 wheel-container"> */}
+      <Game />
+      {/* </div> */}
+
+      <Menu />
+    </div>
+  );
+
+  // return (
+  //   <div className="h-screen bg-black text-white relative overflow-hidden">
+  //     <Wheel />
+  {
+    /* <Image
         src={"/fireworksTwo.svg"}
         alt={"fireworks"}
         width={375}
@@ -167,9 +192,12 @@ const Friends = () => {
           )}
           <ScrollBar orientation="vertical" />
         </ScrollArea>
-      </div> */}
-    </div>
-  );
+      </div> */
+  }
+  {
+    /* </div>
+  ); */
+  }
 };
 
 export default Friends;

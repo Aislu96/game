@@ -12,22 +12,6 @@ import Friends from "./friends/page";
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
 
-  const handleTouch = (icon) => {
-    setActiveIcon(icon);
-  };
-
-  const getIconSrc = (icon) => {
-    const iconPaths = {
-      shop: "/shop",
-      game: "/game",
-      profile: "/profile",
-    };
-
-    return activeIcon === icon
-      ? `${iconPaths[icon]}Active.svg`
-      : `${iconPaths[icon]}.svg`;
-  };
-
   const {
     userId,
     setUserId,
