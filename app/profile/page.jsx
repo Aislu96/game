@@ -9,7 +9,7 @@ import { supabase } from "../utils/supabase/server";
 const Page = () => {
   const { score, image, username, userId, profitPerWeek, wallet, setWallet } =
     useGameContext();
-  const [activeIcon, setActiveIcon] = useState("game");
+  const [activeIcon, setActiveIcon] = useState("profile");
 
   const [isWalletValid, setIsWalletValid] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);

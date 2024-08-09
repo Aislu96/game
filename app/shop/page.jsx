@@ -69,7 +69,7 @@ const Shop = () => {
         </div>
       </div>
       <Boost />
-      <Menu />
+      <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} />
     </div>
   );
 };
