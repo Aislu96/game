@@ -265,19 +265,19 @@ const Page = () => {
 
   return (
     <div className="relative flex flex-col h-screen bg-black text-white ">
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-orange-500 opacity-30 blur-[120px] -translate-y-1/4 translate-x-1/4"></div>
+      {/* <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-orange-500 opacity-30 blur-[120px] -translate-y-1/4 translate-x-1/4"></div>
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full bg-purple-600 opacity-30 blur-[120px] translate-y-1/4 -translate-x-1/4"></div>
-      <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full bg-blue-500 opacity-20 blur-[100px] -translate-x-1/2 -translate-y-1/2"></div>
-      {/* <div className="absolute top-0 left-0 w-full  h-[90vh] ">
+      <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] rounded-full bg-blue-500 opacity-20 blur-[100px] -translate-x-1/2 -translate-y-1/2"></div> */}
+      <div className="absolute top-0 left-0 w-full  h-[90vh] ">
         <div className="absolute h-[92.9%] w-full bg-white opacity-5 "></div>
         <div
           className={`w-full opacity-5 absolute  bottom-0 h-0 triangle`}
         ></div>
-      </div> */}
+      </div>
 
       <Game />
 
-      {/* <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} /> */}
+      <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} />
     </div>
   );
 };
