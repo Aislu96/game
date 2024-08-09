@@ -101,7 +101,7 @@ const Wheel = () => {
   }, []);
 
   return (
-    <div className="bg-[url('/arrow.svg')] max-h-[333px] max-w-[300px] h-full w-full bg-cover flex items-center justify-center mx-auto">
+    <div className="bg-[url('/arrow.svg')] z-50 max-h-[333px] max-w-[300px] h-full w-full bg-cover flex items-center justify-center mx-auto">
       <img
         ref={wheelRef}
         src="/wheel.png"
