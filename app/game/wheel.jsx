@@ -4,12 +4,14 @@ import { useGameContext } from "../context/game";
 
 const Wheel = () => {
   const [rotation, setRotation] = useState(0);
+  const [startAngle, setStartAngle] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const wheelRef = useRef(null);
-  const startAngleRef = useRef(0);
   const lastAngleRef = useRef(0);
   const rotationCountRef = useRef(0);
   const { setScore, setEnergy, profitPerRoll } = useGameContext();
+  const requestRef = useRef();
+  const previousTimeRef = useRef();
 
   const calculateAngle = useCallback((clientX, clientY) => {
     const rect = wheelRef.current.getBoundingClientRect();
@@ -24,7 +26,7 @@ const Wheel = () => {
     (clientX, clientY) => {
       setIsDragging(true);
       const angle = calculateAngle(clientX, clientY);
-      startAngleRef.current = angle;
+      setStartAngle(angle);
       lastAngleRef.current = angle;
     },
     [calculateAngle]
@@ -36,35 +38,58 @@ const Wheel = () => {
       const currentAngle = calculateAngle(clientX, clientY);
       let angleDiff = currentAngle - lastAngleRef.current;
       if (angleDiff < -180) angleDiff += 360;
-      if (angleDiff > 180) angleDiff -= 360;
-
+      if (angleDiff > 180) {
+        setIsDragging(false);
+        return;
+      }
       if (angleDiff > 0) {
-        requestAnimationFrame(() => {
-          setRotation((prev) => prev + angleDiff);
-          rotationCountRef.current += angleDiff;
-          if (
-            rotationCountRef.current >= 360 &&
-            Math.abs(currentAngle - startAngleRef.current) < 30
-          ) {
-            setScore((prevScore) => prevScore + profitPerRoll);
-            setEnergy((prevEnergy) => Math.max(0, prevEnergy - 1));
-            rotationCountRef.current = 0;
-          }
-          lastAngleRef.current = currentAngle;
-        });
+        setRotation((prevRotation) => prevRotation + angleDiff);
+        rotationCountRef.current += angleDiff;
+        if (
+          rotationCountRef.current >= 360 &&
+          Math.abs(currentAngle - startAngle) < 30
+        ) {
+          setScore((prevScore) => prevScore + profitPerRoll);
+          setEnergy((prevEnergy) => Math.max(0, prevEnergy - 1));
+          rotationCountRef.current = 0;
+        }
+        lastAngleRef.current = currentAngle;
       } else {
         setIsDragging(false);
       }
     },
-    [isDragging, calculateAngle, setScore, setEnergy, profitPerRoll]
+    [isDragging, calculateAngle, startAngle, setScore, setEnergy, profitPerRoll]
   );
 
   const handleEnd = useCallback(() => {
     setIsDragging(false);
-  }, []);
+    lastAngleRef.current = rotation;
+  }, [rotation]);
+
+  const animate = useCallback(
+    (time) => {
+      if (previousTimeRef.current != undefined) {
+        const deltaTime = time - previousTimeRef.current;
+        setRotation((prevRotation) => {
+          const newRotation = prevRotation + (isDragging ? 0.1 * deltaTime : 0);
+          return newRotation % 360;
+        });
+      }
+      previousTimeRef.current = time;
+      requestRef.current = requestAnimationFrame(animate);
+    },
+    [isDragging]
+  );
 
   useEffect(() => {
-    const preventDefaultScroll = (e) => e.preventDefault();
+    requestRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [animate]);
+
+  useEffect(() => {
+    const preventDefaultScroll = (e) => {
+      e.preventDefault();
+    };
     document.body.style.overflow = "hidden";
     document.addEventListener("touchmove", preventDefaultScroll, {
       passive: false,
@@ -77,15 +102,19 @@ const Wheel = () => {
 
   return (
     <div className="bg-[url('/arrow.svg')] max-h-[333px] max-w-[300px] h-full w-full bg-cover flex items-center justify-center mx-auto">
-      <div
+      <img
         ref={wheelRef}
+        src="/wheel.png"
+        alt="Wheel"
         style={{
           transform: `rotate(${rotation}deg)`,
-          // transition: isDragging ? "none" : "transform 0.1s linear",
+          maxWidth: "295px",
+          maxHeight: "295px",
+          width: "100%",
+          height: "100%",
+          touchAction: "none",
         }}
-        className={`max-w-[295px] max-h-[295px] h-full w-full rounded-full bg-[url('/wheel.png')] bg-cover relative touch-none flex items-center justify-center 
-        
-        `}
+        className="rounded-full relative touch-none"
         onTouchStart={(e) =>
           handleStart(e.touches[0].clientX, e.touches[0].clientY)
         }
@@ -93,7 +122,7 @@ const Wheel = () => {
           handleMove(e.touches[0].clientX, e.touches[0].clientY)
         }
         onTouchEnd={handleEnd}
-      ></div>
+      />
     </div>
   );
 };
