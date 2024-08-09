@@ -11,6 +11,20 @@ body,
   touch-action: none !important;
 }
 
+.bg-gradient {
+  background: radial-gradient(
+      circle at top right,
+      rgba(249, 115, 22, 0.2),
+      transparent 70%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(147, 51, 234, 0.2),
+      transparent 70%
+    ),
+    radial-gradient(circle at center, rgba(59, 130, 246, 0.2), transparent 60%);
+}
+
 .wheel-animation {
   animation: spin 2s linear infinite;
 }

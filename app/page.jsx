@@ -265,8 +265,8 @@ const Page = () => {
   }, [userId]);
 
   return (
-    <div className="relative flex flex-col h-screen bg-black text-white ">
-      <BgGradient />
+    <div className="relative flex flex-col h-screen bg-[url('/gameBG.svg')] bg-cover  text-white ">
+      {/* <BgGradient /> */}
       <div className="absolute top-0 left-0 w-full  h-[90vh] ">
         <div className="absolute h-[92.9%] w-full bg-white opacity-5 "></div>
         <div
