@@ -1,7 +1,9 @@
 "use client";
 
 import LabeledIcon from "./game/labeledIcon";
-import { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
+
+import { useState, useEffect } from "react";
 import Game from "./game/game";
 import Shop from "./shop/page";
 import Image from "next/image";
@@ -10,6 +12,7 @@ import { supabase } from "./utils/supabase/server";
 import Menu from "./menu";
 import Friends from "./friends/page";
 import BgGradient from "./bgGradient";
+import { useTranslations } from "./utils/hooks/useTranslations";
 
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
@@ -34,6 +37,13 @@ const Page = () => {
   } = useGameContext();
 
   const [startGame, setStartGame] = useState(false);
+  // const router = useRouter();
+
+  // useEffect(() => {
+  //   if (language_code && language_code !== router.locale) {
+  //     router.push(router.pathname, router.asPath, { locale: language_code });
+  //   }
+  // }, [language_code]);
 
   async function saveUserData() {
     if (!userId) return;
