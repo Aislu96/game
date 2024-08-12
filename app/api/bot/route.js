@@ -80,8 +80,10 @@ export async function POST(req) {
 }
 
 async function sendWelcomeMessage(chatId, first_name) {
+  // const inviteLink = `https://bi-xcoin-7rao.vercel.app/bot/invite?chatId=${chatId}`;
+
   const inviteLink = `https://t.me/BIXXcoin_bot?start=invite_${chatId}`;
-  const inviteText = `Hi friend, Let's SPIN and EARN together ${inviteLink}\n`;
+  const inviteText = `${inviteLink}\n Join me on BIXcoin!`;
   const welcomeText = `Hi ${first_name}! This is BIXcoin 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them using your referral link: ${inviteLink} and earn more together.`;
 
   try {
