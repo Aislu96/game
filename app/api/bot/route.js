@@ -80,7 +80,7 @@ export async function POST(req) {
 
 async function sendWelcomeMessage(chatId) {
   const inviteLink = `https://t.me/BIXXcoin_bot?start=invite_${chatId}`;
-  const welcomeText = `Hi, ${body.message.from.first_name}! This is BIXcoin 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them using your referral link: ${inviteLink} and earn more together.`;
+  const welcomeText = `Hi! This is BIXcoin 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them using your referral link: ${inviteLink} and earn more together.`;
 
   try {
     await bot.sendPhoto(
