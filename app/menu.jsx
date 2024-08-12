@@ -2,8 +2,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 const Menu = ({ activeIcon }) => {
+  const router = useRouter();
   // const [activeIcon, setActiveIcon] = useState("game");
 
   // const handleTouch = (icon) => {
@@ -33,7 +34,10 @@ const Menu = ({ activeIcon }) => {
   // };
 
   return (
-    <div className="flex flex-row justify-between w-full px-[30px] z-[100] !fixed !bottom-2 !left-0 !right-0">
+    <div
+      className="flex flex-row justify-between w-full px-[30px] z-[100] !fixed !bottom-2 !left-0 !right-0"
+      // onClick={router.push("/profile")}
+    >
       {["shop", "game", "profile"].map((icon) => (
         <Link
           href={icon === "game" ? "/" : `/${icon}`}

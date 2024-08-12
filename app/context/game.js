@@ -1,21 +1,21 @@
 "use client";
 import { createContext, useContext, useState } from "react";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
-  const router = useRouter();
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.Telegram?.WebApp) {
-      const userLanguage =
-        window.Telegram.WebApp.initDataUnsafe?.user?.language_code || "en";
-      if (userLanguage !== router.locale) {
-        router.push(router.pathname, router.asPath, { locale: userLanguage });
-      }
-    }
-  }, [router]);
+  // const router = useRouter();
+  // useEffect(() => {
+  //   if (typeof window !== "undefined" && window.Telegram?.WebApp) {
+  //     const userLanguage =
+  //       window.Telegram.WebApp.initDataUnsafe?.user?.language_code || "en";
+  //     if (userLanguage !== router.locale) {
+  //       router.push(router.pathname, router.asPath, { locale: userLanguage });
+  //     }
+  //   }
+  // }, [router]);
 
   const [score, setScore] = useState(0);
   const [energy, setEnergy] = useState(1000);
@@ -30,7 +30,7 @@ export const GameProvider = ({ children }) => {
   const [theTopFriends, setTheTopFriends] = useState([]);
 
   const [profitPerWeek, setProfitPerWeek] = useState(0);
-  const [language_code, setLanguageCode] = useState("en");
+  const [language_code, setLanguageCode] = useState("ru");
 
   return (
     <GameContext.Provider
