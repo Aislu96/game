@@ -2,10 +2,12 @@
 import React, { useState, useEffect, use } from "react";
 import Image from "next/image";
 import { supabase } from "../utils/supabase/server";
+import { useTranslations } from "../utils/hooks/useTranslations";
 
 const BoostCard = ({ iconSrc, altText, text, duration, onClick }) => {
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
+  const { t } = useTranslations();
 
   const handleTouch = () => {
     if (!isActive) {
@@ -74,7 +76,7 @@ const BoostCard = ({ iconSrc, altText, text, duration, onClick }) => {
           }`}
         >
           <p className="text-base font-light">
-            {isActive ? formatTime(timeLeft) + "h" : "use"}
+            {isActive ? formatTime(timeLeft) + "h" : t("Use")}
           </p>
         </button>
       </div>

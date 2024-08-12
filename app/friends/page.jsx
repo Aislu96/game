@@ -5,12 +5,14 @@ import User from "../user.jsx";
 import UserTop from "../userTop";
 import Link from "next/link";
 import { useGameContext } from "../context/game.js";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { supabase } from "../utils/supabase/server";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "../utils/hooks/useTranslations";
 
 const Friends = () => {
   const { userId, score, image, username, theTopFriends } = useGameContext();
+  const { t } = useTranslations();
   const [isUserInList, setIsUserInList] = useState(false);
   const [user, setUser] = useState(null);
   const [userIndex, setUserIndex] = useState(null);
@@ -83,7 +85,7 @@ const Friends = () => {
             }
             username={
               username == theTopFriends[1]?.username
-                ? "You"
+                ? t("You")
                 : theTopFriends[1]?.username
             }
           />
@@ -94,7 +96,7 @@ const Friends = () => {
             userImgSrc={theTopFriends[0]?.imageSrc}
             username={
               username == theTopFriends[0]?.username
-                ? "You"
+                ? t("You")
                 : theTopFriends[0]?.username
             }
           />
@@ -115,7 +117,9 @@ const Friends = () => {
                 className="object-cover"
               />
             </div>
-            <p className="text-medium text-sm mt-[5px] gradient-text">INVITE</p>
+            <p className="text-medium text-sm mt-[5px] gradient-text">
+              {t("INVITE")}
+            </p>
           </div>
         </div>
         <div className="flex flex-col items-center mt-[85px]">
@@ -128,7 +132,7 @@ const Friends = () => {
             }
             username={
               username == theTopFriends[2]?.username
-                ? "You"
+                ? t("You")
                 : theTopFriends[2]?.username
             }
           />

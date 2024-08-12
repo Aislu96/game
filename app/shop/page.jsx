@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Menu from "../menu";
 import Boost from "./boost";
+import { useTranslations } from "../utils/hooks/useTranslations";
 
 const Shop = () => {
   const [activeIcon, setActiveIcon] = useState("shop");
+  const { t } = useTranslations();
 
   const getTriangleClass = () => {
     if (activeIcon === "shop") return "triangle-two";
@@ -54,7 +56,7 @@ const Shop = () => {
               href="/output"
               className="m-[4px] rounded-[6px] bg-customYellow2 text-black text-base font-medium h-6 w-[130px] flex items-center justify-center hover:bg-customYellow3"
             >
-              Output
+              {t("Output")}
             </Link>
           </div>
         </div>

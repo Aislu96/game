@@ -4,10 +4,12 @@ import Image from "next/image";
 import React, { use, useEffect, useState } from "react";
 import BoostCard from "./boostCard";
 import { useGameContext } from "../context/game";
+import { useTranslations } from "../utils/hooks/useTranslations";
 
 const Boast = () => {
   const { userId, setEnergy, score, setScore, setProfitPerRoll } =
     useGameContext();
+  const { t } = useTranslations();
   const [boostTimes, setBoostTimes] = useState({
     recover: null,
     x2: null,
@@ -98,7 +100,7 @@ const Boast = () => {
         <BoostCard
           iconSrc="lightningTwo.svg"
           altText="Recover ENERGY"
-          text="Recover ENERGY"
+          text={t("Recover ENERGY")}
           duration={boostTimes.recover}
           onClick={() => {
             handleBoost("recover");
@@ -108,7 +110,7 @@ const Boast = () => {
         <BoostCard
           iconSrc="hand.svg"
           altText="x2 BinXcoin 2 min"
-          text="x2 BinXcoin 2 min"
+          text={t("x2 BinXcoin 2 min")}
           duration={boostTimes.x2}
           onClick={() => {
             handleBoost("x2");
@@ -120,8 +122,8 @@ const Boast = () => {
         />
         <BoostCard
           iconSrc="coins.svg"
-          altText="plus100 BinXcoin"
-          text="plus100 BinXcoin"
+          altText="plus 100 BinXcoin"
+          text={t("plus 100 BinXcoin")}
           duration={boostTimes.plus100}
           onClick={() => {
             handleBoost("plus100");

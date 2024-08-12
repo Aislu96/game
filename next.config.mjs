@@ -9,6 +9,10 @@ const nextConfig = {
   images: {
     domains: ["api.telegram.org"],
   },
+  i18n: {
+    locales: ["en", "ru", "zh", "es", "ar", "hi", "fr", "pt", "tr"], // Add all languages you want to support
+    defaultLocale: "en",
+  },
 };
 
 export default nextConfig;

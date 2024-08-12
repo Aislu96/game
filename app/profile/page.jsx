@@ -5,10 +5,12 @@ import Menu from "../menu";
 import Link from "next/link";
 import { useGameContext } from "../context/game";
 import { supabase } from "../utils/supabase/server";
+import { useTranslations } from "../utils/hooks/useTranslations";
 
 const Page = () => {
   const { score, image, username, userId, profitPerWeek, wallet, setWallet } =
     useGameContext();
+  const { t } = useTranslations();
   const [activeIcon, setActiveIcon] = useState("game");
 
   const [isWalletValid, setIsWalletValid] = useState(false);
@@ -220,11 +222,13 @@ const Page = () => {
           <div className="overflow-hidden relative w-full p-2.5 rounded-[10px] border-solid border-[1px] border-transparent gradient-profile flex flex-col justify-center">
             <div className="absolute w-full h-full radial-gradient-two "></div>
             <div className="flex flex-row gap-1.5 items-baseline relative flex-wrap">
-              <p className="text-medium text-sm text-white">Your score:</p>
+              <p className="text-medium text-sm text-white">
+                {t("Your score")}:
+              </p>
               <p className="text-medium text-base text-white">{score}</p>
             </div>
             <div className="flex flex-row gap-1.5 items-baseline relative flex-wrap">
-              <p className="text-medium text-sm text-white">League:</p>
+              <p className="text-medium text-sm text-white">{t("League")}:</p>
               <p className="text-medium text-base text-white">
                 {getImageSrc(score).text}
               </p>
@@ -240,14 +244,16 @@ const Page = () => {
           <div className="overflow-hidden relative w-full p-2.5 rounded-[10px] border-solid border-[1px] border-transparent gradient-profile flex flex-col justify-center">
             <div className="absolute w-full h-full radial-gradient left-0"></div>
             <div className="flex flex-row gap-1.5 items-baseline relative flex-wrap">
-              <p className="text-medium text-sm text-white">Earned:</p>
+              <p className="text-medium text-sm text-white">{t("Earned")}:</p>
               <p className="text-medium text-base text-white">
                 {(score * 0.0002).toFixed(2)}
               </p>
               <Image src="/tether.svg" alt="tether" width={13} height={13} />
             </div>
             <div className="flex flex-row gap-1.5 items-baseline relative flex-wrap">
-              <p className="text-medium text-sm text-white">Profit per week:</p>
+              <p className="text-medium text-sm text-white">
+                {t("Profit per week")}:
+              </p>
               <p className="text-medium text-base text-white">
                 {profitPerWeek.toFixed(2)}
               </p>
@@ -260,8 +266,8 @@ const Page = () => {
         >
           <p className="text-medium text-base text-white">
             {isWalletAttached
-              ? "Change the wallet address"
-              : "Attach a crypto wallet"}
+              ? t("Change the wallet address")
+              : t("Attach a crypto wallet")}
           </p>
         </div>
         <Link
@@ -269,7 +275,7 @@ const Page = () => {
           className="flex items-center justify-center h-9 w-full rounded-[10px] border-solid border-[1px] border-transparent gradient-profile-two"
         >
           <p className="text-medium text-base text-white">
-            Learn more about the project
+            {t(" Learn more about the project")}
           </p>
         </Link>
         <div className="flex items-center justify-around h-10 w-full rounded-[10px] border-solid border-[1px] border-customYellow">

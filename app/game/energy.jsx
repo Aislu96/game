@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useGameContext } from "../context/game";
+import { useTranslations } from "../utils/hooks/useTranslations";
 
 const Energy = () => {
+  const { t } = useTranslations();
   const { energy } = useGameContext();
   return (
     <div className="mb-6 flex justify-center">
@@ -19,7 +21,7 @@ const Energy = () => {
           <h1 className="text-4xl"> {energy}</h1>
           <h3 className="text-2xl text-stone-400">/1000</h3>
         </div>
-        <div className="text-sm text-center">1 Energy - 10 Sec</div>
+        <div className="text-sm text-center">{t("Energy")}</div>
       </span>
     </div>
   );
