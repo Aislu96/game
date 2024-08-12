@@ -31,6 +31,7 @@ export async function POST(req) {
         }
       }
     }
+
     if (body.callback_query) {
       const chatId = body.callback_query.message.chat.id;
       const data = body.callback_query.data;
@@ -44,12 +45,24 @@ export async function POST(req) {
         const inviteLink = `https://t.me/BIXXcoin_bot?start=invite_${chatId}`;
         await bot.sendMessage(
           chatId,
-          `Here's your invite link: ${inviteLink}\nShare this with your friends to earn more coins!`
+          `Hi friend, Let's SPIN and EARN together ${inviteLink}\n`,
+          {
+            reply_markup: JSON.stringify({
+              inline_keyboard: [
+                [
+                  {
+                    text: "Forward Invite Link",
+                    switch_inline_query: inviteLink,
+                  },
+                ],
+              ],
+            }),
+          }
         );
-        console.log("Sent invite link");
+        console.log("Sent invite link with forward option");
       } else if (data === "play") {
         const userInfo = body.callback_query.from;
-        // await updateUserData(chatId, userInfo);
+        await updateUserData(chatId, userInfo);
         console.log("User data updated after pressing Play button");
         // Note: We don't need to open the web app here as it's handled by the button itself
       }
@@ -66,7 +79,8 @@ export async function POST(req) {
 }
 
 async function sendWelcomeMessage(chatId) {
-  const welcomeText = `Welcome to BIXcoin Bot 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them to the game and earn more coins 🪙🪙 together.`;
+  const inviteLink = `https://t.me/BIXXcoin_bot?start=invite_${chatId}`;
+  const welcomeText = `Hi, ${body.message.from.first_name}! This is BIXcoin 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them using your referral link: ${inviteLink} and earn more together.`;
 
   try {
     await bot.sendPhoto(

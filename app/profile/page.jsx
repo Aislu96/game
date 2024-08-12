@@ -98,7 +98,7 @@ const Page = () => {
       <div className="absolute top-0 left-0 w-full  h-[90vh]">
         <div className="absolute h-[92.9%] w-full bg-white opacity-5 rounded-t-[50px]"></div>
         <div
-          className={`w-full opacity-5 absolute z-20 bottom-0 h-0 triangle-three`}
+          className={`w-full opacity-5 absolute z-20 -bottom-[0.3px] h-0 triangle-three`}
         ></div>
       </div>
       <div className="relative bg-no-repeat bg-center bg-cover h-[128px]">

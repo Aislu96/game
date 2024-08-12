@@ -10,6 +10,7 @@ import { supabase } from "./utils/supabase/server";
 import Menu from "./menu";
 import Friends from "./friends/page";
 import BgGradient from "./bgGradient";
+
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
 
@@ -269,7 +270,7 @@ const Page = () => {
       <div className="absolute top-0 left-0 w-full  h-[90vh] ">
         <div className="absolute h-[92.9%] w-full bg-white opacity-5 "></div>
         <div
-          className={`w-full opacity-5 absolute  bottom-0 h-0 triangle`}
+          className={`w-full opacity-5 absolute  -bottom-[0.3px] h-0 triangle`}
         ></div>
       </div>
 

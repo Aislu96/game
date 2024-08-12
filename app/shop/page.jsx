@@ -28,7 +28,7 @@ const Shop = () => {
       <div className="absolute top-0 left-0 w-full  h-[90vh]">
         <div className="absolute h-[92.9%] w-full bg-white opacity-5"></div>
         <div
-          className={`w-full opacity-5 absolute bottom-0 h-0 ${triangleClass}`}
+          className={`w-full opacity-5 absolute -bottom-[0.3px] h-0 ${triangleClass}`}
         ></div>
       </div>
       <div className="flex flex-row gap-5 px-[30px] py-5 z-30 items-center mx-auto">
