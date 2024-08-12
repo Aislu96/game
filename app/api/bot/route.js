@@ -22,7 +22,7 @@ export async function POST(req) {
       if (text.startsWith("/start")) {
         console.log("User detected:", chatId);
         const params = text.split(" ");
-        await sendWelcomeMessage(chatId);
+        await sendWelcomeMessage(chatId, body.message.from.first_name);
         await updateUserData(chatId, body.message.from);
         if (params.length > 1 && params[1].startsWith("invite_")) {
           console.log("Invited by:", params[1]);
@@ -41,26 +41,27 @@ export async function POST(req) {
       // Immediately answer the callback query
       await bot.answerCallbackQuery(body.callback_query.id);
 
-      if (data === "invite") {
-        const inviteLink = `https://t.me/BIXXcoin_bot?start=invite_${chatId}`;
-        await bot.sendMessage(
-          chatId,
-          `Hi friend, Let's SPIN and EARN together ${inviteLink}\n`,
-          {
-            reply_markup: JSON.stringify({
-              inline_keyboard: [
-                [
-                  {
-                    text: "Forward Invite Link",
-                    switch_inline_query: inviteLink,
-                  },
-                ],
-              ],
-            }),
-          }
-        );
-        console.log("Sent invite link with forward option");
-      } else if (data === "play") {
+      // if (data === "invite") {
+      //   const inviteLink = `https://t.me/BIXXcoin_bot?start=invite_${chatId}`;
+      //   await bot.sendMessage(
+      //     chatId,
+      //     `Hi friend, Let's SPIN and EARN together ${inviteLink}\n`,
+      //     {
+      //       reply_markup: JSON.stringify({
+      //         inline_keyboard: [
+      //           [
+      //             {
+      //               text: "Forward Invite Link",
+      //               switch_inline_query: inviteLink,
+      //             },
+      //           ],
+      //         ],
+      //       }),
+      //     }
+      //   );
+      //   console.log("Sent invite link with forward option");
+      //  }
+      if (data === "play") {
         const userInfo = body.callback_query.from;
         await updateUserData(chatId, userInfo);
         console.log("User data updated after pressing Play button");
@@ -78,9 +79,10 @@ export async function POST(req) {
   }
 }
 
-async function sendWelcomeMessage(chatId) {
+async function sendWelcomeMessage(chatId, first_name) {
   const inviteLink = `https://t.me/BIXXcoin_bot?start=invite_${chatId}`;
-  const welcomeText = `Hi! This is BIXcoin 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them using your referral link: ${inviteLink} and earn more together.`;
+  const inviteText = `Hi friend, Let's SPIN and EARN together ${inviteLink}\n`;
+  const welcomeText = `Hi ${first_name}! This is BIXcoin 👋\n\nSPIN and watch your balance Grow.\nGot friends? Invite them using your referral link: ${inviteLink} and earn more together.`;
 
   try {
     await bot.sendPhoto(
@@ -96,7 +98,7 @@ async function sendWelcomeMessage(chatId) {
                 web_app: { url: `${webAppUrl}?tgWebAppFullscreen=true` },
               },
             ],
-            [{ text: "Invite Friends", callback_data: "invite" }],
+            [{ text: "Invite Friends", switch_inline_query: inviteText }],
           ],
         }),
       }
