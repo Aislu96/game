@@ -1,13 +1,13 @@
 "use client";
-import React, {useEffect, useState, useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Menu from "../menu";
 import Link from "next/link";
-import {useGameContext} from "../context/game";
-import {supabase} from "../utils/supabase/server";
+import { useGameContext } from "../context/game";
+import { supabase } from "../utils/supabase/server";
 
 const Page = () => {
-    const {score, image, username, userId, profitPerWeek, wallet, setWallet} =
+    const { score, image, username, userId, profitPerWeek, wallet, setWallet } =
         useGameContext();
     const [activeIcon, setActiveIcon] = useState("game");
 
@@ -15,7 +15,7 @@ const Page = () => {
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [isWalletAttached, setIsWalletAttached] = useState(false);
-    const [disabledInput, setDisabledInput] = useState(false);
+    const [isLocked, setIsLocked] = useState(false);
 
     const getTriangleClass = () => {
         if (activeIcon === "shop") return "triangle-two";
@@ -26,24 +26,21 @@ const Page = () => {
     const triangleClass = getTriangleClass();
     const getImageSrc = (score) => {
         if (score >= 0 && score <= 100) {
-            return {src: "/coal.svg", text: "Coal"};
+            return { src: "/coal.svg", text: "Coal" };
         } else if (score > 100 && score <= 500) {
-            return {src: "/copper.svg", text: "Copper"};
+            return { src: "/copper.svg", text: "Copper" };
         } else if (score > 500 && score <= 2000) {
-            return {src: "/gold.svg", text: "Gold"};
+            return { src: "/gold.svg", text: "Gold" };
         } else if (score > 2000 && score <= 5000) {
-            return {src: "/emerald.svg", text: "Emerald"};
+            return { src: "/emerald.svg", text: "Emerald" };
         } else if (score > 5000 && score <= 10000) {
-            return {src: "/diamond.svg", text: "Diamond"};
+            return { src: "/diamond.svg", text: "Diamond" };
         } else if (score > 10000) {
-            return {src: "/binXcoin.svg", text: "BinXcoin"};
+            return { src: "/binXcoin.svg", text: "BinXcoin" };
         } else {
-            return {src: "/coal.svg", text: "Coal"};
+            return { src: "/coal.svg", text: "Coal" };
         }
     };
-    const clickButtonReplace = () => {
-        setDisabledInput(true);
-    }
 
     const inputRef = useRef(null);
 
@@ -62,18 +59,15 @@ const Page = () => {
     const handleWalletChange = (e) => {
         setWallet(e.target.value);
     };
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (isWalletValid) {
             setIsFormSubmitted(true);
             setIsWalletAttached(true);
-            setDisabledInput(true);
             try {
-                const {data, error} = await supabase
+                const { data, error } = await supabase
                     .from("Account")
-                    .upsert({user_id: userId, wallet: wallet});
+                    .upsert({ user_id: userId, wallet: wallet });
                 if (error) {
                     console.error(error);
                 } else {
@@ -83,6 +77,13 @@ const Page = () => {
                 console.error(error);
             }
         }
+        setIsLocked(true);
+    };
+
+    const handleReplaceClick = (e) => {
+        e.preventDefault();
+        setWallet('');
+        setIsLocked(!isLocked);
     };
 
     const toggleFormVisibility = () => {
@@ -154,57 +155,70 @@ const Page = () => {
                             </div>
                         </div>
                         {isFormSubmitted ? (
-                            <div
-                                className="w-full bg-customFon px-2.5 py-4 border-[1px]  border-solid border-customBorder rounded-xl">
+                            <div className="w-full bg-customFon px-2.5 py-4 border-[1px]  border-solid border-customBorder rounded-xl">
                                 <p className="text-medium text-base text-white text-center">
                                     Your wallet is saved
                                 </p>
                             </div>
                         ) : (
-                            <form
+                            isLocked ? (
+                                    <form
+                                        className="flex flex-col gap-1.5 z-50"
+                                        name="form-wallet"
+                                    >
+                                        <input
+                                            type="text"
+                                            ref={inputRef}
+                                            className={`w-full text-medium text-base text-white bg-customFon outline-0 h-[50px] px-2.5 py-4 border-[1px] border-solid border-customBorder rounded-xl ${
+                                                isWalletValid ? "opacity-50" : ""
+                                            }`}
+                                            placeholder=""
+                                            minLength="27"
+                                            maxLength="34"
+                                            value={wallet}
+                                            disabled={isWalletValid}
+                                        />
+                                        <button
+                                            type="submit"
+                                            className={`bg-customYellow2 w-full h-8 rounded-xl text-medium text-base ${
+                                                isWalletValid ? "" : "opacity-50"
+                                            }`}
+                                            disabled={!isWalletValid}
+                                            onClick={handleReplaceClick}
+                                        >
+                                            Replace
+                                        </button>
+                                    </form>
+                            ) : (<form
                                 className="flex flex-col gap-1.5 z-50"
                                 name="form-wallet"
                                 onSubmit={handleSubmit}
                             >
-                                <div className="relative">
-                                    <input
-                                        type="text"
-                                        ref={inputRef}
-                                        className={`w-full text-medium text-base text-white bg-customFon outline-0 h-[50px] px-2.5 py-4 border-[1px] border-solid border-customBorder rounded-xl pr-6 ${disabledInput ? 'opacity-50' : ''}`}
-                                        placeholder=""
-                                        minLength="27"
-                                        maxLength="34"
-                                        value={wallet}
-                                        onChange={handleWalletChange}
-                                        disabled={disabledInput}
-                                    />
-
-                                </div>
-                                {isWalletAttached ?
-                                    <button
-                                        className={`bg-customYellow2 w-full h-8 rounded-xl text-medium text-base ${
-                                            !isWalletValid ? "opacity-50" : ""
-                                        }`}
-                                        disabled={!isWalletValid}
-                                    onClick={clickButtonReplace}>Replace
-                                    </button> :
-
-                                    <button
-                                        type="submit"
-                                        className={`bg-customYellow2 w-full h-8 rounded-xl text-medium text-base ${
-                                            !isWalletValid ? "opacity-50" : ""
-                                        }`}
-                                        disabled={!isWalletValid}>Save
-                                    </button>
-                                }
-                            </form>
-
+                                <input
+                                    type="text"
+                                    ref={inputRef}
+                                    className="w-full text-medium text-base text-white bg-customFon outline-0 h-[50px] px-2.5 py-4 border-[1px] border-solid border-customBorder rounded-xl"
+                                    placeholder=""
+                                    minLength="27"
+                                    maxLength="34"
+                                    value={wallet}
+                                    onChange={handleWalletChange}
+                                />
+                                <button
+                                    type="submit"
+                                    className={`bg-customYellow2 w-full h-8 rounded-xl text-medium text-base ${
+                                        !isWalletValid ? "opacity-50" : ""
+                                    }`}
+                                    disabled={!isWalletValid}
+                                >
+                                    Save
+                                </button>
+                            </form>)
                         )}
                     </div>
                 )}
                 <div className="flex flex-row gap-2.5">
-                    <div
-                        className="overflow-hidden relative w-full p-2.5 rounded-[10px] border-solid border-[1px] border-transparent gradient-profile flex flex-col justify-center">
+                    <div className="overflow-hidden relative w-full p-2.5 rounded-[10px] border-solid border-[1px] border-transparent gradient-profile flex flex-col justify-center">
                         <div className="absolute w-full h-full radial-gradient-two "></div>
                         <div className="flex flex-row gap-1.5 items-baseline relative flex-wrap">
                             <p className="text-medium text-sm text-white">Your score:</p>
@@ -224,15 +238,14 @@ const Page = () => {
                             />
                         </div>
                     </div>
-                    <div
-                        className="overflow-hidden relative w-full p-2.5 rounded-[10px] border-solid border-[1px] border-transparent gradient-profile flex flex-col justify-center">
+                    <div className="overflow-hidden relative w-full p-2.5 rounded-[10px] border-solid border-[1px] border-transparent gradient-profile flex flex-col justify-center">
                         <div className="absolute w-full h-full radial-gradient left-0"></div>
                         <div className="flex flex-row gap-1.5 items-baseline relative flex-wrap">
                             <p className="text-medium text-sm text-white">Earned:</p>
                             <p className="text-medium text-base text-white">
                                 {(score * 0.0002).toFixed(2)}
                             </p>
-                            <Image src="/tether.svg" alt="tether" width={13} height={13}/>
+                            <Image src="/tether.svg" alt="tether" width={13} height={13} />
                         </div>
                         <div className="flex flex-row gap-1.5 items-baseline relative flex-wrap">
                             <p className="text-medium text-sm text-white">Profit per week:</p>
@@ -260,8 +273,7 @@ const Page = () => {
                         Learn more about the project
                     </p>
                 </Link>
-                <div
-                    className="flex items-center justify-around h-10 w-full rounded-[10px] border-solid border-[1px] border-customYellow">
+                <div className="flex items-center justify-around h-10 w-full rounded-[10px] border-solid border-[1px] border-customYellow">
                     <Link href="/" target="_blank">
                         <Image
                             src="unix.svg"
@@ -294,7 +306,7 @@ const Page = () => {
                 </div>
             </div>
 
-            <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon}/>
+            <Menu setActiveIcon={setActiveIcon} activeIcon={activeIcon} />
         </div>
     );
 };
