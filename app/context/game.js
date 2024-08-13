@@ -24,13 +24,13 @@ export const GameProvider = ({ children }) => {
   const [tg, setTg] = useState(null);
   const [username, setUsername] = useState(null);
   const [profitPerRoll, setProfitPerRoll] = useState(1);
-  const [wallet, setWallet] = useState(0);
+  const [wallet, setWallet] = useState("");
   const [theTopList, setTheTopList] = useState([]);
   const [users, setUsers] = useState([]);
   const [theTopFriends, setTheTopFriends] = useState([]);
 
   const [profitPerWeek, setProfitPerWeek] = useState(0);
-  const [language_code, setLanguageCode] = useState("ru");
+  const [language_code, setLanguageCode] = useState("en");
 
   return (
     <GameContext.Provider

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, use } from "react";
 import Image from "next/image";
 import Menu from "../menu";
 import Link from "next/link";
@@ -59,6 +59,7 @@ const Page = () => {
     if (isWalletValid) {
       setIsFormSubmitted(true);
       setIsWalletAttached(true);
+
       try {
         const { data, error } = await supabase
           .from("Account")
@@ -91,7 +92,7 @@ const Page = () => {
       setIsWalletAttached(true);
       setIsLocked(true);
     }
-  }, [wallet]);
+  }, []);
 
   return (
     <div className="h-screen bg-customFon relative">

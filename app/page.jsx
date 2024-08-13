@@ -13,9 +13,14 @@ import Menu from "./menu";
 import Friends from "./friends/page";
 import BgGradient from "./bgGradient";
 import { useTranslations } from "./utils/hooks/useTranslations";
+import dynamic from "next/dynamic";
+import MobileDetect from "mobile-detect";
+
+const QRCodeComponent = dynamic(() => import("./qrCode"), { ssr: false });
 
 const Page = () => {
   const [activeIcon, setActiveIcon] = useState("game");
+  const [isMobile, setIsMobile] = useState(true);
 
   const {
     userId,
@@ -139,7 +144,7 @@ const Page = () => {
           console.log("Telegram user ID set:", user.id);
         } else {
           console.warn("No user ID found in Telegram Web App data");
-          setUserId(1); // Fallback for development
+          setUserId(null); // Fallback for development
         }
         // await loadUserData();
 
@@ -154,7 +159,7 @@ const Page = () => {
         console.warn(
           "Telegram Web App not found. Are you running in development mode?"
         );
-        setUserId(1); // Fallback for development
+        setUserId(null); // Fallback for development
         setStartGame(true);
       }
     };
@@ -274,6 +279,15 @@ const Page = () => {
       loadUserData();
     }
   }, [userId]);
+
+  useEffect(() => {
+    const md = new MobileDetect(window.navigator.userAgent);
+    setIsMobile(md.mobile() !== null);
+  }, []);
+
+  if (!isMobile) {
+    return <QRCodeComponent url={`https://t.me/BIXXcoin_bot`} />;
+  }
 
   return (
     <div className="relative flex flex-col h-screen bg-[url('/gameBG2.svg')] bg-black bg-cover  text-white ">
