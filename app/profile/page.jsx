@@ -91,6 +91,12 @@ const Page = () => {
         setIsFormSubmitted(false);
     };
 
+    useEffect(() => {
+        if (wallet) {
+            setIsLocked(true);
+        }
+    }, []);
+
     return (
         <div className="h-screen bg-customFon relative">
             {isFormVisible && (
